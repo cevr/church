@@ -16,6 +16,7 @@ import {
   userRevisePrompt,
 } from "./prompts";
 import { makeAppleNoteFromMarkdown } from "lib/markdown-to-notes";
+import { log } from "~/lib/log";
 
 dotenv.config();
 
@@ -76,13 +77,6 @@ const spin = <V, E, R>(message: string, job: Effect.Effect<V, E, R>) =>
     );
     return result;
   });
-
-const log = {
-  info: (message: string) => Effect.sync(() => clackLog.info(message)),
-  error: (message: string) => Effect.sync(() => clackLog.error(message)),
-  success: (message: string) => Effect.sync(() => clackLog.success(message)),
-  warn: (message: string) => Effect.sync(() => clackLog.warn(message)),
-};
 
 const program = Effect.gen(function* (_) {
   const startTime = Date.now();

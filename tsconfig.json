@@ -18,6 +18,9 @@
     /* Module Resolution */
     "moduleResolution": "bundler",
     "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"]
+    },
 
     /* If NOT transpiling with TypeScript: */
     "module": "Preserve",

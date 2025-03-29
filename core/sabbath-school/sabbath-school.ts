@@ -17,7 +17,7 @@ import {
   reviewUserPrompt,
 } from "./prompts";
 import { z } from "zod";
-import { parseFlag } from "../parse";
+import { Parse } from "~/core/parse";
 
 dotenv.config();
 
@@ -75,51 +75,62 @@ class Model extends Effect.Service<Model>()("Model", {
   }),
 }) {}
 
-const parseYear = parseFlag("--year").pipe(
-  Effect.map((x) =>
-    x.pipe(
-      Option.map(
-        Schema.decodeUnknownSync(
-          Schema.NumberFromString.pipe(
-            Schema.lessThanOrEqualTo(new Date().getFullYear())
+const parseYear = Effect.gen(function* () {
+  const parse = yield* Parse;
+  return yield* parse.flag("--year").pipe(
+    Effect.map((x) =>
+      x.pipe(
+        Option.map(
+          Schema.decodeUnknownSync(
+            Schema.NumberFromString.pipe(
+              Schema.lessThanOrEqualTo(new Date().getFullYear())
+            )
           )
-        )
-      ),
-      Option.getOrElse(() => new Date().getFullYear())
+        ),
+        Option.getOrElse(() => new Date().getFullYear())
+      )
     )
-  )
-);
+  );
+});
 
-const parseQuarter = parseFlag("--quarter").pipe(
-  Effect.map((x) =>
-    x.pipe(
-      Option.map(
-        Schema.decodeUnknownSync(
-          Schema.NumberFromString.pipe(
-            Schema.greaterThanOrEqualTo(1),
-            Schema.lessThanOrEqualTo(4)
+const parseQuarter = Effect.gen(function* () {
+  const parse = yield* Parse;
+  return yield* parse.flag("--quarter").pipe(
+    Effect.map((x) =>
+      x.pipe(
+        Option.map(
+          Schema.decodeUnknownSync(
+            Schema.NumberFromString.pipe(
+              Schema.greaterThanOrEqualTo(1),
+              Schema.lessThanOrEqualTo(4)
+            )
           )
-        )
-      ),
-      Option.getOrElse(() => Math.floor(new Date().getMonth() / 3) + 1)
+        ),
+        Option.getOrElse(() => Math.floor(new Date().getMonth() / 3) + 1)
+      )
     )
-  )
-);
+  );
+});
 
-const parseWeek = parseFlag("--week").pipe(
-  Effect.map((x) =>
-    x.pipe(
-      Option.map(
-        Schema.decodeUnknownSync(
-          Schema.NumberFromString.pipe(
-            Schema.greaterThanOrEqualTo(1),
-            Schema.lessThanOrEqualTo(13)
+const parseWeek = Effect.gen(function* () {
+  const parse = yield* Parse;
+  return yield* parse
+    .flag("--week")
+    .pipe(
+      Effect.map((x) =>
+        x.pipe(
+          Option.map(
+            Schema.decodeUnknownSync(
+              Schema.NumberFromString.pipe(
+                Schema.greaterThanOrEqualTo(1),
+                Schema.lessThanOrEqualTo(13)
+              )
+            )
           )
         )
       )
-    )
-  )
-);
+    );
+});
 
 enum Action {
   Outline = "outline",
@@ -128,30 +139,65 @@ enum Action {
   Export = "export",
 }
 
-const parseAction = parseFlag("--action").pipe(
-  Effect.map((x) =>
-    x.pipe(
-      Option.flatMap((action) =>
-        Option.fromNullable(
-          matchSorter(
-            [Action.Outline, Action.Download, Action.Revise, Action.Export],
-            action
-          )[0] as string | undefined
+class ActionService extends Effect.Service<ActionService>()("ActionService", {
+  effect: Effect.gen(function* () {
+    const parse = yield* Parse;
+    const action = yield* parse.command.pipe(
+      Effect.map((x) =>
+        x.pipe(
+          Option.flatMap((action) =>
+            Option.fromNullable(
+              matchSorter(
+                [Action.Outline, Action.Download, Action.Revise, Action.Export],
+                action
+              )[0] as string | undefined
+            )
+          ),
+          Option.map(Schema.decodeUnknownSync(Schema.Enums(Action)))
         )
-      ),
-      Option.map(Schema.decodeUnknownSync(Schema.Enums(Action)))
-    )
-  )
-);
+      )
+    );
+    return {
+      action: yield* Option.match(action, {
+        onSome: Effect.succeed,
+        onNone: () =>
+          Effect.gen(function* () {
+            const result = yield* Effect.tryPromise({
+              try: () =>
+                select({
+                  message: "Select an action to perform:",
+                  options: [
+                    { value: Action.Outline, label: "Generate Outlines" },
+                    { value: Action.Revise, label: "Revise Outlines" },
+                    { value: Action.Download, label: "Download Files" },
+                    { value: Action.Export, label: "Export to Apple Notes" },
+                  ],
+                }),
+              catch: (cause: unknown) =>
+                new ArgumentError({
+                  message: `Failed to select action: ${cause}`,
+                  cause,
+                }),
+            });
+
+            if (isCancel(result)) {
+              return yield* Effect.die("Action selection cancelled");
+            }
+
+            return result as Action;
+          }),
+      }),
+    };
+  }),
+}) {}
 
 class Args extends Effect.Service<Args>()("Args", {
   effect: Effect.gen(function* (_) {
     const year = yield* parseYear;
     const quarter = yield* parseQuarter;
-    const action = yield* parseAction;
     const week = yield* parseWeek;
 
-    return { year, quarter, action, week } as const;
+    return { year, quarter, week } as const;
   }),
 }) {}
 
@@ -866,37 +912,7 @@ const exportQuarter = Effect.gen(function* (_) {
 });
 
 const program = Effect.gen(function* (_) {
-  const args = yield* Args;
-
-  const action = yield* Option.match(args.action, {
-    onSome: Effect.succeed,
-    onNone: () =>
-      Effect.gen(function* () {
-        const result = yield* Effect.tryPromise({
-          try: () =>
-            select({
-              message: "Select an action to perform:",
-              options: [
-                { value: Action.Outline, label: "Generate Outlines" },
-                { value: Action.Revise, label: "Revise Outlines" },
-                { value: Action.Download, label: "Download Files" },
-                { value: Action.Export, label: "Export to Apple Notes" },
-              ],
-            }),
-          catch: (cause: unknown) =>
-            new ArgumentError({
-              message: `Failed to select action: ${cause}`,
-              cause,
-            }),
-        });
-
-        if (isCancel(result)) {
-          return yield* Effect.die("Action selection cancelled");
-        }
-
-        return result as Action;
-      }),
-  });
+  const { action } = yield* ActionService;
 
   return yield* Match.value(action).pipe(
     Match.when(Action.Outline, () => processQuarter),
@@ -914,6 +930,7 @@ const msToMinutes = (ms: number) => {
 };
 
 export const main = program.pipe(
+  Effect.provide(ActionService.Default),
   Effect.provide(Args.Default),
   Effect.provide(Model.Default)
 );

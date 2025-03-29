@@ -1,8 +1,8 @@
 import { matchSorter } from "match-sorter";
-import { main as messagesMain } from "./messages/main";
-import { parseCommand } from "./parse";
-import { main as sabbathSchoolMain } from "./sabbath-school/main";
-import { Effect, Match, Option, Schema } from "effect";
+import { main as messagesMain } from "./messages/messages";
+import { Parse } from "./parse";
+import { main as sabbathSchoolMain } from "./sabbath-school/sabbath-school";
+import { Effect, Layer, Match, Option, Schema } from "effect";
 import { isCancel, select } from "@clack/prompts";
 import { NodeRuntime } from "@effect/platform-node";
 
@@ -13,12 +13,13 @@ enum Command {
 
 class CommandService extends Effect.Service<CommandService>()("Command", {
   effect: Effect.gen(function* () {
-    let command = yield* parseCommand.pipe(
+    const parse = yield* Parse;
+    let command = yield* parse.command.pipe(
       Effect.map((o) =>
         o.pipe(
           Option.flatMap((c) =>
             Option.fromNullable(
-              matchSorter([Command.Messages, Command.SabbathSchool], c)
+              matchSorter([Command.Messages, Command.SabbathSchool], c)[0]
             )
           ),
           Option.map((c) => Schema.decodeUnknown(Schema.Enums(Command))(c))
@@ -50,6 +51,7 @@ class CommandService extends Effect.Service<CommandService>()("Command", {
       }),
     };
   }),
+  dependencies: [Parse.Default],
 }) {}
 
 const main = Effect.gen(function* () {
@@ -60,6 +62,6 @@ const main = Effect.gen(function* () {
     Match.when(Command.SabbathSchool, () => sabbathSchoolMain),
     Match.exhaustive
   );
-}).pipe(Effect.provide(CommandService.Default));
+}).pipe(Effect.provide(Layer.merge(Parse.Default, CommandService.Default)));
 
 NodeRuntime.runMain(main);
