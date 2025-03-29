@@ -39,8 +39,12 @@ class FilesystemError extends Data.TaggedError("FilesystemError")<{
 }> {}
 
 const MessageSchema = z.object({
-  filename: z.string(),
-  message: z.string(),
+  filename: z.string().describe("The filename of the message. no extension."),
+  message: z
+    .string()
+    .describe(
+      "The message to be written to the file. Markdown format, no code blocks."
+    ),
 });
 
 const msToMinutes = (ms: number) => {
@@ -125,8 +129,7 @@ const program = Effect.gen(function* (_) {
     })
   );
 
-  const result = response.object;
-  let { filename, message } = result;
+  let { filename, message } = response.object;
 
   const reviewResponse = yield* spin(
     "Reviewing message",
@@ -196,7 +199,7 @@ const program = Effect.gen(function* (_) {
   }
 
   const messagesDir = path.join(process.cwd(), "outputs", "messages");
-  const filePath = path.join(messagesDir, filename);
+  const filePath = path.join(messagesDir, `${filename}.md`);
 
   yield* spin(
     "Ensuring messages directory exists",

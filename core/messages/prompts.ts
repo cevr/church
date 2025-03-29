@@ -141,8 +141,20 @@ The completed outline should enable a presentation that:
 -   SDA History informs understanding, avoids past mistakes.
 -   Final Generation Theology: A people perfected by Christ's grace, reflecting His character fully.
 -   Investigative Judgment: Examination of professed faith demonstrated by alignment with God's will (character/works flowing from faith).
-`;
 
+## Output Format
+- The output should be a valid JSON object with the following keys:
+    - \`filename\`: The filename of the message - no extension.
+    - \`message\`: The message to be written to the file in markdown format. No code blocks.
+
+## Example Output
+\`\`\`json
+{
+    "filename": "the-simplicity-of-trusting-god",
+    "message": "..."
+}
+\`\`\`
+`;
 export const userMessagePrompt = (topic: string) => `
 Make an outline for the following text.
 
