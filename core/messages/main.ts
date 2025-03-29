@@ -15,6 +15,7 @@ import {
   userReviewPrompt,
   userRevisePrompt,
 } from "./prompts";
+import { makeAppleNoteFromMarkdown } from "lib/markdown-to-notes";
 
 dotenv.config();
 
@@ -222,6 +223,8 @@ const program = Effect.gen(function* (_) {
         }),
     })
   );
+
+  yield* spin("Adding message to notes", makeAppleNoteFromMarkdown(message));
 
   const totalTime = msToMinutes(Date.now() - startTime);
   yield* log.success(
