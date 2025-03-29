@@ -142,21 +142,7 @@ enum Action {
 class ActionService extends Effect.Service<ActionService>()("ActionService", {
   effect: Effect.gen(function* () {
     const parse = yield* Parse;
-    const action = yield* parse.command.pipe(
-      Effect.map((x) =>
-        x.pipe(
-          Option.flatMap((action) =>
-            Option.fromNullable(
-              matchSorter(
-                [Action.Outline, Action.Download, Action.Revise, Action.Export],
-                action
-              )[0] as string | undefined
-            )
-          ),
-          Option.map(Schema.decodeUnknownSync(Schema.Enums(Action)))
-        )
-      )
-    );
+    const action = yield* parse.command(Action);
     return {
       action: yield* Option.match(action, {
         onSome: Effect.succeed,

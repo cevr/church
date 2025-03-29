@@ -1,18 +1,24 @@
-import { Context, Effect, Layer, Option, Ref } from "effect";
+import { Context, Effect, Layer, Option, Ref, Schema } from "effect";
+import { matchSorter } from "match-sorter";
 import { log } from "~/lib/log";
 
 const main = Effect.gen(function* () {
   const levelRef = yield* Ref.make(0);
 
   return {
-    command: Effect.gen(function* () {
-      const level = yield* levelRef.get;
-      yield* log.info(`Level: ${level}`);
-      const args = process.argv.slice(2 + level);
-      yield* levelRef.modify((l) => [l + 1, l + 1]);
+    command: <T extends Record<string, string | number>>(e: T) =>
+      Effect.gen(function* () {
+        const level = yield* levelRef.get;
+        const args = process.argv.slice(2 + level);
+        yield* levelRef.modify((l) => [l + 1, l + 1]);
 
-      return Option.fromNullable(args[0]);
-    }),
+        return Option.fromNullable(args[0]).pipe(
+          Option.flatMap((c) =>
+            Option.fromNullable(matchSorter(Object.values(e), c)[0])
+          ),
+          Option.map((c) => Schema.decodeUnknownSync(Schema.Enums(e))(c))
+        );
+      }),
     flag: (flag: string) =>
       Effect.gen(function* () {
         const level = yield* levelRef.get;

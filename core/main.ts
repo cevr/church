@@ -14,22 +14,11 @@ enum Command {
 class CommandService extends Effect.Service<CommandService>()("Command", {
   effect: Effect.gen(function* () {
     const parse = yield* Parse;
-    let command = yield* parse.command.pipe(
-      Effect.map((o) =>
-        o.pipe(
-          Option.flatMap((c) =>
-            Option.fromNullable(
-              matchSorter([Command.Messages, Command.SabbathSchool], c)[0]
-            )
-          ),
-          Option.map((c) => Schema.decodeUnknown(Schema.Enums(Command))(c))
-        )
-      )
-    );
+    let command = yield* parse.command(Command);
 
     return {
       command: yield* Option.match(command, {
-        onSome: (c) => c,
+        onSome: (c) => Effect.succeed(c),
         onNone: () =>
           Effect.gen(function* () {
             const command = yield* Effect.tryPromise(() =>
