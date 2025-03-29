@@ -44,9 +44,9 @@ class CommandService extends Effect.Service<CommandService>()("Command", {
 }) {}
 
 const main = Effect.gen(function* () {
-  const command = yield* CommandService;
+  const { command } = yield* CommandService;
 
-  return yield* Match.value(command.command).pipe(
+  return yield* Match.value(command).pipe(
     Match.when(Command.Messages, () => messagesMain),
     Match.when(Command.SabbathSchool, () => sabbathSchoolMain),
     Match.exhaustive
