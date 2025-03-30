@@ -160,12 +160,13 @@ The completed outline should enable a presentation that:
 -   Final Generation Theology: A people perfected by Christ's grace, reflecting His character fully.
 -   Investigative Judgment: Examination of professed faith demonstrated by alignment with God's will (character/works flowing from faith).
 `;
-export const userMessagePrompt = (topic: string) => `
+export const userMessagePrompt = (topic: string, points?: string[]) => `
 Make an outline for the following text.
 
 - IMPORTANT: Only return the outline, nothing else.
 Topic:
 ${topic}
+${points ? `Points to include: ${points.join("\n")}` : ""}
 `;
 
 export const systemReviewPrompt = `# Prompt: Review Checklist for SDA Bible Study Outline
@@ -261,7 +262,7 @@ export const systemRevisePrompt = `**Objective:** Revise the provided Seventh-da
 4.  **Verify Final Output:** Before outputting, double-check the *entire* revised outline against the original generation prompt's **Markdown Template** and **Output Format** rules to ensure 100% compliance.
 
 **Key Areas to Focus On (Based on Potential Feedback):**
-*   **Markdown Syntax:** Absolutely critical. Headings (\`#\`, \`##\`, \`###\`, \`####\` - no bold), bullets (\`-\` only), indentation (4 spaces), bolding (**emphasis only**).
+*   **Markdown Syntax:** Absolutely critical. Headings (\`#\`, \`##\`, \`###\`, \`####\` - no bold), bullets (\`-\` only), indentation (4 spaces), bolding (**emphasis only**). No code blocks, or wrapping the entire outline in \`\`\`markdown\`\`\` tags.
 *   **Structural Completeness:** Ensure every \`###\` Body Section contains the required \`- A./B.\` points AND the \`#### Illustrative Speaking Notes\`, \`#### Whiteboard Visuals\`, and \`#### Discussion Questions\` subsections with appropriate content.
 *   **Presence of All Required Elements:** Introduction, Body Sections, Conclusion, Theme, Focus, Texts, Time Estimates, EGW quotes (with refs), Application points, etc.
 *   **Content Depth & Focus:** Aligning with the profound theme, character perfection/readiness focus.

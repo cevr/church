@@ -1,10 +1,9 @@
 import * as fs from "fs";
 import * as path from "path";
 import { Effect, Schema, Option, Match, Data } from "effect";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+
 import { generateText, generateObject } from "ai";
 import { select, isCancel } from "@clack/prompts";
-import { matchSorter } from "match-sorter";
 import * as cheerio from "cheerio";
 import { makeAppleNoteFromMarkdown } from "../../lib/markdown-to-notes";
 
@@ -18,6 +17,8 @@ import {
 } from "./prompts";
 import { z } from "zod";
 import { Parse } from "~/core/parse";
+import { Model } from "../model";
+import { msToMinutes } from "../lib";
 
 dotenv.config();
 
@@ -64,72 +65,42 @@ class ReviseError extends Data.TaggedError("ReviseError")<{
   cause: unknown;
 }> {}
 
-class Model extends Effect.Service<Model>()("Model", {
-  effect: Effect.gen(function* (_) {
-    const key = yield* Schema.Config("GEMINI_API_KEY", Schema.NonEmptyString);
-    const model = createGoogleGenerativeAI({
-      apiKey: key,
-    })("gemini-2.5-pro-exp-03-25");
-
-    return model;
-  }),
-}) {}
-
 const parseYear = Effect.gen(function* () {
   const parse = yield* Parse;
-  return yield* parse.flag("--year").pipe(
-    Effect.map((x) =>
-      x.pipe(
-        Option.map(
-          Schema.decodeUnknownSync(
-            Schema.NumberFromString.pipe(
-              Schema.lessThanOrEqualTo(new Date().getFullYear())
-            )
-          )
-        ),
-        Option.getOrElse(() => new Date().getFullYear())
-      )
+  const year = yield* parse.flagSchema(
+    "year",
+    Schema.NumberFromString.pipe(
+      Schema.lessThanOrEqualTo(new Date().getFullYear())
     )
   );
+
+  return year.pipe(Option.getOrElse(() => new Date().getFullYear()));
 });
 
 const parseQuarter = Effect.gen(function* () {
   const parse = yield* Parse;
-  return yield* parse.flag("--quarter").pipe(
-    Effect.map((x) =>
-      x.pipe(
-        Option.map(
-          Schema.decodeUnknownSync(
-            Schema.NumberFromString.pipe(
-              Schema.greaterThanOrEqualTo(1),
-              Schema.lessThanOrEqualTo(4)
-            )
-          )
-        ),
-        Option.getOrElse(() => Math.floor(new Date().getMonth() / 3) + 1)
-      )
+  const quarter = yield* parse.flagSchema(
+    "quarter",
+    Schema.NumberFromString.pipe(
+      Schema.greaterThanOrEqualTo(1),
+      Schema.lessThanOrEqualTo(4)
     )
+  );
+
+  return quarter.pipe(
+    Option.getOrElse(() => Math.floor(new Date().getMonth() / 3) + 1)
   );
 });
 
 const parseWeek = Effect.gen(function* () {
   const parse = yield* Parse;
-  return yield* parse
-    .flag("--week")
-    .pipe(
-      Effect.map((x) =>
-        x.pipe(
-          Option.map(
-            Schema.decodeUnknownSync(
-              Schema.NumberFromString.pipe(
-                Schema.greaterThanOrEqualTo(1),
-                Schema.lessThanOrEqualTo(13)
-              )
-            )
-          )
-        )
-      )
-    );
+  return yield* parse.flagSchema(
+    "week",
+    Schema.NumberFromString.pipe(
+      Schema.greaterThanOrEqualTo(1),
+      Schema.lessThanOrEqualTo(13)
+    )
+  );
 });
 
 enum Action {
@@ -908,12 +879,6 @@ const program = Effect.gen(function* (_) {
     Match.exhaustive
   );
 });
-
-const msToMinutes = (ms: number) => {
-  const minutes = Math.floor(ms / 60000);
-  const seconds = Math.floor((ms % 60000) / 1000);
-  return `${minutes}m:${seconds.toString().padStart(2, "0")}s`;
-};
 
 export const main = program.pipe(
   Effect.provide(ActionService.Default),

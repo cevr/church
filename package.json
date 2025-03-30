@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "tsx core/main.ts"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +13,7 @@
   "dependencies": {
     "@ai-sdk/google": "^1.2.3",
     "@clack/prompts": "^0.10.0",
+    "@effect/platform": "^0.80.2",
     "@effect/platform-node": "^0.76.5",
     "ai": "^4.2.8",
     "cheerio": "^1.0.0",

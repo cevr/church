@@ -1,11 +1,9 @@
 import * as fs from "fs";
 import * as path from "path";
-import { Data, Effect, Schema } from "effect";
-import { NodeRuntime } from "@effect/platform-node";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { Data, Effect } from "effect";
 import { generateObject, generateText } from "ai";
 
-import { isCancel, text, spinner, log as clackLog } from "@clack/prompts";
+import { isCancel, text } from "@clack/prompts";
 import { z } from "zod";
 import dotenv from "dotenv";
 import {
@@ -17,6 +15,8 @@ import {
 } from "./prompts";
 import { makeAppleNoteFromMarkdown } from "lib/markdown-to-notes";
 import { log } from "~/lib/log";
+import { Model } from "../model";
+import { msToMinutes, spin } from "../lib";
 
 dotenv.config();
 
@@ -40,42 +40,112 @@ class FilesystemError extends Data.TaggedError("FilesystemError")<{
   cause: unknown;
 }> {}
 
-const MessageSchema = z.object({
-  filename: z.string().describe("The filename of the message. no extension."),
-  message: z
-    .string()
-    .describe(
-      "The message to be written to the file. Markdown format, no code blocks."
-    ),
-});
-
-const msToMinutes = (ms: number) => {
-  const minutes = Math.floor(ms / 60000);
-  const seconds = Math.floor((ms % 60000) / 1000);
-  return `${minutes}m:${seconds.toString().padStart(2, "0")}s`;
-};
-
-class Model extends Effect.Service<Model>()("Model", {
-  effect: Effect.gen(function* (_) {
-    const key = yield* Schema.Config("GEMINI_API_KEY", Schema.NonEmptyString);
-    const model = createGoogleGenerativeAI({
-      apiKey: key,
-    })("gemini-2.5-pro-exp-03-25");
-
-    return model;
-  }),
-}) {}
-
-const spin = <V, E, R>(message: string, job: Effect.Effect<V, E, R>) =>
+export const makeMessage = (topic: string, points?: string[]) =>
   Effect.gen(function* () {
-    const start = Date.now();
-    const s = yield* Effect.sync(() => spinner());
-    yield* Effect.sync(() => s.start(message + "..."));
-    const result = yield* job;
-    yield* Effect.sync(() =>
-      s.stop(`${message} done! (${msToMinutes(Date.now() - start)})`)
+    const model = yield* Model;
+    const response = yield* spin(
+      "Generating message outline",
+      Effect.tryPromise({
+        try: () =>
+          generateObject({
+            model,
+            schema: z.object({
+              filename: z
+                .string()
+                .describe("The filename of the message. no extension."),
+              message: z
+                .string()
+                .describe(
+                  "The message to be written to the file. Markdown format, no code blocks, no ```markdown``` tags. Only the content, nothing else."
+                ),
+            }),
+            messages: [
+              {
+                role: "system",
+                content: systemMessagePrompt,
+              },
+              {
+                role: "user",
+                content: userMessagePrompt(topic, points),
+              },
+            ],
+          }),
+        catch: (cause: unknown) =>
+          new OutlineError({
+            cause,
+          }),
+      })
     );
-    return result;
+
+    let { filename, message } = response.object;
+
+    const reviewResponse = yield* spin(
+      "Reviewing message",
+      Effect.tryPromise({
+        try: () =>
+          generateObject({
+            model,
+            schema: z.object({
+              needsRevision: z
+                .boolean()
+                .describe("Whether the message needs revision"),
+              revisions: z
+                .array(z.string())
+                .describe("The specific criteria that need revision"),
+            }),
+            messages: [
+              {
+                role: "system",
+                content: systemReviewPrompt,
+              },
+              {
+                role: "user",
+                content: userReviewPrompt(message),
+              },
+            ],
+          }),
+        catch: (cause: unknown) =>
+          new ReviewError({
+            cause,
+          }),
+      })
+    );
+
+    const needsRevision = reviewResponse.object.needsRevision;
+
+    yield* log.info(`needsRevision: ${needsRevision}`);
+
+    if (needsRevision) {
+      const revisedMessage = yield* spin(
+        "Revising message",
+        Effect.tryPromise({
+          try: () =>
+            generateText({
+              model,
+              messages: [
+                {
+                  role: "system",
+                  content: systemReviewPrompt,
+                },
+                {
+                  role: "user",
+                  content: userRevisePrompt(
+                    message,
+                    reviewResponse.object.revisions
+                  ),
+                },
+              ],
+            }),
+          catch: (cause: unknown) =>
+            new ReviseError({
+              cause,
+            }),
+        })
+      );
+
+      message = revisedMessage.text;
+    }
+    return { filename, message };
   });
 
 const program = Effect.gen(function* (_) {
@@ -99,99 +169,7 @@ const program = Effect.gen(function* (_) {
     return;
   }
 
-  const response = yield* spin(
-    "Generating message outline",
-    Effect.tryPromise({
-      try: () =>
-        generateObject({
-          model,
-          schema: MessageSchema,
-          messages: [
-            {
-              role: "system",
-              content: systemMessagePrompt,
-            },
-            {
-              role: "user",
-              content: userMessagePrompt(topic),
-            },
-          ],
-        }),
-      catch: (cause: unknown) =>
-        new OutlineError({
-          cause,
-        }),
-    })
-  );
-
-  let { filename, message } = response.object;
-
-  const reviewResponse = yield* spin(
-    "Reviewing message",
-    Effect.tryPromise({
-      try: () =>
-        generateObject({
-          model,
-          schema: z.object({
-            needsRevision: z
-              .boolean()
-              .describe("Whether the message needs revision"),
-            revisions: z
-              .array(z.string())
-              .describe("The specific criteria that need revision"),
-          }),
-          messages: [
-            {
-              role: "system",
-              content: systemReviewPrompt,
-            },
-            {
-              role: "user",
-              content: userReviewPrompt(message),
-            },
-          ],
-        }),
-      catch: (cause: unknown) =>
-        new ReviewError({
-          cause,
-        }),
-    })
-  );
-
-  const needsRevision = reviewResponse.object.needsRevision;
-
-  yield* log.info(`needsRevision: ${needsRevision}`);
-
-  if (needsRevision) {
-    const revisedMessage = yield* spin(
-      "Revising message",
-      Effect.tryPromise({
-        try: () =>
-          generateText({
-            model,
-            messages: [
-              {
-                role: "system",
-                content: systemReviewPrompt,
-              },
-              {
-                role: "user",
-                content: userRevisePrompt(
-                  message,
-                  reviewResponse.object.revisions
-                ),
-              },
-            ],
-          }),
-        catch: (cause: unknown) =>
-          new ReviseError({
-            cause,
-          }),
-      })
-    );
-
-    message = revisedMessage.text;
-  }
+  const { filename, message } = yield* makeMessage(topic);
 
   const messagesDir = path.join(process.cwd(), "outputs", "messages");
   const filePath = path.join(messagesDir, `${filename}.md`);

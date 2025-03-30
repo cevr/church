@@ -1,14 +1,17 @@
-import { matchSorter } from "match-sorter";
-import { main as messagesMain } from "./messages/messages";
-import { Parse } from "./parse";
-import { main as sabbathSchoolMain } from "./sabbath-school/sabbath-school";
-import { Effect, Layer, Match, Option, Schema } from "effect";
+import { Effect, Layer, Match, Option } from "effect";
 import { isCancel, select } from "@clack/prompts";
-import { NodeRuntime } from "@effect/platform-node";
+import { NodeFileSystem, NodeRuntime } from "@effect/platform-node";
+
+import { Parse } from "./parse";
+import { main as messagesMain } from "./messages/messages";
+import { main as sabbathSchoolMain } from "./sabbath-school/sabbath-school";
+import { main as eldersDigestMain } from "./elders-digest/elders-digest";
+import { Model } from "./model";
 
 enum Command {
   Messages = "messages",
   SabbathSchool = "sabbath-school",
+  EldersDigest = "elders-digest",
 }
 
 class CommandService extends Effect.Service<CommandService>()("Command", {
@@ -27,6 +30,7 @@ class CommandService extends Effect.Service<CommandService>()("Command", {
                 options: [
                   { label: "Messages", value: Command.Messages },
                   { label: "Sabbath School", value: Command.SabbathSchool },
+                  { label: "Elders Digest", value: Command.EldersDigest },
                 ],
               })
             );
@@ -49,8 +53,13 @@ const main = Effect.gen(function* () {
   return yield* Match.value(command).pipe(
     Match.when(Command.Messages, () => messagesMain),
     Match.when(Command.SabbathSchool, () => sabbathSchoolMain),
+    Match.when(Command.EldersDigest, () => eldersDigestMain),
     Match.exhaustive
   );
-}).pipe(Effect.provide(Layer.merge(Parse.Default, CommandService.Default)));
+}).pipe(
+  Effect.provide(Layer.merge(Parse.Default, CommandService.Default)),
+  Effect.provide(NodeFileSystem.layer),
+  Effect.provide(Model.Default)
+);
 
 NodeRuntime.runMain(main);
