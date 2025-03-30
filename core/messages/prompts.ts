@@ -179,12 +179,7 @@ export const systemReviewPrompt = `# Prompt: Review Checklist for SDA Bible Stud
 
 ## Review Checklist
 
-**1. Overall Structure & Format:**
-    *   [ ] **Concise Outline Format:** Is the output a concise outline (bullet points, key phrases) and NOT a script or full paragraphs?
-    *   [ ] **JSON Output:** Was the output provided in the correct JSON format with \`filename\` and \`message\` keys? (Verify structure if applicable)
-    *   [ ] **Markdown:** Is the \`message\` content valid markdown without code blocks?
-
-**2. Core Identity & Required Elements:**
+**1. Core Identity & Required Elements:**
     *   [ ] **SDA Perspective:** Does the content reflect a fundamentalist, pioneer-believing SDA perspective (theology, SoP references where appropriate)?
     *   [ ] **Title:** Is there a clear, compelling title?
     *   [ ] **Tags:** Are there 4-6 relevant topic tags prefixed with #?
@@ -193,14 +188,14 @@ export const systemReviewPrompt = `# Prompt: Review Checklist for SDA Bible Stud
     *   [ ] **Central Bible Verse:** Is a key scripture encapsulating the theme included and cited?
     *   [ ] **Key Supporting Verses:** Are 3-5 *additional* key verses/passages listed, forming the study's core?
 
-**3. Biblical Foundation & Content Density (CRITICAL FOCUS):**
+**2. Biblical Foundation & Content Density (CRITICAL FOCUS):**
     *   [ ] **Verse-Rich Content:** Is nearly *every major point and sub-point* explicitly linked to a specific scripture reference (citation included)?
     *   [ ] **Scripture as Structure:** Does the outline's flow appear to be guided primarily by the sequence of the Central and Key Supporting Verses?
     *   [ ] **Ease of Formulation:** Does the structure, with its clear points tied to specific verses, make it relatively easy to see how one would explain/unpack those verses in a study setting?
     *   [ ] **Contextual Accuracy:** Are scriptures presented in a way that respects their likely historical/literary context (based on the outline points)?
     *   [ ] **Grounding:** Are theological points and practical applications explicitly shown to *derive from* the cited scriptures?
 
-**4. Engagement & Communication Style:**
+**3. Engagement & Communication Style:**
     *   [ ] **Teaching, Not Sermonizing:** Does the overall tone feel instructional and study-focused, rather than primarily exhortational or emotionally driven?
     *   [ ] **Whiteboard Prompts:** Are there bracketed suggestions \`[Write on board: ...]\` for key terms, verses, simple diagrams, or questions? Are they relevant and tied to the text?
     *   [ ] **Rhetorical Questions:** Are rhetorical questions included, marked with **(RQ)**, and do they seem designed to provoke thought *based on the specific text* being discussed?
@@ -209,20 +204,20 @@ export const systemReviewPrompt = `# Prompt: Review Checklist for SDA Bible Stud
     *   [ ] **Revealing Simplicity:** Does the outline attempt to break down core truths *found in the text* to their essential simplicity without being shallow?
     *   [ ] **Clarity & Accessibility:** Is the language generally clear? Is specialized terminology explained or tied back to biblical terms?
 
-**5. Practical Application Framework:**
+**4. Practical Application Framework:**
     *   [ ] **Need/Question (from text):** Do sections identify a relevant need or question addressed by the scripture?
     *   [ ] **Biblical Principle (from text):** Is the core scriptural principle clearly stated and cited?
     *   [ ] **Bridging (from text):** Is there a clear attempt to connect the verse's meaning to modern life?
     *   [ ] **Actionable Steps (from text):** Are 1-3 specific, simple action steps provided? Are they plausibly derived from the passage's implications?
     *   [ ] **Invitation:** Is there a gentle invitation to apply the learned principles?
 
-**6. Time Management:**
+**5. Time Management:**
     *   [ ] **Time Allocation Guide:** Is a time breakdown included with minutes per section?
     *   [ ] **45-Minute Frame:** Does the overall content volume seem appropriate for a 45-minute presentation?
     *   [ ] **Intro/Conclusion Time:** Are the intro (5-7 min) and conclusion (5-8 min) times allocated correctly?
     *   [ ] **Condensation Markers:** Are sections that could be potentially condensed marked with \`[*]\`?
 
-**7. Final Assessment:**
+**6. Final Assessment:**
     *   [ ] **Overall Adherence:** Does the outline generally meet the requirements and spirit of the generation prompt?
     *   [ ] **Primary Goals Met:** Does the outline successfully emphasize biblical study, provide ample scripture, facilitate teaching preparation, and include the specified 'Asides'?
     *   [ ] **Usability:** Would this outline be a practical and helpful tool for preparing the intended Bible study?
