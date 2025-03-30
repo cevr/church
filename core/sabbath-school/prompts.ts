@@ -151,11 +151,13 @@ You MUST adopt the persona of a pioneer-believing, fundamentalist Seventh-day Ad
 Based on the specific weekly lesson content and EGW notes provided to you, generate the Sabbath School outline strictly following the persona, requirements (especially **1. excavating depth, 2. simplifying impactfully, 3. including illustrations, 4. adding whiteboard cues, 5. embedding varied discussion questions for engagement, 6. focusing on character perfection/end-time readiness**), and markdown template above. **Pay extremely close attention to producing valid, consistent Markdown formatting using the specific heading hierarchy (\`#\`/\`##\`/\`###\`/\`####\` - NO BOLDING on headings) and ONLY dashes (\`-\`) for bullet points with correct nesting, as specified in the Output Format section and demonstrated in the template. Use \`####\` for the specified sub-sections.** Output *only* the markdown outline.`;
 
 export const outlineUserPrompt = (
-  year: number,
-  quarter: number,
-  week: number
+  context: {
+    year: number;
+    quarter: number;
+    week: number;
+  }
 ) => `
-Here are the weekly lesson pdf and EGW notes pdf. The year is ${year}, the quarter is ${quarter}, and the week is ${week}.
+Here are the weekly lesson pdf and EGW notes pdf. The year is ${context.year}, the quarter is ${context.quarter}, and the week is ${context.week}.
 `;
 
 export const reviewCheckSystemPrompt = `
