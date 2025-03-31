@@ -150,7 +150,6 @@ export const makeMessage = (topic: string, points?: string[]) =>
 
 const program = Effect.gen(function* (_) {
   const startTime = Date.now();
-  const model = yield* Model;
 
   const topic = yield* Effect.tryPromise({
     try: () =>

@@ -38,8 +38,7 @@ class CheerioError extends Data.TaggedError("CheerioError")<{
 }> {}
 
 class MissingPdfError extends Data.TaggedError("MissingPdfError")<{
-  week: number;
-  missingFiles: string[];
+  quarter: number;
 }> {}
 
 class ArgumentError extends Data.TaggedError("ArgumentError")<{
@@ -106,16 +105,16 @@ class ActionService extends Effect.Service<ActionService>()("ActionService", {
 class Args extends Effect.Service<Args>()("Args", {
   effect: Effect.gen(function* (_) {
     const parse = yield* Parse;
-    const year = yield* parse
+    const year = parse
       .flagSchema(
         ["year", "y"],
         Schema.NumberFromString.pipe(
           Schema.lessThanOrEqualTo(new Date().getFullYear())
         )
       )
-      .pipe(Effect.map(Option.getOrElse(() => new Date().getFullYear())));
+      .pipe(Option.getOrElse(() => new Date().getFullYear()));
 
-    const quarter = yield* parse
+    const quarter = parse
       .flagSchema(
         ["quarter", "q"],
         Schema.NumberFromString.pipe(
@@ -123,13 +122,9 @@ class Args extends Effect.Service<Args>()("Args", {
           Schema.lessThanOrEqualTo(4)
         )
       )
-      .pipe(
-        Effect.map(
-          Option.getOrElse(() => Math.floor(new Date().getMonth() / 3) + 1)
-        )
-      );
+      .pipe(Option.getOrElse(() => Math.floor(new Date().getMonth() / 3) + 1));
 
-    const week = yield* parse.flagSchema(
+    const week = parse.flagSchema(
       ["week", "w"],
       Schema.NumberFromString.pipe(
         Schema.greaterThanOrEqualTo(1),
@@ -159,7 +154,7 @@ interface SabbathSchoolContext {
   week: number;
 }
 
-const findWeekUrls = (year: number, quarter: number) =>
+const findQuarterUrls = (year: number, quarter: number) =>
   Effect.gen(function* (_) {
     // Parse the base URL once
     const baseUrl = `https://www.sabbath.school/LessonBook?year=${year}&quarter=${quarter}`;
@@ -220,8 +215,7 @@ const findWeekUrls = (year: number, quarter: number) =>
     // Validate that we found all weeks
     if (weekUrls.length === 0) {
       return yield* new MissingPdfError({
-        week: 1,
-        missingFiles: ["Lesson PDF", "EGW Notes PDF"],
+        quarter,
       });
     }
 
@@ -381,7 +375,11 @@ const processQuarter = Effect.gen(function* (_) {
     onNone: () => Array.range(1, 13),
   });
 
-  const weekUrls = yield* findWeekUrls(year, quarter);
+  const quarterUrls = yield* findQuarterUrls(year, quarter);
+
+  yield* Effect.log(
+    `Found ${quarterUrls.length} missing Sabbath School lessons to download...`
+  );
 
   const fs = yield* FileSystem.FileSystem;
 
@@ -400,7 +398,7 @@ const processQuarter = Effect.gen(function* (_) {
     Effect.map((weeks) =>
       weeks.map((weekNumber) =>
         Option.fromNullable(
-          weekUrls.find((urls) => urls.weekNumber === weekNumber)
+          quarterUrls.find((urls) => urls.weekNumber === weekNumber)
         )
       )
     ),
@@ -439,23 +437,19 @@ const processQuarter = Effect.gen(function* (_) {
             outline
           );
 
-          outline = Option.getOrElse(revision, () => outline);
+          outline = Option.match(revision, {
+            onSome: (text) => text,
+            onNone: () => outline,
+          });
 
           yield* Effect.log(
             `Writing outline to disk and exporting to Apple Notes...`
           );
-          yield* Effect.all([
-            fs.writeFile(
-              getFilePath(year, quarter, urls.weekNumber),
-              new TextEncoder().encode(outline)
-            ),
-            makeAppleNoteFromMarkdown(outline, {
-              activateNotesApp: false,
-            }),
-          ]);
-          yield* Effect.log(
-            `Outline written to disk and exported to Apple Notes`
+          yield* fs.writeFile(
+            getFilePath(year, quarter, urls.weekNumber),
+            new TextEncoder().encode(outline)
           );
+          yield* Effect.log(`Outline written to disk`);
         }).pipe(
           Effect.withLogSpan("Download and generate outline"),
           Effect.annotateLogs({
