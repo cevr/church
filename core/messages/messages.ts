@@ -1,9 +1,9 @@
 import * as fs from "fs";
 import * as path from "path";
-import { Data, Effect } from "effect";
+import { Data, Effect, Match, Option } from "effect";
 import { generateObject, generateText } from "ai";
 
-import { isCancel, text } from "@clack/prompts";
+import { isCancel, select, text } from "@clack/prompts";
 import { z } from "zod";
 import dotenv from "dotenv";
 import {
@@ -17,6 +17,8 @@ import { makeAppleNoteFromMarkdown } from "lib/markdown-to-notes";
 import { log } from "~/lib/log";
 import { Model } from "../model";
 import { msToMinutes, spin } from "../lib";
+import { Parse } from "../parse";
+import { FileSystem } from "@effect/platform";
 
 dotenv.config();
 
@@ -36,11 +38,50 @@ class ReviseError extends Data.TaggedError("ReviseError")<{
   cause: unknown;
 }> {}
 
-class FilesystemError extends Data.TaggedError("FilesystemError")<{
+class ActionError extends Data.TaggedError("ActionError")<{
   cause: unknown;
 }> {}
 
-export const makeMessage = (topic: string, points?: string[]) =>
+enum Actions {
+  Generate = "generate",
+  Revise = "revise",
+}
+
+class ActionService extends Effect.Service<ActionService>()("Action", {
+  effect: Effect.gen(function* () {
+    const parse = yield* Parse;
+    let action = yield* parse.command(Actions);
+
+    return {
+      action: yield* Option.match(action, {
+        onSome: (a) => Effect.succeed(a),
+        onNone: () =>
+          Effect.gen(function* () {
+            const selected = yield* Effect.tryPromise({
+              try: () =>
+                select({
+                  message: "What would you like to do?",
+                  options: [
+                    { label: "Generate", value: Actions.Generate },
+                    { label: "Revise", value: Actions.Revise },
+                  ],
+                }),
+              catch: () => new ActionError({ cause: "No action selected" }),
+            });
+
+            if (isCancel(selected)) {
+              return yield* Effect.dieMessage("Operation cancelled.");
+            }
+
+            return selected;
+          }),
+      }),
+    };
+  }),
+  dependencies: [Parse.Default],
+}) {}
+
+export const generate = (topic: string, points?: string[]) =>
   Effect.gen(function* () {
     const model = yield* Model;
     const response = yield* spin(
@@ -79,6 +120,21 @@ export const makeMessage = (topic: string, points?: string[]) =>
 
     let { filename, message } = response.object;
 
+    const revisedMessage = yield* revise(message);
+
+    return {
+      filename,
+      message: Option.match(revisedMessage, {
+        onSome: (i) => i,
+        onNone: () => message,
+      }),
+    };
+  });
+
+const revise = (message: string) =>
+  Effect.gen(function* () {
+    const model = yield* Model;
+
     const reviewResponse = yield* spin(
       "Reviewing message",
       Effect.tryPromise({
@@ -115,40 +171,41 @@ export const makeMessage = (topic: string, points?: string[]) =>
 
     yield* log.info(`needsRevision: ${needsRevision}`);
 
-    if (needsRevision) {
-      const revisedMessage = yield* spin(
-        "Revising message",
-        Effect.tryPromise({
-          try: () =>
-            generateText({
-              model,
-              messages: [
-                {
-                  role: "system",
-                  content: systemReviewPrompt,
-                },
-                {
-                  role: "user",
-                  content: userRevisePrompt(
-                    message,
-                    reviewResponse.object.revisions
-                  ),
-                },
-              ],
-            }),
-          catch: (cause: unknown) =>
-            new ReviseError({
-              cause,
-            }),
-        })
-      );
-
-      message = revisedMessage.text;
+    if (!needsRevision) {
+      return Option.none<string>();
     }
-    return { filename, message };
+
+    const revisedMessage = yield* spin(
+      "Revising message",
+      Effect.tryPromise({
+        try: () =>
+          generateText({
+            model,
+            messages: [
+              {
+                role: "system",
+                content: systemReviewPrompt,
+              },
+              {
+                role: "user",
+                content: userRevisePrompt(
+                  message,
+                  reviewResponse.object.revisions
+                ),
+              },
+            ],
+          }),
+        catch: (cause: unknown) =>
+          new ReviseError({
+            cause,
+          }),
+      })
+    );
+
+    return Option.some(revisedMessage.text);
   });
 
-const program = Effect.gen(function* (_) {
+const generateMessage = Effect.gen(function* (_) {
   const startTime = Date.now();
 
   const topic = yield* Effect.tryPromise({
@@ -168,31 +225,21 @@ const program = Effect.gen(function* (_) {
     return;
   }
 
-  const { filename, message } = yield* makeMessage(topic);
+  const { filename, message } = yield* generate(topic);
 
   const messagesDir = path.join(process.cwd(), "outputs", "messages");
   const filePath = path.join(messagesDir, `${filename}.md`);
 
+  const fs = yield* FileSystem.FileSystem;
+
   yield* spin(
     "Ensuring messages directory exists",
-    Effect.try({
-      try: () => fs.mkdirSync(messagesDir, { recursive: true }),
-      catch: (cause: unknown) =>
-        new FilesystemError({
-          cause,
-        }),
-    })
+    fs.makeDirectory(messagesDir)
   );
 
   yield* spin(
     "Writing message to file",
-    Effect.try({
-      try: () => fs.writeFileSync(filePath, message),
-      catch: (cause: unknown) =>
-        new FilesystemError({
-          cause,
-        }),
-    })
+    fs.writeFile(filePath, new TextEncoder().encode(message))
   );
 
   yield* spin("Adding message to notes", makeAppleNoteFromMarkdown(message));
@@ -203,4 +250,56 @@ const program = Effect.gen(function* (_) {
   );
 });
 
-export const main = program.pipe(Effect.provide(Model.Default));
+const reviseMessage = Effect.gen(function* (_) {
+  const fs = yield* FileSystem.FileSystem;
+  const startTime = Date.now();
+
+  const messagesDir = path.join(process.cwd(), "outputs", "messages");
+  const files = yield* fs.readDirectory(messagesDir);
+
+  const filePaths = files.map((file) => path.join(messagesDir, file));
+
+  const filePath = yield* Effect.tryPromise({
+    try: () =>
+      select({
+        message: "Which message would you like to revise?",
+        options: filePaths.map((filePath) => ({
+          label: path.basename(filePath),
+          value: filePath,
+        })),
+        maxItems: 5,
+      }),
+    catch: (cause: unknown) =>
+      new PromptError({
+        cause,
+      }),
+  });
+
+  if (isCancel(filePath)) {
+    yield* Effect.dieMessage("Operation cancelled.");
+    return;
+  }
+
+  const message = yield* fs.readFile(filePath);
+
+  const revisedMessage = yield* revise(new TextDecoder().decode(message));
+
+  if (Option.isNone(revisedMessage)) {
+    yield* log.error("No message to revise.");
+    return;
+  }
+
+  yield* fs.writeFile(filePath, new TextEncoder().encode(revisedMessage.value));
+});
+
+const program = Effect.gen(function* () {
+  const { action } = yield* ActionService;
+
+  return yield* Match.value(action).pipe(
+    Match.when(Actions.Generate, () => generateMessage),
+    Match.when(Actions.Revise, () => reviseMessage),
+    Match.exhaustive
+  );
+});
+
+export const main = program.pipe(Effect.provide(ActionService.Default));

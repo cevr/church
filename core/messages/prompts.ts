@@ -218,6 +218,7 @@ export const systemReviewPrompt = `# Prompt: Review Checklist for SDA Bible Stud
     *   [ ] **Condensation Markers:** Are sections that could be potentially condensed marked with \`[*]\`?
 
 **6. Final Assessment:**
+    *   [ ] **Fixing Formatting:** Correct any deviations from the strict Markdown rules (heading levels \`#\`/\`##\`/\`###\`/\`####\` without bolding, dash \`-\` bullets only, correct indentation, bolding **only** for emphasis/labels like **A.**). **Pay extreme attention to this.**
     *   [ ] **Overall Adherence:** Does the outline generally meet the requirements and spirit of the generation prompt?
     *   [ ] **Primary Goals Met:** Does the outline successfully emphasize biblical study, provide ample scripture, facilitate teaching preparation, and include the specified 'Asides'?
     *   [ ] **Usability:** Would this outline be a practical and helpful tool for preparing the intended Bible study?

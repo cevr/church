@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsx core/main.ts"
+    "start": "tsx core/main.ts",
+    "export": "tsx core/markdown-to-notes.ts"
+
   },
   "keywords": [],
   "author": "",

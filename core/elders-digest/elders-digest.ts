@@ -8,7 +8,7 @@ import { z } from "zod";
 import { eldersDigestSystemPrompt } from "./prompts";
 import { FileSystem } from "@effect/platform";
 import path from "path";
-import { makeMessage } from "../messages/messages";
+import { generate } from "../messages/messages";
 import { spin } from "../lib";
 
 //cdn.ministerialassociation.org/cdn/eldersdigest.org/issues/ED%20Q1%201994.pdf
@@ -133,7 +133,7 @@ export const main = Effect.gen(function* () {
         const contents = yield* getExtractedContent(pdf);
         yield* Effect.forEach(contents, (content) =>
           Effect.gen(function* () {
-            const message = yield* makeMessage(content.title, content.content);
+            const message = yield* generate(content.title, content.content);
             yield* spin(
               `Writing ${message.filename}`,
               fs.writeFile(
