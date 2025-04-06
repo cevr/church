@@ -27,7 +27,12 @@
     "noEmit": true,
 
     /* If your code doesn't run in the DOM: */
-    "lib": ["es2022", "dom"]
+    "lib": ["es2022", "dom"],
+    "plugins": [
+      {
+        "name": "@effect/language-service"
+      }
+    ]
   },
   "include": ["core/**/*.ts", "lib/**/*.ts"]
 }
