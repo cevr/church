@@ -13,7 +13,8 @@ import {
   outlineUserPrompt,
   reviewCheckSystemPrompt,
   reviewCheckUserPrompt,
-  reviewUserPrompt,
+  reviseSystemPrompt,
+  reviseUserPrompt,
 } from "./prompts";
 import { z } from "zod";
 import { ParseService } from "~/core/parse";
@@ -270,10 +271,11 @@ const reviseOutline = Effect.fn("reviseOutline")(function* (
       generateText({
         model,
         messages: [
-          { role: "system", content: reviewCheckSystemPrompt },
+          { role: "system", content: outlineSystemPrompt },
+          { role: "system", content: reviseSystemPrompt },
           {
             role: "user",
-            content: reviewUserPrompt(reviewResponse.object, text),
+            content: reviseUserPrompt(reviewResponse.object, text),
           },
         ],
       }),
