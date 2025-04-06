@@ -1,9 +1,8 @@
-import * as fs from "fs";
 import * as path from "path";
 import { Data, Effect, Match, Option } from "effect";
 import { generateObject, generateText } from "ai";
 
-import { isCancel, select, text } from "@clack/prompts";
+import { confirm, isCancel, select, text } from "@clack/prompts";
 import { z } from "zod";
 import dotenv from "dotenv";
 import {
@@ -78,7 +77,6 @@ class ActionService extends Effect.Service<ActionService>()("Action", {
       }),
     };
   }),
-  dependencies: [Parse.Default],
 }) {}
 
 export const generate = (topic: string, points?: string[]) =>
@@ -171,9 +169,31 @@ const revise = (message: string) =>
 
     yield* log.info(`needsRevision: ${needsRevision}`);
 
-    if (!needsRevision) {
+    const userRevisionsRequested = yield* Effect.tryPromise({
+      try: () =>
+        confirm({
+          message: "Would you like to make any revisions to the message?",
+        }).then((r) => (isCancel(r) ? false : r)),
+      catch: (cause: unknown) =>
+        new PromptError({
+          cause,
+        }),
+    });
+
+    if (!needsRevision && !userRevisionsRequested) {
       return Option.none<string>();
     }
+
+    const userRevisions = yield* Effect.tryPromise({
+      try: () =>
+        text({
+          message: "Enter the revisions you would like to make to the message.",
+        }).then((r) => (isCancel(r) ? [] : [r])),
+      catch: (cause: unknown) =>
+        new PromptError({
+          cause,
+        }),
+    });
 
     const revisedMessage = yield* spin(
       "Revising message",
@@ -188,10 +208,10 @@ const revise = (message: string) =>
               },
               {
                 role: "user",
-                content: userRevisePrompt(
-                  message,
-                  reviewResponse.object.revisions
-                ),
+                content: userRevisePrompt(message, [
+                  ...reviewResponse.object.revisions,
+                  ...userRevisions,
+                ]),
               },
             ],
           }),

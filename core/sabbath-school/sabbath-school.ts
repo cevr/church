@@ -358,7 +358,7 @@ const generateOutline = (
     });
 
     return response.text;
-  }).pipe(Effect.withLogSpan("Generate outline"));
+  });
 
 const processQuarter = Effect.gen(function* (_) {
   const args = yield* Args;
@@ -451,7 +451,6 @@ const processQuarter = Effect.gen(function* (_) {
           );
           yield* Effect.log(`Outline written to disk`);
         }).pipe(
-          Effect.withLogSpan("Download and generate outline"),
           Effect.annotateLogs({
             year,
             quarter,
@@ -466,7 +465,7 @@ const processQuarter = Effect.gen(function* (_) {
   );
 
   yield* Effect.log(`\n✅ Download complete`);
-}).pipe(Effect.withLogSpan("Download and generate outlines"));
+});
 
 const reviseQuarter = Effect.gen(function* (_) {
   const startTime = Date.now();
@@ -523,7 +522,6 @@ const reviseQuarter = Effect.gen(function* (_) {
           onNone: () => Effect.log(`No revision needed for week ${weekNumber}`),
         });
       }).pipe(
-        Effect.withLogSpan("Revise outline"),
         Effect.annotateLogs({
           year,
           quarter,
@@ -569,29 +567,27 @@ const exportQuarter = Effect.gen(function* (_) {
     return;
   }
 
-  yield* Effect.forEach(
-    weeksToExport,
-    (weekNumber, index) =>
-      Effect.gen(function* () {
-        const outlinePath = getFilePath(year, quarter, weekNumber);
-        const outline = yield* fs.readFile(outlinePath);
-        const outlineText = new TextDecoder().decode(outline);
-        yield* makeAppleNoteFromMarkdown(outlineText, {
-          activateNotesApp: false,
-        });
-      }).pipe(
-        Effect.withLogSpan("Export outline"),
-        Effect.annotateLogs({
-          year,
-          quarter,
-          week: weekNumber,
-          total: weeks.length,
-          current: index + 1,
-        })
-      ),
-    { concurrency: "unbounded" }
+  yield* Effect.forEach(weeksToExport, (weekNumber, index) =>
+    Effect.gen(function* () {
+      const outlinePath = getFilePath(year, quarter, weekNumber);
+      const outline = yield* fs.readFile(outlinePath);
+      const outlineText = new TextDecoder().decode(outline);
+      yield* Effect.log(`Exporting outline to Apple Notes...`);
+      yield* makeAppleNoteFromMarkdown(outlineText, {
+        activateNotesApp: false,
+      });
+      yield* Effect.log(`Outline exported to Apple Notes`);
+    }).pipe(
+      Effect.annotateLogs({
+        year,
+        quarter,
+        week: weekNumber,
+        total: weeks.length,
+        current: index + 1,
+      })
+    )
   );
-}).pipe(Effect.withLogSpan("Export outline"));
+});
 
 const program = Effect.gen(function* (_) {
   const { action } = yield* ActionService;

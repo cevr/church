@@ -1,12 +1,12 @@
 import { Effect, Layer, Match, Option } from "effect";
 import { isCancel, select } from "@clack/prompts";
-import { NodeFileSystem, NodeRuntime } from "@effect/platform-node";
 
 import { Parse } from "./parse";
 import { main as messagesMain } from "./messages/messages";
 import { main as sabbathSchoolMain } from "./sabbath-school/sabbath-school";
 import { main as eldersDigestMain } from "./elders-digest/elders-digest";
 import { Model } from "./model";
+import { BunFileSystem, BunRuntime } from "@effect/platform-bun";
 
 enum Command {
   Messages = "messages",
@@ -44,7 +44,6 @@ class CommandService extends Effect.Service<CommandService>()("Command", {
       }),
     };
   }),
-  dependencies: [Parse.Default],
 }) {}
 
 const main = Effect.gen(function* () {
@@ -57,9 +56,9 @@ const main = Effect.gen(function* () {
     Match.exhaustive
   );
 }).pipe(
-  Effect.provide(Layer.merge(Parse.Default, CommandService.Default)),
-  Effect.provide(NodeFileSystem.layer),
+  Effect.provide(Layer.provideMerge(CommandService.Default, Parse.Default)),
+  Effect.provide(BunFileSystem.layer),
   Effect.provide(Model.Default)
 );
 
-NodeRuntime.runMain(main);
+BunRuntime.runMain(main);

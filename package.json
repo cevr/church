@@ -6,7 +6,6 @@
   "scripts": {
     "start": "tsx core/main.ts",
     "export": "tsx core/markdown-to-notes.ts"
-
   },
   "keywords": [],
   "author": "",
@@ -16,6 +15,7 @@
     "@ai-sdk/google": "^1.2.3",
     "@clack/prompts": "^0.10.0",
     "@effect/platform": "^0.80.2",
+    "@effect/platform-bun": "^0.60.10",
     "@effect/platform-node": "^0.76.5",
     "ai": "^4.2.8",
     "cheerio": "^1.0.0",
