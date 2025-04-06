@@ -16,7 +16,7 @@ import { makeAppleNoteFromMarkdown } from "lib/markdown-to-notes";
 import { log } from "~/lib/log";
 import { Model } from "../model";
 import { msToMinutes, spin } from "../lib";
-import { Parse } from "../parse";
+import { ParseService } from "../parse";
 import { FileSystem } from "@effect/platform";
 
 dotenv.config();
@@ -37,10 +37,6 @@ class ReviseError extends Data.TaggedError("ReviseError")<{
   cause: unknown;
 }> {}
 
-class ActionError extends Data.TaggedError("ActionError")<{
-  cause: unknown;
-}> {}
-
 enum Actions {
   Generate = "generate",
   Revise = "revise",
@@ -48,182 +44,145 @@ enum Actions {
 
 class ActionService extends Effect.Service<ActionService>()("Action", {
   effect: Effect.gen(function* () {
-    const parse = yield* Parse;
-    let action = yield* parse.command(Actions);
+    const parse = yield* ParseService;
+    let action = yield* parse.command(Actions, {
+      message: "What would you like to do?",
+      labels: {
+        [Actions.Generate]: "Generate",
+        [Actions.Revise]: "Revise",
+      },
+    });
 
     return {
-      action: yield* Option.match(action, {
-        onSome: (a) => Effect.succeed(a),
-        onNone: () =>
-          Effect.gen(function* () {
-            const selected = yield* Effect.tryPromise({
-              try: () =>
-                select({
-                  message: "What would you like to do?",
-                  options: [
-                    { label: "Generate", value: Actions.Generate },
-                    { label: "Revise", value: Actions.Revise },
-                  ],
-                }),
-              catch: () => new ActionError({ cause: "No action selected" }),
-            });
-
-            if (isCancel(selected)) {
-              return yield* Effect.dieMessage("Operation cancelled.");
-            }
-
-            return selected;
-          }),
-      }),
+      action,
     };
   }),
 }) {}
 
-export const generate = (topic: string, points?: string[]) =>
-  Effect.gen(function* () {
-    const model = yield* Model;
-    const response = yield* spin(
-      "Generating message outline",
-      Effect.tryPromise({
-        try: () =>
-          generateObject({
-            model,
-            schema: z.object({
-              filename: z
-                .string()
-                .describe("The filename of the message. no extension."),
-              message: z
-                .string()
-                .describe(
-                  "The message to be written to the file. Markdown format, no code blocks, no ```markdown``` tags. Only the content, nothing else."
-                ),
-            }),
-            messages: [
-              {
-                role: "system",
-                content: systemMessagePrompt,
-              },
-              {
-                role: "user",
-                content: userMessagePrompt(topic, points),
-              },
-            ],
-          }),
-        catch: (cause: unknown) =>
-          new OutlineError({
-            cause,
-          }),
-      })
-    );
-
-    let { filename, message } = response.object;
-
-    const revisedMessage = yield* revise(message);
-
-    return {
-      filename,
-      message: Option.match(revisedMessage, {
-        onSome: (i) => i,
-        onNone: () => message,
-      }),
-    };
-  });
-
-const revise = (message: string) =>
-  Effect.gen(function* () {
-    const model = yield* Model;
-
-    const reviewResponse = yield* spin(
-      "Reviewing message",
-      Effect.tryPromise({
-        try: () =>
-          generateObject({
-            model,
-            schema: z.object({
-              needsRevision: z
-                .boolean()
-                .describe("Whether the message needs revision"),
-              revisions: z
-                .array(z.string())
-                .describe("The specific criteria that need revision"),
-            }),
-            messages: [
-              {
-                role: "system",
-                content: systemReviewPrompt,
-              },
-              {
-                role: "user",
-                content: userReviewPrompt(message),
-              },
-            ],
-          }),
-        catch: (cause: unknown) =>
-          new ReviewError({
-            cause,
-          }),
-      })
-    );
-
-    const needsRevision = reviewResponse.object.needsRevision;
-
-    yield* log.info(`needsRevision: ${needsRevision}`);
-
-    const userRevisionsRequested = yield* Effect.tryPromise({
+export const generate = Effect.fn("generate")(function* (
+  topic: string,
+  points?: string[]
+) {
+  const model = yield* Model;
+  const response = yield* spin(
+    "Generating message outline",
+    Effect.tryPromise({
       try: () =>
-        confirm({
-          message: "Would you like to make any revisions to the message?",
-        }).then((r) => (isCancel(r) ? false : r)),
+        generateObject({
+          model,
+          schema: z.object({
+            filename: z
+              .string()
+              .describe("The filename of the message. no extension."),
+            message: z
+              .string()
+              .describe(
+                "The message to be written to the file. Markdown format, no code blocks, no ```markdown``` tags. Only the content, nothing else."
+              ),
+          }),
+          messages: [
+            {
+              role: "system",
+              content: systemMessagePrompt,
+            },
+            {
+              role: "user",
+              content: userMessagePrompt(topic, points),
+            },
+          ],
+        }),
       catch: (cause: unknown) =>
-        new PromptError({
+        new OutlineError({
           cause,
         }),
-    });
+    })
+  );
 
-    if (!needsRevision && !userRevisionsRequested) {
-      return Option.none<string>();
-    }
+  let { filename, message } = response.object;
 
-    const userRevisions = yield* Effect.tryPromise({
+  const revisedMessage = yield* revise(message);
+
+  return {
+    filename,
+    message: Option.match(revisedMessage, {
+      onSome: (i) => i,
+      onNone: () => message,
+    }),
+  };
+});
+
+const revise = Effect.fn("revise")(function* (message: string) {
+  const model = yield* Model;
+
+  const reviewResponse = yield* spin(
+    "Reviewing message",
+    Effect.tryPromise({
       try: () =>
-        text({
-          message: "Enter the revisions you would like to make to the message.",
-        }).then((r) => (isCancel(r) ? [] : [r])),
+        generateObject({
+          model,
+          schema: z.object({
+            needsRevision: z
+              .boolean()
+              .describe("Whether the message needs revision"),
+            revisions: z
+              .array(z.string())
+              .describe("The specific criteria that need revision"),
+          }),
+          messages: [
+            {
+              role: "system",
+              content: systemReviewPrompt,
+            },
+            {
+              role: "user",
+              content: userReviewPrompt(message),
+            },
+          ],
+        }),
       catch: (cause: unknown) =>
-        new PromptError({
+        new ReviewError({
           cause,
         }),
-    });
+    })
+  );
 
-    const revisedMessage = yield* spin(
-      "Revising message",
-      Effect.tryPromise({
-        try: () =>
-          generateText({
-            model,
-            messages: [
-              {
-                role: "system",
-                content: systemReviewPrompt,
-              },
-              {
-                role: "user",
-                content: userRevisePrompt(message, [
-                  ...reviewResponse.object.revisions,
-                  ...userRevisions,
-                ]),
-              },
-            ],
-          }),
-        catch: (cause: unknown) =>
-          new ReviseError({
-            cause,
-          }),
-      })
-    );
+  const needsRevision = reviewResponse.object.needsRevision;
 
-    return Option.some(revisedMessage.text);
-  });
+  yield* log.info(`needsRevision: ${needsRevision}`);
+
+  if (!needsRevision) {
+    return Option.none<string>();
+  }
+
+  const revisedMessage = yield* spin(
+    "Revising message",
+    Effect.tryPromise({
+      try: () =>
+        generateText({
+          model,
+          messages: [
+            {
+              role: "system",
+              content: systemReviewPrompt,
+            },
+            {
+              role: "user",
+              content: userRevisePrompt(
+                message,
+                reviewResponse.object.revisions
+              ),
+            },
+          ],
+        }),
+      catch: (cause: unknown) =>
+        new ReviseError({
+          cause,
+        }),
+    })
+  );
+
+  return Option.some(revisedMessage.text);
+});
 
 const generateMessage = Effect.gen(function* (_) {
   const startTime = Date.now();

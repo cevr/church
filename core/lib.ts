@@ -1,5 +1,6 @@
 import { spinner } from "@clack/prompts";
-import { Effect } from "effect";
+import { Data, Effect } from "effect";
+import { isCancel, select as clackSelect } from "@clack/prompts";
 
 export const spin = <V, E, R>(message: string, job: Effect.Effect<V, E, R>) =>
   Effect.gen(function* () {
@@ -18,3 +19,33 @@ export const msToMinutes = (ms: number) => {
   const seconds = Math.floor((ms % 60000) / 1000);
   return `${minutes}m:${seconds.toString().padStart(2, "0")}s`;
 };
+
+export class SelectError extends Data.TaggedError("SelectError")<{
+  message: string;
+  cause: unknown;
+}> {}
+
+export const select = <T extends string | boolean | number>(
+  message: string,
+  options: { value: T; label: string }[]
+) =>
+  Effect.gen(function* () {
+    const result = yield* Effect.tryPromise({
+      try: () =>
+        clackSelect({
+          message,
+          options: options as any,
+        }),
+      catch: (cause: unknown) =>
+        new SelectError({
+          message: `Failed to select action: ${cause}`,
+          cause,
+        }),
+    });
+
+    if (isCancel(result)) {
+      return yield* Effect.dieMessage("selection cancelled");
+    }
+
+    return result as T;
+  });

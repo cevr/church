@@ -20,67 +20,70 @@ class SermonFetchError extends Data.TaggedError("SermonFetchError")<{
   cause: unknown;
 }> {}
 
-const downloadPdf = (url: string) =>
-  Effect.gen(function* () {
-    const response = yield* Effect.tryPromise(() => fetch(url));
-    if (!response.ok) {
-      return yield* new SermonFetchError({ url, cause: response });
-    }
-    return yield* Effect.tryPromise(() => response.arrayBuffer());
+const downloadPdf = Effect.fn("downloadPdf")(function* (url: string) {
+  return yield* Effect.tryPromise({
+    try: () =>
+      fetch(url).then((r) => {
+        if (!r.ok) {
+          throw new Error(`Failed to fetch ${url}`);
+        }
+        return r.arrayBuffer();
+      }),
+    catch: (cause) => new SermonFetchError({ url, cause }),
   }).pipe(
     Effect.tap((pdf) => Effect.log(`Downloaded ${pdf.byteLength} bytes`)),
     Effect.option
   );
+});
 
 class SermonExtractionError extends Data.TaggedError("SermonExtractionError")<{
   cause: unknown;
 }> {}
 
-const getExtractedContent = (pdf: ArrayBuffer) =>
-  Effect.gen(function* () {
-    const model = yield* Model;
-    const response = yield* spin(
-      "Extracting content...",
-      Effect.tryPromise({
-        try: () =>
-          generateObject({
-            model,
-            schema: z.array(
-              z.object({
-                title: z
-                  .string()
-                  .describe(
-                    "The title of the sermon relevant to the extracted content  "
-                  ),
-                content: z
-                  .array(z.string())
-                  .describe(
-                    "The extracted truth/themes/kernels from the sermon"
-                  ),
-              })
-            ),
-            messages: [
-              {
-                role: "system",
-                content: eldersDigestSystemPrompt,
-              },
-              {
-                role: "user",
-                content: [
-                  {
-                    type: "file",
-                    data: pdf,
-                    mimeType: "application/pdf",
-                  },
-                ],
-              },
-            ],
-          }),
-        catch: (cause) => new SermonExtractionError({ cause }),
-      })
-    );
-    return response.object;
-  });
+const getExtractedContent = Effect.fn("getExtractedContent")(function* (
+  pdf: ArrayBuffer
+) {
+  const model = yield* Model;
+  const response = yield* spin(
+    "Extracting content...",
+    Effect.tryPromise({
+      try: () =>
+        generateObject({
+          model,
+          schema: z.array(
+            z.object({
+              title: z
+                .string()
+                .describe(
+                  "The title of the sermon relevant to the extracted content  "
+                ),
+              content: z
+                .array(z.string())
+                .describe("The extracted truth/themes/kernels from the sermon"),
+            })
+          ),
+          messages: [
+            {
+              role: "system",
+              content: eldersDigestSystemPrompt,
+            },
+            {
+              role: "user",
+              content: [
+                {
+                  type: "file",
+                  data: pdf,
+                  mimeType: "application/pdf",
+                },
+              ],
+            },
+          ],
+        }),
+      catch: (cause) => new SermonExtractionError({ cause }),
+    })
+  );
+  return response.object;
+});
 
 class ArgumentError extends Data.TaggedError("ArgumentError")<{
   cause: unknown;

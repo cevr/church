@@ -16,7 +16,7 @@ import {
   reviewUserPrompt,
 } from "./prompts";
 import { z } from "zod";
-import { Parse } from "~/core/parse";
+import { ParseService } from "~/core/parse";
 import { Model } from "../model";
 import { msToMinutes } from "../lib";
 
@@ -41,11 +41,6 @@ class MissingPdfError extends Data.TaggedError("MissingPdfError")<{
   quarter: number;
 }> {}
 
-class ArgumentError extends Data.TaggedError("ArgumentError")<{
-  message: string;
-  cause: unknown;
-}> {}
-
 class ReviewError extends Data.TaggedError("ReviewError")<{
   context: SabbathSchoolContext;
   cause: unknown;
@@ -64,47 +59,24 @@ enum Action {
 
 class ActionService extends Effect.Service<ActionService>()("ActionService", {
   effect: Effect.gen(function* () {
-    const parse = yield* Parse;
-    const action = yield* parse.command(Action);
+    const parse = yield* ParseService;
+    const action = yield* parse.command(Action, {
+      message: "Select an action to perform:",
+      labels: {
+        [Action.Revise]: "Revise Outlines",
+        [Action.Process]: "Download and Generate Outlines",
+        [Action.Export]: "Export to Apple Notes",
+      },
+    });
     return {
-      action: yield* Option.match(action, {
-        onSome: Effect.succeed,
-        onNone: () =>
-          Effect.gen(function* () {
-            const result = yield* Effect.tryPromise({
-              try: () =>
-                select({
-                  message: "Select an action to perform:",
-                  options: [
-                    { value: Action.Revise, label: "Revise Outlines" },
-                    {
-                      value: Action.Process,
-                      label: "Download and Generate Outlines",
-                    },
-                    { value: Action.Export, label: "Export to Apple Notes" },
-                  ],
-                }),
-              catch: (cause: unknown) =>
-                new ArgumentError({
-                  message: `Failed to select action: ${cause}`,
-                  cause,
-                }),
-            });
-
-            if (isCancel(result)) {
-              return yield* Effect.die("Action selection cancelled");
-            }
-
-            return result as Action;
-          }),
-      }),
+      action,
     };
   }),
 }) {}
 
 class Args extends Effect.Service<Args>()("Args", {
   effect: Effect.gen(function* (_) {
-    const parse = yield* Parse;
+    const parse = yield* ParseService;
     const year = parse
       .flagSchema(
         ["year", "y"],
@@ -154,76 +126,78 @@ interface SabbathSchoolContext {
   week: number;
 }
 
-const findQuarterUrls = (year: number, quarter: number) =>
-  Effect.gen(function* (_) {
-    // Parse the base URL once
-    const baseUrl = `https://www.sabbath.school/LessonBook?year=${year}&quarter=${quarter}`;
-    const response = yield* Effect.tryPromise({
-      try: () =>
-        fetch(baseUrl).then((res) => {
-          if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-          }
-          return res.text();
-        }),
-      catch: (cause: unknown) =>
-        new DownloadError({
-          week: 0,
-          cause,
-        }),
-    });
-
-    const $ = yield* Effect.try({
-      try: () => cheerio.load(response),
-      catch: (cause: unknown) =>
-        new CheerioError({
-          week: 0,
-          cause,
-        }),
-    });
-    const weekUrls: WeekUrls[] = [];
-    let currentWeek = 1;
-    let currentFiles: Partial<WeekFiles> = {};
-
-    // Find all anchor tags with the specific class
-    $("a.btn-u.btn-u-sm").each((_, element) => {
-      const text = $(element).text().trim();
-      const href = $(element).attr("href");
-
-      if (!href) return;
-
-      if (text === "Lesson PDF") {
-        currentFiles.lessonPdf = href;
-      } else if (text === "EGW Notes PDF") {
-        currentFiles.egwPdf = href;
-      }
-
-      // If we have both files, we've completed a week
-      if (currentFiles.lessonPdf && currentFiles.egwPdf) {
-        weekUrls.push({
-          weekNumber: currentWeek,
-          files: {
-            lessonPdf: currentFiles.lessonPdf,
-            egwPdf: currentFiles.egwPdf,
-          },
-        });
-        currentWeek++;
-        currentFiles = {};
-      }
-    });
-
-    // Validate that we found all weeks
-    if (weekUrls.length === 0) {
-      return yield* new MissingPdfError({
-        quarter,
-      });
-    }
-
-    return weekUrls;
+const findQuarterUrls = Effect.fn("findQuarterUrls")(function* (
+  year: number,
+  quarter: number
+) {
+  // Parse the base URL once
+  const baseUrl = `https://www.sabbath.school/LessonBook?year=${year}&quarter=${quarter}`;
+  const response = yield* Effect.tryPromise({
+    try: () =>
+      fetch(baseUrl).then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.text();
+      }),
+    catch: (cause: unknown) =>
+      new DownloadError({
+        week: 0,
+        cause,
+      }),
   });
 
-const downloadFile = (url: string) =>
-  Effect.tryPromise({
+  const $ = yield* Effect.try({
+    try: () => cheerio.load(response),
+    catch: (cause: unknown) =>
+      new CheerioError({
+        week: 0,
+        cause,
+      }),
+  });
+  const weekUrls: WeekUrls[] = [];
+  let currentWeek = 1;
+  let currentFiles: Partial<WeekFiles> = {};
+
+  // Find all anchor tags with the specific class
+  $("a.btn-u.btn-u-sm").each((_, element) => {
+    const text = $(element).text().trim();
+    const href = $(element).attr("href");
+
+    if (!href) return;
+
+    if (text === "Lesson PDF") {
+      currentFiles.lessonPdf = href;
+    } else if (text === "EGW Notes PDF") {
+      currentFiles.egwPdf = href;
+    }
+
+    // If we have both files, we've completed a week
+    if (currentFiles.lessonPdf && currentFiles.egwPdf) {
+      weekUrls.push({
+        weekNumber: currentWeek,
+        files: {
+          lessonPdf: currentFiles.lessonPdf,
+          egwPdf: currentFiles.egwPdf,
+        },
+      });
+      currentWeek++;
+      currentFiles = {};
+    }
+  });
+
+  // Validate that we found all weeks
+  if (weekUrls.length === 0) {
+    return yield* new MissingPdfError({
+      quarter,
+    });
+  }
+
+  return weekUrls;
+});
+
+const downloadFile = Effect.fn("downloadFile")(function* (url: string) {
+  return yield* Effect.tryPromise({
     try: () =>
       fetch(url).then((res) => {
         if (!res.ok) {
@@ -237,79 +211,83 @@ const downloadFile = (url: string) =>
         cause,
       }),
   });
+});
 
-const getFilePath = (year: number, quarter: number, week: number) =>
-  path.join(outputDir, `${year}-Q${quarter}-W${week}.md`);
+const getFilePath = (year: number, quarter: number, week: number) => {
+  return path.join(outputDir, `${year}-Q${quarter}-W${week}.md`);
+};
 
-const reviseOutline = (context: SabbathSchoolContext, text: string) =>
-  Effect.gen(function* (_) {
-    const model = yield* Model;
+const reviseOutline = Effect.fn("reviseOutline")(function* (
+  context: SabbathSchoolContext,
+  text: string
+) {
+  const model = yield* Model;
 
-    yield* Effect.log(`Checking if revision is needed...`);
-    const reviewResponse = yield* Effect.tryPromise({
-      try: () =>
-        generateObject({
-          model,
-          messages: [
-            { role: "system", content: reviewCheckSystemPrompt },
-            { role: "user", content: reviewCheckUserPrompt(text) },
-          ],
-          schema: z.object({
-            needsRevision: z
-              .boolean()
-              .describe("Whether the outline needs revision"),
-            revisionPoints: z
-              .array(z.string())
-              .describe(
-                "Specific points where the outline FAILS to meet the prompt requirements"
-              ),
-            comments: z
-              .string()
-              .optional()
-              .describe(
-                "Optional: Brief overall comment on the adherence or specific strengths/weaknesses, but keep it concise"
-              ),
-          }),
+  yield* Effect.log(`Checking if revision is needed...`);
+  const reviewResponse = yield* Effect.tryPromise({
+    try: () =>
+      generateObject({
+        model,
+        messages: [
+          { role: "system", content: reviewCheckSystemPrompt },
+          { role: "user", content: reviewCheckUserPrompt(text) },
+        ],
+        schema: z.object({
+          needsRevision: z
+            .boolean()
+            .describe("Whether the outline needs revision"),
+          revisionPoints: z
+            .array(z.string())
+            .describe(
+              "Specific points where the outline FAILS to meet the prompt requirements"
+            ),
+          comments: z
+            .string()
+            .optional()
+            .describe(
+              "Optional: Brief overall comment on the adherence or specific strengths/weaknesses, but keep it concise"
+            ),
         }),
-      catch: (cause: unknown) =>
-        new ReviewError({
-          context,
-          cause,
-        }),
-    });
-
-    const needsRevision = reviewResponse.object.needsRevision;
-
-    yield* Effect.log(`Revision needed: ${needsRevision}`);
-    if (!needsRevision) {
-      return Option.none<string>();
-    }
-
-    yield* Effect.log(`Revising outline...`);
-
-    const revisedOutline = yield* Effect.tryPromise({
-      try: () =>
-        generateText({
-          model,
-          messages: [
-            { role: "system", content: reviewCheckSystemPrompt },
-            {
-              role: "user",
-              content: reviewUserPrompt(reviewResponse.object, text),
-            },
-          ],
-        }),
-      catch: (cause: unknown) =>
-        new ReviseError({
-          context,
-          cause,
-        }),
-    });
-
-    return Option.some(revisedOutline.text);
+      }),
+    catch: (cause: unknown) =>
+      new ReviewError({
+        context,
+        cause,
+      }),
   });
 
-const generateOutline = (
+  const needsRevision = reviewResponse.object.needsRevision;
+
+  yield* Effect.log(`Revision needed: ${needsRevision}`);
+  if (!needsRevision) {
+    return Option.none<string>();
+  }
+
+  yield* Effect.log(`Revising outline...`);
+
+  const revisedOutline = yield* Effect.tryPromise({
+    try: () =>
+      generateText({
+        model,
+        messages: [
+          { role: "system", content: reviewCheckSystemPrompt },
+          {
+            role: "user",
+            content: reviewUserPrompt(reviewResponse.object, text),
+          },
+        ],
+      }),
+    catch: (cause: unknown) =>
+      new ReviseError({
+        context,
+        cause,
+      }),
+  });
+
+  return Option.some(revisedOutline.text);
+});
+
+const generateOutline = Effect.fn("generateOutline")(function* (
   context: {
     year: number;
     quarter: number;
@@ -317,48 +295,47 @@ const generateOutline = (
   },
   lessonPdfBuffer: ArrayBuffer,
   egwPdfBuffer: ArrayBuffer
-) =>
-  Effect.gen(function* (_) {
-    const model = yield* Model;
+) {
+  const model = yield* Model;
 
-    yield* Effect.log(`Generating outline...`);
+  yield* Effect.log(`Generating outline...`);
 
-    const response = yield* Effect.tryPromise({
-      try: () =>
-        generateText({
-          model,
-          messages: [
-            { role: "system", content: outlineSystemPrompt },
-            {
-              role: "user",
-              content: [
-                {
-                  type: "text",
-                  text: outlineUserPrompt(context),
-                },
-                {
-                  type: "file",
-                  mimeType: "application/pdf",
-                  data: lessonPdfBuffer,
-                },
-                {
-                  type: "file",
-                  mimeType: "application/pdf",
-                  data: egwPdfBuffer,
-                },
-              ],
-            },
-          ],
-        }),
-      catch: (cause: unknown) =>
-        new OutlineError({
-          context,
-          cause,
-        }),
-    });
-
-    return response.text;
+  const response = yield* Effect.tryPromise({
+    try: () =>
+      generateText({
+        model,
+        messages: [
+          { role: "system", content: outlineSystemPrompt },
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: outlineUserPrompt(context),
+              },
+              {
+                type: "file",
+                mimeType: "application/pdf",
+                data: lessonPdfBuffer,
+              },
+              {
+                type: "file",
+                mimeType: "application/pdf",
+                data: egwPdfBuffer,
+              },
+            ],
+          },
+        ],
+      }),
+    catch: (cause: unknown) =>
+      new OutlineError({
+        context,
+        cause,
+      }),
   });
+
+  return response.text;
+});
 
 const processQuarter = Effect.gen(function* (_) {
   const args = yield* Args;
@@ -420,7 +397,7 @@ const processQuarter = Effect.gen(function* (_) {
     Stream.mapEffect(
       (urls) =>
         Effect.gen(function* () {
-          Effect.log(`Downloading PDFs...`);
+          yield* Effect.log(`Downloading PDFs...`);
           const [lessonPdf, egwPdf] = yield* Effect.all([
             downloadFile(urls.files.lessonPdf),
             downloadFile(urls.files.egwPdf),
