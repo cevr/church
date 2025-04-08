@@ -4,7 +4,8 @@ import { isCancel, select } from "@clack/prompts";
 import path from "node:path";
 import type { PlatformError } from "@effect/platform/Error";
 import { makeAppleNoteFromMarkdown } from "~/lib/markdown-to-notes";
-import { NodeFileSystem, NodeRuntime } from "@effect/platform-node";
+import {} from "@effect/platform-node";
+import { BunFileSystem, BunRuntime } from "@effect/platform-bun";
 
 class ArgsError extends Data.TaggedError("ArgsError")<{
   message: string;
@@ -75,4 +76,4 @@ const program = Effect.gen(function* () {
   yield* makeAppleNoteFromMarkdown(new TextDecoder().decode(contents));
 });
 
-NodeRuntime.runMain(program.pipe(Effect.provide(NodeFileSystem.layer)));
+BunRuntime.runMain(program.pipe(Effect.provide(BunFileSystem.layer)));

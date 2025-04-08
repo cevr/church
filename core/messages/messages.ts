@@ -1,8 +1,9 @@
 import * as path from "path";
-import { Data, Effect, Match, Option } from "effect";
+import { Data, Effect, Match, Option, Schedule, DateTime } from "effect";
 import { generateObject, generateText } from "ai";
+import { format } from "date-fns";
 
-import { confirm, isCancel, select, text } from "@clack/prompts";
+import { isCancel, select, text } from "@clack/prompts";
 import { z } from "zod";
 import dotenv from "dotenv";
 import {
@@ -14,7 +15,7 @@ import {
 } from "./prompts";
 import { makeAppleNoteFromMarkdown } from "lib/markdown-to-notes";
 import { log } from "~/lib/log";
-import { Model } from "../model";
+import { ModelService } from "../model";
 import { msToMinutes, spin } from "../lib";
 import { ParseService } from "../parse";
 import { FileSystem } from "@effect/platform";
@@ -59,11 +60,20 @@ class ActionService extends Effect.Service<ActionService>()("Action", {
   }),
 }) {}
 
+class Args extends Effect.Service<Args>()("Args", {
+  effect: Effect.gen(function* () {
+    const parse = yield* ParseService;
+    const topic = parse.flag(["topic", "t"]);
+    return { topic };
+  }),
+}) {}
+
 export const generate = Effect.fn("generate")(function* (
   topic: string,
   points?: string[]
 ) {
-  const model = yield* Model;
+  const model = yield* ModelService;
+
   const response = yield* spin(
     "Generating message outline",
     Effect.tryPromise({
@@ -95,7 +105,12 @@ export const generate = Effect.fn("generate")(function* (
         new OutlineError({
           cause,
         }),
-    })
+    }).pipe(
+      Effect.retry({
+        times: 3,
+        schedule: Schedule.spaced(500),
+      })
+    )
   );
 
   let { filename, message } = response.object;
@@ -112,7 +127,7 @@ export const generate = Effect.fn("generate")(function* (
 });
 
 const revise = Effect.fn("revise")(function* (message: string) {
-  const model = yield* Model;
+  const model = yield* ModelService;
 
   const reviewResponse = yield* spin(
     "Reviewing message",
@@ -186,16 +201,21 @@ const revise = Effect.fn("revise")(function* (message: string) {
 
 const generateMessage = Effect.gen(function* (_) {
   const startTime = Date.now();
+  const args = yield* Args;
 
-  const topic = yield* Effect.tryPromise({
-    try: () =>
-      text({
-        message: "What would you like the message to be about?",
-        placeholder: "e.g., The Power of Prayer",
-      }),
-    catch: (cause: unknown) =>
-      new PromptError({
-        cause,
+  const topic = yield* Option.match(args.topic, {
+    onSome: (topic) => Effect.succeed(topic),
+    onNone: () =>
+      Effect.tryPromise({
+        try: () =>
+          text({
+            message: "What would you like the message to be about?",
+            placeholder: "e.g., The Power of Prayer",
+          }),
+        catch: (cause: unknown) =>
+          new PromptError({
+            cause,
+          }),
       }),
   });
 
@@ -204,20 +224,24 @@ const generateMessage = Effect.gen(function* (_) {
     return;
   }
 
+  yield* log.info(`topic: ${topic}`);
+
   const { filename, message } = yield* generate(topic);
 
   const messagesDir = path.join(process.cwd(), "outputs", "messages");
-  const filePath = path.join(messagesDir, `${filename}.md`);
+
+  const fileName = `${format(new Date(), "yyyy-MM-dd")}-${filename}.md`;
+  const filePath = path.join(messagesDir, fileName);
 
   const fs = yield* FileSystem.FileSystem;
 
   yield* spin(
     "Ensuring messages directory exists",
-    fs.makeDirectory(messagesDir)
+    fs.makeDirectory(messagesDir).pipe(Effect.ignore)
   );
 
   yield* spin(
-    "Writing message to file",
+    "Writing message to file: " + fileName,
     fs.writeFile(filePath, new TextEncoder().encode(message))
   );
 
@@ -281,4 +305,7 @@ const program = Effect.gen(function* () {
   );
 });
 
-export const main = program.pipe(Effect.provide(ActionService.Default));
+export const main = program.pipe(
+  Effect.provide(ActionService.Default),
+  Effect.provide(Args.Default)
+);

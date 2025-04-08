@@ -2,7 +2,7 @@ import { Array, Effect, Option, Schema, Stream } from "effect";
 import { isCancel, text } from "@clack/prompts";
 
 import { Data } from "effect";
-import { Model } from "../model";
+import { ModelService } from "../model";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { eldersDigestSystemPrompt } from "./prompts";
@@ -43,7 +43,7 @@ class SermonExtractionError extends Data.TaggedError("SermonExtractionError")<{
 const getExtractedContent = Effect.fn("getExtractedContent")(function* (
   pdf: ArrayBuffer
 ) {
-  const model = yield* Model;
+  const model = yield* ModelService;
   const response = yield* spin(
     "Extracting content...",
     Effect.tryPromise({

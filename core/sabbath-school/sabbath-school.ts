@@ -18,7 +18,7 @@ import {
 } from "./prompts";
 import { z } from "zod";
 import { ParseService } from "~/core/parse";
-import { Model } from "../model";
+import { ModelService } from "../model";
 import { msToMinutes } from "../lib";
 
 dotenv.config();
@@ -222,7 +222,7 @@ const reviseOutline = Effect.fn("reviseOutline")(function* (
   context: SabbathSchoolContext,
   text: string
 ) {
-  const model = yield* Model;
+  const model = yield* ModelService;
 
   yield* Effect.log(`Checking if revision is needed...`);
   const reviewResponse = yield* Effect.tryPromise({
@@ -298,7 +298,7 @@ const generateOutline = Effect.fn("generateOutline")(function* (
   lessonPdfBuffer: ArrayBuffer,
   egwPdfBuffer: ArrayBuffer
 ) {
-  const model = yield* Model;
+  const model = yield* ModelService;
 
   yield* Effect.log(`Generating outline...`);
 
@@ -582,5 +582,5 @@ const program = Effect.gen(function* (_) {
 export const main = program.pipe(
   Effect.provide(ActionService.Default),
   Effect.provide(Args.Default),
-  Effect.provide(Model.Default)
+  Effect.provide(ModelService.Default)
 );

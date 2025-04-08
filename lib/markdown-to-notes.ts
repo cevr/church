@@ -1,6 +1,6 @@
 import { marked } from "marked";
 import { exec } from "child_process";
-import { Effect, Data, pipe, Option } from "effect";
+import { Effect, Data, pipe, Option, Schema } from "effect";
 
 // --- Helper Function: Escape string for AppleScript ---
 function escapeAppleScriptString(str: string): string {
@@ -23,6 +23,8 @@ class ExecError extends Data.TaggedError("ExecError")<{
 
 class MarkdownParseError extends Data.TaggedError("MarkdownParseError")<{
   message: string;
+  cause: unknown;
+  content: string;
 }> {}
 
 /**
@@ -35,8 +37,8 @@ export interface CreateSimpleNoteOptions {
   activateNotesApp?: boolean;
 }
 
-const execCommand = (command: string) =>
-  Effect.acquireRelease(
+const execCommand = Effect.fn("execCommand")(function* (command: string) {
+  const result = yield* Effect.acquireRelease(
     Effect.tryPromise({
       try: () => {
         const child = exec(command);
@@ -70,14 +72,22 @@ const execCommand = (command: string) =>
       })
   ).pipe(Effect.scoped);
 
-const parseMarkdown = (content: string) =>
-  Effect.try({
+  return result;
+});
+
+const parseMarkdown = Effect.fn("parseMarkdown")(function* (content: string) {
+  const result = yield* Effect.try({
     try: () => marked.parse(content),
     catch: (cause: unknown) =>
       new MarkdownParseError({
-        message: `Markdown parsing failed: ${cause}`,
+        message: `Markdown parsing failed`,
+        cause,
+        content,
       }),
-  });
+  }).pipe(Effect.flatMap(Schema.decodeUnknown(Schema.String)));
+
+  return result;
+});
 
 /**
  * Converts Markdown content to HTML and creates a new note in the default
@@ -89,11 +99,8 @@ const parseMarkdown = (content: string) =>
  * @returns An Effect that resolves with the final title used for the note upon successful creation.
  * @throws An error if the AppleScript execution fails (e.g., permissions issues).
  */
-export const makeAppleNoteFromMarkdown = (
-  markdownContent: string,
-  options: CreateSimpleNoteOptions = {}
-) =>
-  Effect.gen(function* (_) {
+export const makeAppleNoteFromMarkdown = Effect.fn("makeAppleNoteFromMarkdown")(
+  function* (markdownContent: string, options: CreateSimpleNoteOptions = {}) {
     yield* Effect.logDebug("🔄 Converting Markdown to HTML...");
 
     // Determine the note title
@@ -262,4 +269,5 @@ export const makeAppleNoteFromMarkdown = (
       `✅ Success! Note "${finalNoteTitle}" created in Apple Notes (default location).`
     );
     return finalNoteTitle; // Resolve with the title used
-  });
+  }
+);

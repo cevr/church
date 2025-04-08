@@ -159,6 +159,9 @@ The completed outline should enable a presentation that:
 -   SDA History informs understanding, avoids past mistakes.
 -   Final Generation Theology: A people perfected by Christ's grace, reflecting His character fully.
 -   Investigative Judgment: Examination of professed faith demonstrated by alignment with God's will (character/works flowing from faith).
+
+IMPORTANT: ONLY return the outline, nothing else.
+IMPORTANT: Do not include any other text or comments. like "ny" \`\`\`json or \`\`\`markdown tags.
 `;
 export const userMessagePrompt = (topic: string, points?: string[]) => `
 Make an outline for the following text.

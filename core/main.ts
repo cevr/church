@@ -5,7 +5,7 @@ import { ParseService } from "./parse";
 import { main as messagesMain } from "./messages/messages";
 import { main as sabbathSchoolMain } from "./sabbath-school/sabbath-school";
 import { main as eldersDigestMain } from "./elders-digest/elders-digest";
-import { Model } from "./model";
+import { ModelService } from "./model";
 import { BunFileSystem, BunRuntime } from "@effect/platform-bun";
 
 enum Command {
@@ -41,11 +41,11 @@ const main = Effect.gen(function* () {
     Match.exhaustive
   );
 }).pipe(
+  Effect.provide(CommandService.Default),
   Effect.provide(
-    Layer.provideMerge(CommandService.Default, ParseService.Default)
+    Layer.provideMerge(ModelService.Default, ParseService.Default)
   ),
-  Effect.provide(BunFileSystem.layer),
-  Effect.provide(Model.Default)
+  Effect.provide(BunFileSystem.layer)
 );
 
 BunRuntime.runMain(main);

@@ -1,6 +1,7 @@
 import { spinner } from "@clack/prompts";
-import { Data, Effect } from "effect";
+import { Data, Effect, Option } from "effect";
 import { isCancel, select as clackSelect } from "@clack/prompts";
+import { matchSorter } from "match-sorter";
 
 export const spin = Effect.fn("lib/spin")(function* <V, E, R>(
   message: string,
@@ -27,9 +28,10 @@ export class SelectError extends Data.TaggedError("SelectError")<{
   cause: unknown;
 }> {}
 
-export const select = Effect.fn("lib/select")(function* <
-  T extends string | boolean | number
->(message: string, options: { value: T; label: string }[]) {
+export const select = Effect.fn("lib/select")(function* <T>(
+  message: string,
+  options: { value: T; label: string }[]
+) {
   const result = yield* Effect.tryPromise({
     try: () =>
       clackSelect({
@@ -49,3 +51,17 @@ export const select = Effect.fn("lib/select")(function* <
 
   return result as T;
 });
+
+export function matchEnum<T extends Record<string, string | number>>(
+  enumToParse: T,
+  value: string
+) {
+  const entries = Object.entries(enumToParse).map(([k, v]) => ({
+    value: v as T[keyof T],
+    labels: [enumToParse[k as keyof T], enumToParse[v as keyof T]],
+  }));
+  const matched = matchSorter(entries, value.toString(), {
+    keys: ["labels"],
+  })[0]?.value;
+  return Option.fromNullable(matched);
+}
