@@ -1,5 +1,5 @@
-import { Effect } from "effect";
-import { log as clackLog } from "@clack/prompts";
+import { log as clackLog } from '@clack/prompts';
+import { Effect } from 'effect';
 
 export const log = {
   info: (message: string) => Effect.sync(() => clackLog.info(message)),

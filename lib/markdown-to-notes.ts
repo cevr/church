@@ -1,27 +1,22 @@
-import { marked } from "marked";
-import { exec } from "child_process";
-import { Effect, Data, pipe, Option, Schema } from "effect";
+import Bun from 'bun';
+import { Data, Effect, Option, pipe, Schema } from 'effect';
+import { marked } from 'marked';
 
 // --- Helper Function: Escape string for AppleScript ---
 function escapeAppleScriptString(str: string): string {
-  return str.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+  return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 }
 
 // --- Helper Function: Extract Title from Markdown ---
 // Tries to find the first H1 heading
 function extractTitleFromMarkdown(
-  markdownContent: string
+  markdownContent: string,
 ): Option.Option<string> {
   const h1Match = markdownContent.match(/^\s*#\s+(.*?)(\s+#*)?$/m); // Match lines starting with # (H1)
   return Option.fromNullable(h1Match?.[1]?.trim());
 }
 
-class ExecError extends Data.TaggedError("ExecError")<{
-  message: string;
-  stderr?: string;
-}> {}
-
-class MarkdownParseError extends Data.TaggedError("MarkdownParseError")<{
+class MarkdownParseError extends Data.TaggedError('MarkdownParseError')<{
   message: string;
   cause: unknown;
   content: string;
@@ -37,45 +32,19 @@ export interface CreateSimpleNoteOptions {
   activateNotesApp?: boolean;
 }
 
-const execCommand = Effect.fn("execCommand")(function* (command: string) {
-  const result = yield* Effect.acquireRelease(
-    Effect.tryPromise({
-      try: () => {
-        const child = exec(command);
-        return new Promise<{
-          stdout: string;
-          stderr: string;
-          child: ReturnType<typeof exec>;
-        }>((resolve, reject) => {
-          child.on("error", reject);
-          child.on("exit", (code) => {
-            if (code === 0) {
-              resolve({
-                stdout: child.stdout?.toString() || "",
-                stderr: child.stderr?.toString() || "",
-                child,
-              });
-            } else {
-              reject(new Error(`Process exited with code ${code}`));
-            }
-          });
-        });
-      },
-      catch: (cause: unknown) =>
-        new ExecError({
-          message: `Failed to execute command: ${cause}`,
-        }),
-    }),
-    (result) =>
-      Effect.sync(() => {
-        result.child.kill();
-      })
-  ).pipe(Effect.scoped);
+const execCommand = Effect.fn('execCommand')(function* (command: string[]) {
+  const result = yield* Effect.try(() => {
+    const child = Bun.spawn(command);
+    return child;
+  });
 
-  return result;
+  return yield* Effect.tryPromise(async () => {
+    const text = await new Response(result.stdout).text();
+    return text;
+  });
 });
 
-const parseMarkdown = Effect.fn("parseMarkdown")(function* (content: string) {
+const parseMarkdown = Effect.fn('parseMarkdown')(function* (content: string) {
   const result = yield* Effect.try({
     try: () => marked.parse(content),
     catch: (cause: unknown) =>
@@ -99,28 +68,28 @@ const parseMarkdown = Effect.fn("parseMarkdown")(function* (content: string) {
  * @returns An Effect that resolves with the final title used for the note upon successful creation.
  * @throws An error if the AppleScript execution fails (e.g., permissions issues).
  */
-export const makeAppleNoteFromMarkdown = Effect.fn("makeAppleNoteFromMarkdown")(
+export const makeAppleNoteFromMarkdown = Effect.fn('makeAppleNoteFromMarkdown')(
   function* (markdownContent: string, options: CreateSimpleNoteOptions = {}) {
-    yield* Effect.logDebug("🔄 Converting Markdown to HTML...");
+    yield* Effect.log('🔄 Converting Markdown to HTML...');
 
     // Determine the note title
     const finalNoteTitle =
       options.title ??
       pipe(
         extractTitleFromMarkdown(markdownContent),
-        Option.getOrElse(() => "Untitled Note")
+        Option.getOrElse(() => 'Untitled Note'),
       );
-    yield* Effect.logDebug(`ℹ️  Using note title: "${finalNoteTitle}"`);
+    yield* Effect.log(`ℹ️  Using note title: "${finalNoteTitle}"`);
 
     // Remove the H1 heading from content if we're using it as the title
     const contentToParse = options.title
       ? markdownContent
-      : markdownContent.replace(/^\s*#\s+.*?(\s+#*)?$/m, "").trim();
+      : markdownContent.replace(/^\s*#\s+.*?(\s+#*)?$/m, '').trim();
 
     // Add extra line breaks between sections
     const contentWithBreaks = contentToParse
-      .replace(/(?=#{2,4}\s)/g, "\n\n\n") // Add breaks before h2-h4
-      .replace(/(?<=#{2,4}.*\n)/g, "\n\n"); // Add breaks after h2-h4
+      .replace(/(?=#{2,4}\s)/g, '\n\n\n') // Add breaks before h2-h4
+      .replace(/(?<=#{2,4}.*\n)/g, '\n\n'); // Add breaks after h2-h4
 
     const htmlContent = yield* parseMarkdown(contentWithBreaks);
 
@@ -245,29 +214,32 @@ export const makeAppleNoteFromMarkdown = Effect.fn("makeAppleNoteFromMarkdown")(
     const escapedNoteTitle = escapeAppleScriptString(finalNoteTitle);
 
     // Construct the AppleScript command (always targets the main Notes application)
-    yield* Effect.logDebug(
-      "🔨 Constructing AppleScript command for default location..."
+    yield* Effect.log(
+      '🔨 Constructing AppleScript command for default location...',
     );
     const scriptTarget = 'application "Notes"'; // Simplified target
-    const activateCommand = options.activateNotesApp ? "activate" : "";
+    const activateCommand = options.activateNotesApp ? 'activate' : '';
 
     const appleScriptCommand = `
       tell ${scriptTarget}
-        make new note with properties {name:"${escapedNoteTitle}", body:"${escapedHtmlBody}"}
+        make new note with properties {name:"${escapedNoteTitle}", body:"${escapedHtmlBody.trim()}"}
         ${activateCommand}
       end tell
     `;
 
     // Execute the AppleScript
-    yield* Effect.logDebug(
-      "🚀 Executing AppleScript to create note in default location..."
+    yield* Effect.log(
+      '🚀 Executing AppleScript to create note in default location...',
     );
-    yield* execCommand(`osascript -e '${appleScriptCommand}'`);
+
+    // for now just copy to clipboard
+    const res = yield* execCommand(['osascript', '-e', appleScriptCommand]);
+    yield* Effect.log(res);
 
     // Success
-    yield* Effect.logDebug(
-      `✅ Success! Note "${finalNoteTitle}" created in Apple Notes (default location).`
+    yield* Effect.log(
+      `✅ Success! Note "${finalNoteTitle}" created in Apple Notes (default location).`,
     );
     return finalNoteTitle; // Resolve with the title used
-  }
+  },
 );

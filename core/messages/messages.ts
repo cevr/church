@@ -1,56 +1,52 @@
-import * as path from "path";
-import { Data, Effect, Match, Option, Schedule, DateTime } from "effect";
-import { generateObject, generateText } from "ai";
-import { format } from "date-fns";
+import * as path from 'path';
 
-import { isCancel, select, text } from "@clack/prompts";
-import { z } from "zod";
-import dotenv from "dotenv";
-import {
-  systemMessagePrompt,
-  userMessagePrompt,
-  systemReviewPrompt,
-  userReviewPrompt,
-  userRevisePrompt,
-} from "./prompts";
-import { makeAppleNoteFromMarkdown } from "lib/markdown-to-notes";
-import { log } from "~/lib/log";
-import { ModelService } from "../model";
-import { msToMinutes, spin } from "../lib";
-import { ParseService } from "../parse";
-import { FileSystem } from "@effect/platform";
+import { isCancel, select, text } from '@clack/prompts';
+import { FileSystem } from '@effect/platform';
+import { generateObject, generateText } from 'ai';
+import { format } from 'date-fns';
+import dotenv from 'dotenv';
+import { Data, DateTime, Effect, Match, Option, Schedule } from 'effect';
+import { makeAppleNoteFromMarkdown } from 'lib/markdown-to-notes';
+import { z } from 'zod';
+
+import { log } from '~/lib/log';
+
+import { msToMinutes, spin } from '../lib';
+import { ModelService } from '../model';
+import { ParseService } from '../parse';
+import { userRevisePrompt } from './prompts/prompts';
 
 dotenv.config();
 
-class PromptError extends Data.TaggedError("PromptError")<{
+class PromptError extends Data.TaggedError('PromptError')<{
   cause: unknown;
 }> {}
 
-class OutlineError extends Data.TaggedError("OutlineError")<{
+class OutlineError extends Data.TaggedError('OutlineError')<{
   cause: unknown;
 }> {}
 
-class ReviewError extends Data.TaggedError("ReviewError")<{
+class ReviewError extends Data.TaggedError('ReviewError')<{
   cause: unknown;
 }> {}
 
-class ReviseError extends Data.TaggedError("ReviseError")<{
+class ReviseError extends Data.TaggedError('ReviseError')<{
   cause: unknown;
 }> {}
 
 enum Actions {
-  Generate = "generate",
-  Revise = "revise",
+  Generate = 'generate',
+  Revise = 'revise',
 }
 
-class ActionService extends Effect.Service<ActionService>()("Action", {
+class ActionService extends Effect.Service<ActionService>()('Action', {
   effect: Effect.gen(function* () {
     const parse = yield* ParseService;
     let action = yield* parse.command(Actions, {
-      message: "What would you like to do?",
+      message: 'What would you like to do?',
       labels: {
-        [Actions.Generate]: "Generate",
-        [Actions.Revise]: "Revise",
+        [Actions.Generate]: 'Generate',
+        [Actions.Revise]: 'Revise',
       },
     });
 
@@ -60,22 +56,26 @@ class ActionService extends Effect.Service<ActionService>()("Action", {
   }),
 }) {}
 
-class Args extends Effect.Service<Args>()("Args", {
+class Args extends Effect.Service<Args>()('Args', {
   effect: Effect.gen(function* () {
     const parse = yield* ParseService;
-    const topic = parse.flag(["topic", "t"]);
+    const topic = parse.flag(['topic', 't']);
     return { topic };
   }),
 }) {}
 
-export const generate = Effect.fn("generate")(function* (
-  topic: string,
-  points?: string[]
-) {
+export const generate = Effect.fn('generate')(function* (topic: string) {
   const model = yield* ModelService;
+  const fs = yield* FileSystem.FileSystem;
+
+  const systemMessagePrompt = yield* fs
+    .readFile(
+      path.join(process.cwd(), 'core', 'messages', 'prompts', 'generate.md'),
+    )
+    .pipe(Effect.map((i) => new TextDecoder().decode(i)));
 
   const response = yield* spin(
-    "Generating message outline",
+    'Generating message outline',
     Effect.tryPromise({
       try: () =>
         generateObject({
@@ -83,21 +83,21 @@ export const generate = Effect.fn("generate")(function* (
           schema: z.object({
             filename: z
               .string()
-              .describe("The filename of the message. no extension."),
+              .describe('The filename of the message. no extension.'),
             message: z
               .string()
               .describe(
-                "The message to be written to the file. Markdown format, no code blocks, no ```markdown``` tags. Only the content, nothing else."
+                'The message to be written to the file. Markdown format, no code blocks, no ```markdown``` tags. Only the content, nothing else.',
               ),
           }),
           messages: [
             {
-              role: "system",
+              role: 'system',
               content: systemMessagePrompt,
             },
             {
-              role: "user",
-              content: userMessagePrompt(topic, points),
+              role: 'user',
+              content: topic,
             },
           ],
         }),
@@ -109,8 +109,8 @@ export const generate = Effect.fn("generate")(function* (
       Effect.retry({
         times: 3,
         schedule: Schedule.spaced(500),
-      })
-    )
+      }),
+    ),
   );
 
   let { filename, message } = response.object;
@@ -126,11 +126,18 @@ export const generate = Effect.fn("generate")(function* (
   };
 });
 
-const revise = Effect.fn("revise")(function* (message: string) {
+const revise = Effect.fn('revise')(function* (message: string) {
   const model = yield* ModelService;
+  const fs = yield* FileSystem.FileSystem;
+
+  const systemReviewPrompt = yield* fs
+    .readFile(
+      path.join(process.cwd(), 'core', 'messages', 'prompts', 'review.md'),
+    )
+    .pipe(Effect.map((i) => new TextDecoder().decode(i)));
 
   const reviewResponse = yield* spin(
-    "Reviewing message",
+    'Reviewing message',
     Effect.tryPromise({
       try: () =>
         generateObject({
@@ -138,19 +145,19 @@ const revise = Effect.fn("revise")(function* (message: string) {
           schema: z.object({
             needsRevision: z
               .boolean()
-              .describe("Whether the message needs revision"),
+              .describe('Whether the message needs revision'),
             revisions: z
               .array(z.string())
-              .describe("The specific criteria that need revision"),
+              .describe('The specific criteria that need revision'),
           }),
           messages: [
             {
-              role: "system",
+              role: 'system',
               content: systemReviewPrompt,
             },
             {
-              role: "user",
-              content: userReviewPrompt(message),
+              role: 'user',
+              content: message,
             },
           ],
         }),
@@ -158,7 +165,7 @@ const revise = Effect.fn("revise")(function* (message: string) {
         new ReviewError({
           cause,
         }),
-    })
+    }),
   );
 
   const needsRevision = reviewResponse.object.needsRevision;
@@ -169,22 +176,28 @@ const revise = Effect.fn("revise")(function* (message: string) {
     return Option.none<string>();
   }
 
+  const systemRevisePrompt = yield* fs
+    .readFile(
+      path.join(process.cwd(), 'core', 'messages', 'prompts', 'revise.md'),
+    )
+    .pipe(Effect.map((i) => new TextDecoder().decode(i)));
+
   const revisedMessage = yield* spin(
-    "Revising message",
+    'Revising message',
     Effect.tryPromise({
       try: () =>
         generateText({
           model,
           messages: [
             {
-              role: "system",
-              content: systemReviewPrompt,
+              role: 'system',
+              content: systemRevisePrompt,
             },
             {
-              role: "user",
+              role: 'user',
               content: userRevisePrompt(
                 message,
-                reviewResponse.object.revisions
+                reviewResponse.object.revisions,
               ),
             },
           ],
@@ -193,7 +206,7 @@ const revise = Effect.fn("revise")(function* (message: string) {
         new ReviseError({
           cause,
         }),
-    })
+    }),
   );
 
   return Option.some(revisedMessage.text);
@@ -209,8 +222,8 @@ const generateMessage = Effect.gen(function* (_) {
       Effect.tryPromise({
         try: () =>
           text({
-            message: "What would you like the message to be about?",
-            placeholder: "e.g., The Power of Prayer",
+            message: 'What would you like the message to be about?',
+            placeholder: 'e.g., The Power of Prayer',
           }),
         catch: (cause: unknown) =>
           new PromptError({
@@ -220,7 +233,7 @@ const generateMessage = Effect.gen(function* (_) {
   });
 
   if (isCancel(topic)) {
-    yield* Effect.dieMessage("Operation cancelled.");
+    yield* Effect.dieMessage('Operation cancelled.');
     return;
   }
 
@@ -228,28 +241,28 @@ const generateMessage = Effect.gen(function* (_) {
 
   const { filename, message } = yield* generate(topic);
 
-  const messagesDir = path.join(process.cwd(), "outputs", "messages");
+  const messagesDir = path.join(process.cwd(), 'outputs', 'messages');
 
-  const fileName = `${format(new Date(), "yyyy-MM-dd")}-${filename}.md`;
+  const fileName = `${format(new Date(), 'yyyy-MM-dd')}-${filename}.md`;
   const filePath = path.join(messagesDir, fileName);
 
   const fs = yield* FileSystem.FileSystem;
 
   yield* spin(
-    "Ensuring messages directory exists",
-    fs.makeDirectory(messagesDir).pipe(Effect.ignore)
+    'Ensuring messages directory exists',
+    fs.makeDirectory(messagesDir).pipe(Effect.ignore),
   );
 
   yield* spin(
-    "Writing message to file: " + fileName,
-    fs.writeFile(filePath, new TextEncoder().encode(message))
+    'Writing message to file: ' + fileName,
+    fs.writeFile(filePath, new TextEncoder().encode(message)),
   );
 
-  yield* spin("Adding message to notes", makeAppleNoteFromMarkdown(message));
+  yield* spin('Adding message to notes', makeAppleNoteFromMarkdown(message));
 
   const totalTime = msToMinutes(Date.now() - startTime);
   yield* log.success(
-    `Message generated successfully! (Total time: ${totalTime})`
+    `Message generated successfully! (Total time: ${totalTime})`,
   );
 });
 
@@ -257,7 +270,7 @@ const reviseMessage = Effect.gen(function* (_) {
   const fs = yield* FileSystem.FileSystem;
   const startTime = Date.now();
 
-  const messagesDir = path.join(process.cwd(), "outputs", "messages");
+  const messagesDir = path.join(process.cwd(), 'outputs', 'messages');
   const files = yield* fs.readDirectory(messagesDir);
 
   const filePaths = files.map((file) => path.join(messagesDir, file));
@@ -265,7 +278,7 @@ const reviseMessage = Effect.gen(function* (_) {
   const filePath = yield* Effect.tryPromise({
     try: () =>
       select({
-        message: "Which message would you like to revise?",
+        message: 'Which message would you like to revise?',
         options: filePaths.map((filePath) => ({
           label: path.basename(filePath),
           value: filePath,
@@ -279,7 +292,7 @@ const reviseMessage = Effect.gen(function* (_) {
   });
 
   if (isCancel(filePath)) {
-    yield* Effect.dieMessage("Operation cancelled.");
+    yield* Effect.dieMessage('Operation cancelled.');
     return;
   }
 
@@ -288,7 +301,7 @@ const reviseMessage = Effect.gen(function* (_) {
   const revisedMessage = yield* revise(new TextDecoder().decode(message));
 
   if (Option.isNone(revisedMessage)) {
-    yield* log.error("No message to revise.");
+    yield* log.error('No message to revise.');
     return;
   }
 
@@ -301,11 +314,11 @@ const program = Effect.gen(function* () {
   return yield* Match.value(action).pipe(
     Match.when(Actions.Generate, () => generateMessage),
     Match.when(Actions.Revise, () => reviseMessage),
-    Match.exhaustive
+    Match.exhaustive,
   );
 });
 
 export const main = program.pipe(
   Effect.provide(ActionService.Default),
-  Effect.provide(Args.Default)
+  Effect.provide(Args.Default),
 );

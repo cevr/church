@@ -158,7 +158,7 @@ Meticulously compare the \`Generated Sabbath School Outline\` against each speci
 `;
 
 export const reviewCheckUserPrompt = (
-  outline: string
+  outline: string,
 ) => `Please review the following outline and determine whether or not it needs to be revised.
 
 - IMPORTANT: Only return true or false in the JSON response. Do not include any other text.
@@ -177,7 +177,7 @@ export const reviseSystemPrompt = `
 
 export const reviseUserPrompt = (
   reviewResults: Record<string, any>,
-  outline: string
+  outline: string,
 ) => `
 reviewResults:
 ${JSON.stringify(reviewResults)}

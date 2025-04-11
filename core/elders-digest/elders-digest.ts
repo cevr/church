@@ -1,26 +1,26 @@
-import { Array, Effect, Option, Schema, Stream } from "effect";
-import { isCancel, text } from "@clack/prompts";
+import path from 'path';
 
-import { Data } from "effect";
-import { ModelService } from "../model";
-import { generateObject } from "ai";
-import { z } from "zod";
-import { eldersDigestSystemPrompt } from "./prompts";
-import { FileSystem } from "@effect/platform";
-import path from "path";
-import { generate } from "../messages/messages";
-import { spin } from "../lib";
+import { isCancel, text } from '@clack/prompts';
+import { FileSystem } from '@effect/platform';
+import { generateObject } from 'ai';
+import { Array, Data, Effect, Option, Schema, Stream } from 'effect';
+import { z } from 'zod';
+
+import { spin } from '../lib';
+import { generate } from '../messages/messages';
+import { ModelService } from '../model';
+import { eldersDigestSystemPrompt } from './prompts';
 
 //cdn.ministerialassociation.org/cdn/eldersdigest.org/issues/ED%20Q1%201994.pdf
 const getEldersDigestPdfUrl = (year: number, quarter: number) =>
   `https://cdn.ministerialassociation.org/cdn/eldersdigest.org/issues/ED%20Q${quarter}%20${year}.pdf`;
 
-class SermonFetchError extends Data.TaggedError("SermonFetchError")<{
+class SermonFetchError extends Data.TaggedError('SermonFetchError')<{
   url: string;
   cause: unknown;
 }> {}
 
-const downloadPdf = Effect.fn("downloadPdf")(function* (url: string) {
+const downloadPdf = Effect.fn('downloadPdf')(function* (url: string) {
   return yield* Effect.tryPromise({
     try: () =>
       fetch(url).then((r) => {
@@ -32,20 +32,20 @@ const downloadPdf = Effect.fn("downloadPdf")(function* (url: string) {
     catch: (cause) => new SermonFetchError({ url, cause }),
   }).pipe(
     Effect.tap((pdf) => Effect.log(`Downloaded ${pdf.byteLength} bytes`)),
-    Effect.option
+    Effect.option,
   );
 });
 
-class SermonExtractionError extends Data.TaggedError("SermonExtractionError")<{
+class SermonExtractionError extends Data.TaggedError('SermonExtractionError')<{
   cause: unknown;
 }> {}
 
-const getExtractedContent = Effect.fn("getExtractedContent")(function* (
-  pdf: ArrayBuffer
+const getExtractedContent = Effect.fn('getExtractedContent')(function* (
+  pdf: ArrayBuffer,
 ) {
   const model = yield* ModelService;
   const response = yield* spin(
-    "Extracting content...",
+    'Extracting content...',
     Effect.tryPromise({
       try: () =>
         generateObject({
@@ -55,37 +55,37 @@ const getExtractedContent = Effect.fn("getExtractedContent")(function* (
               title: z
                 .string()
                 .describe(
-                  "The title of the sermon relevant to the extracted content  "
+                  'The title of the sermon relevant to the extracted content  ',
                 ),
               content: z
                 .array(z.string())
-                .describe("The extracted truth/themes/kernels from the sermon"),
-            })
+                .describe('The extracted truth/themes/kernels from the sermon'),
+            }),
           ),
           messages: [
             {
-              role: "system",
+              role: 'system',
               content: eldersDigestSystemPrompt,
             },
             {
-              role: "user",
+              role: 'user',
               content: [
                 {
-                  type: "file",
+                  type: 'file',
                   data: pdf,
-                  mimeType: "application/pdf",
+                  mimeType: 'application/pdf',
                 },
               ],
             },
           ],
         }),
       catch: (cause) => new SermonExtractionError({ cause }),
-    })
+    }),
   );
   return response.object;
 });
 
-class ArgumentError extends Data.TaggedError("ArgumentError")<{
+class ArgumentError extends Data.TaggedError('ArgumentError')<{
   cause: unknown;
 }> {}
 
@@ -93,11 +93,11 @@ export const main = Effect.gen(function* () {
   const year = yield* Effect.tryPromise({
     try: () =>
       text({
-        message: "Enter the year",
+        message: 'Enter the year',
         placeholder: new Date().getFullYear().toString(),
         validate: (value) => {
           if (isNaN(Number(value))) {
-            return "Invalid year";
+            return 'Invalid year';
           }
         },
       }),
@@ -105,26 +105,26 @@ export const main = Effect.gen(function* () {
   }).pipe(
     Effect.map((x) => {
       if (isCancel(x)) {
-        return Effect.dieMessage("Cancelled");
+        return Effect.dieMessage('Cancelled');
       }
       return x;
     }),
-    Effect.map(Schema.decodeUnknownSync(Schema.NumberFromString))
+    Effect.map(Schema.decodeUnknownSync(Schema.NumberFromString)),
   );
   const years = Array.range(year, new Date().getFullYear());
   const quarters = Array.range(1, 4);
 
   const urls = years.flatMap((year) =>
-    quarters.map((quarter) => getEldersDigestPdfUrl(year, quarter))
+    quarters.map((quarter) => getEldersDigestPdfUrl(year, quarter)),
   );
 
   const fs = yield* FileSystem.FileSystem;
 
   yield* fs.makeDirectory(
-    path.join(process.cwd(), "outputs", "elders-digest"),
+    path.join(process.cwd(), 'outputs', 'elders-digest'),
     {
       recursive: true,
-    }
+    },
   );
 
   yield* Stream.fromIterable(urls).pipe(
@@ -142,17 +142,17 @@ export const main = Effect.gen(function* () {
               fs.writeFile(
                 path.join(
                   process.cwd(),
-                  "outputs",
-                  "elders-digest",
-                  `${message.filename}.md`
+                  'outputs',
+                  'elders-digest',
+                  `${message.filename}.md`,
                 ),
-                new TextEncoder().encode(message.message)
-              )
+                new TextEncoder().encode(message.message),
+              ),
             );
-          })
+          }),
         );
-      })
+      }),
     ),
-    Stream.runDrain
+    Stream.runDrain,
   );
 });

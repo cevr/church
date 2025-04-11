@@ -1,28 +1,28 @@
-import { Effect, Layer, Match, Option } from "effect";
-import { isCancel, select } from "@clack/prompts";
+import { isCancel, select } from '@clack/prompts';
+import { BunFileSystem, BunRuntime } from '@effect/platform-bun';
+import { Effect, Layer, Match, Option } from 'effect';
 
-import { ParseService } from "./parse";
-import { main as messagesMain } from "./messages/messages";
-import { main as sabbathSchoolMain } from "./sabbath-school/sabbath-school";
-import { main as eldersDigestMain } from "./elders-digest/elders-digest";
-import { ModelService } from "./model";
-import { BunFileSystem, BunRuntime } from "@effect/platform-bun";
+import { main as eldersDigestMain } from './elders-digest/elders-digest';
+import { main as messagesMain } from './messages/messages';
+import { ModelService } from './model';
+import { ParseService } from './parse';
+import { main as sabbathSchoolMain } from './sabbath-school/sabbath-school';
 
 enum Command {
-  Messages = "messages",
-  SabbathSchool = "sabbath-school",
-  EldersDigest = "elders-digest",
+  Messages = 'messages',
+  SabbathSchool = 'sabbath-school',
+  EldersDigest = 'elders-digest',
 }
 
-class CommandService extends Effect.Service<CommandService>()("Command", {
+class CommandService extends Effect.Service<CommandService>()('Command', {
   effect: Effect.gen(function* () {
     const parse = yield* ParseService;
     let command = yield* parse.command(Command, {
-      message: "Select a command",
+      message: 'Select a command',
       labels: {
-        [Command.Messages]: "Messages",
-        [Command.SabbathSchool]: "Sabbath School",
-        [Command.EldersDigest]: "Elders Digest",
+        [Command.Messages]: 'Messages',
+        [Command.SabbathSchool]: 'Sabbath School',
+        [Command.EldersDigest]: 'Elders Digest',
       },
     });
     return {
@@ -38,14 +38,14 @@ const main = Effect.gen(function* () {
     Match.when(Command.Messages, () => messagesMain),
     Match.when(Command.SabbathSchool, () => sabbathSchoolMain),
     Match.when(Command.EldersDigest, () => eldersDigestMain),
-    Match.exhaustive
+    Match.exhaustive,
   );
 }).pipe(
   Effect.provide(CommandService.Default),
   Effect.provide(
-    Layer.provideMerge(ModelService.Default, ParseService.Default)
+    Layer.provideMerge(ModelService.Default, ParseService.Default),
   ),
-  Effect.provide(BunFileSystem.layer)
+  Effect.provide(BunFileSystem.layer),
 );
 
 BunRuntime.runMain(main);

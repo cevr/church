@@ -1,23 +1,27 @@
-import { Data, Effect, Option } from "effect";
-import { FileSystem } from "@effect/platform";
-import { isCancel, select } from "@clack/prompts";
-import path from "node:path";
-import type { PlatformError } from "@effect/platform/Error";
-import { makeAppleNoteFromMarkdown } from "~/lib/markdown-to-notes";
-import {} from "@effect/platform-node";
-import { BunFileSystem, BunRuntime } from "@effect/platform-bun";
+import path from 'node:path';
 
-class ArgsError extends Data.TaggedError("ArgsError")<{
+import { isCancel, select } from '@clack/prompts';
+import { FileSystem } from '@effect/platform';
+import type { PlatformError } from '@effect/platform/Error';
+import { Data, Effect, Option } from 'effect';
+
+import { makeAppleNoteFromMarkdown } from '~/lib/markdown-to-notes';
+
+import '@effect/platform-node';
+
+import { BunFileSystem, BunRuntime } from '@effect/platform-bun';
+
+class ArgsError extends Data.TaggedError('ArgsError')<{
   message: string;
 }> {}
 
 const chooseFile = (
-  filepath: string
+  filepath: string,
 ): Effect.Effect<string, ArgsError | PlatformError, FileSystem.FileSystem> =>
   Effect.gen(function* () {
     const fileSystem = yield* FileSystem.FileSystem;
     const stat = yield* fileSystem.stat(filepath);
-    const isDirectory = stat.type === "Directory";
+    const isDirectory = stat.type === 'Directory';
 
     if (isDirectory) {
       const files = yield* fileSystem.readDirectory(filepath);
@@ -27,36 +31,36 @@ const chooseFile = (
         (filePath) =>
           Effect.gen(function* () {
             const stat = yield* fileSystem.stat(filePath);
-            const isDirectory = stat.type === "Directory";
+            const isDirectory = stat.type === 'Directory';
             return {
               label: `${path.basename(filePath)} (${
-                isDirectory ? "directory" : "file"
+                isDirectory ? 'directory' : 'file'
               })`,
               value: filePath,
             };
           }),
         {
-          concurrency: "unbounded",
-        }
+          concurrency: 'unbounded',
+        },
       );
       const selectedPath = yield* Effect.tryPromise({
         try: () =>
           select({
-            message: "Select a file",
+            message: 'Select a file',
             options,
             maxItems: 5,
           }),
-        catch: () => new ArgsError({ message: "No file selected" }),
+        catch: () => new ArgsError({ message: 'No file selected' }),
       });
       if (isCancel(selectedPath)) {
-        return yield* Effect.dieMessage("No file selected");
+        return yield* Effect.dieMessage('No file selected');
       }
       return yield* chooseFile(selectedPath);
     }
 
     const extension = path.extname(filepath);
-    if (extension !== ".md") {
-      return yield* Effect.dieMessage("File must have a .md extension");
+    if (extension !== '.md') {
+      return yield* Effect.dieMessage('File must have a .md extension');
     }
 
     return filepath;
@@ -67,7 +71,7 @@ const program = Effect.gen(function* () {
 
   const argFilePath = Option.fromNullable(process.argv[2]);
   const filePath = yield* Option.match(argFilePath, {
-    onNone: () => chooseFile(path.join(process.cwd(), "outputs")),
+    onNone: () => chooseFile(path.join(process.cwd(), 'outputs')),
     onSome: (filePath) => chooseFile(filePath),
   });
 

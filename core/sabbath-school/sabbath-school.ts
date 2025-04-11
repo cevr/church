@@ -1,13 +1,18 @@
-import * as path from "path";
-import { Effect, Schema, Option, Match, Data, Array, Stream } from "effect";
-import { FileSystem } from "@effect/platform";
+import * as path from 'path';
 
-import { generateText, generateObject } from "ai";
-import { select, isCancel } from "@clack/prompts";
-import * as cheerio from "cheerio";
-import { makeAppleNoteFromMarkdown } from "../../lib/markdown-to-notes";
+import { isCancel, select } from '@clack/prompts';
+import { FileSystem } from '@effect/platform';
+import { generateObject, generateText } from 'ai';
+import * as cheerio from 'cheerio';
+import dotenv from 'dotenv';
+import { Array, Data, Effect, Match, Option, Schema, Stream } from 'effect';
+import { z } from 'zod';
 
-import dotenv from "dotenv";
+import { ParseService } from '~/core/parse';
+
+import { makeAppleNoteFromMarkdown } from '../../lib/markdown-to-notes';
+import { msToMinutes } from '../lib';
+import { ModelService } from '../model';
 import {
   outlineSystemPrompt,
   outlineUserPrompt,
@@ -15,58 +20,54 @@ import {
   reviewCheckUserPrompt,
   reviseSystemPrompt,
   reviseUserPrompt,
-} from "./prompts";
-import { z } from "zod";
-import { ParseService } from "~/core/parse";
-import { ModelService } from "../model";
-import { msToMinutes } from "../lib";
+} from './prompts';
 
 dotenv.config();
 
-class OutlineError extends Data.TaggedError("OutlineError")<{
+class OutlineError extends Data.TaggedError('OutlineError')<{
   context: SabbathSchoolContext;
   cause: unknown;
 }> {}
 
-class DownloadError extends Data.TaggedError("DownloadError")<{
+class DownloadError extends Data.TaggedError('DownloadError')<{
   week: number;
   cause: unknown;
 }> {}
 
-class CheerioError extends Data.TaggedError("CheerioError")<{
+class CheerioError extends Data.TaggedError('CheerioError')<{
   week: number;
   cause: unknown;
 }> {}
 
-class MissingPdfError extends Data.TaggedError("MissingPdfError")<{
+class MissingPdfError extends Data.TaggedError('MissingPdfError')<{
   quarter: number;
 }> {}
 
-class ReviewError extends Data.TaggedError("ReviewError")<{
+class ReviewError extends Data.TaggedError('ReviewError')<{
   context: SabbathSchoolContext;
   cause: unknown;
 }> {}
 
-class ReviseError extends Data.TaggedError("ReviseError")<{
+class ReviseError extends Data.TaggedError('ReviseError')<{
   context: SabbathSchoolContext;
   cause: unknown;
 }> {}
 
 enum Action {
-  Process = "process",
-  Revise = "revise",
-  Export = "export",
+  Process = 'process',
+  Revise = 'revise',
+  Export = 'export',
 }
 
-class ActionService extends Effect.Service<ActionService>()("ActionService", {
+class ActionService extends Effect.Service<ActionService>()('ActionService', {
   effect: Effect.gen(function* () {
     const parse = yield* ParseService;
     const action = yield* parse.command(Action, {
-      message: "Select an action to perform:",
+      message: 'Select an action to perform:',
       labels: {
-        [Action.Revise]: "Revise Outlines",
-        [Action.Process]: "Download and Generate Outlines",
-        [Action.Export]: "Export to Apple Notes",
+        [Action.Revise]: 'Revise Outlines',
+        [Action.Process]: 'Download and Generate Outlines',
+        [Action.Export]: 'Export to Apple Notes',
       },
     });
     return {
@@ -75,41 +76,41 @@ class ActionService extends Effect.Service<ActionService>()("ActionService", {
   }),
 }) {}
 
-class Args extends Effect.Service<Args>()("Args", {
+class Args extends Effect.Service<Args>()('Args', {
   effect: Effect.gen(function* (_) {
     const parse = yield* ParseService;
     const year = parse
       .flagSchema(
-        ["year", "y"],
+        ['year', 'y'],
         Schema.NumberFromString.pipe(
-          Schema.lessThanOrEqualTo(new Date().getFullYear())
-        )
+          Schema.lessThanOrEqualTo(new Date().getFullYear()),
+        ),
       )
       .pipe(Option.getOrElse(() => new Date().getFullYear()));
 
     const quarter = parse
       .flagSchema(
-        ["quarter", "q"],
+        ['quarter', 'q'],
         Schema.NumberFromString.pipe(
           Schema.greaterThanOrEqualTo(1),
-          Schema.lessThanOrEqualTo(4)
-        )
+          Schema.lessThanOrEqualTo(4),
+        ),
       )
       .pipe(Option.getOrElse(() => Math.floor(new Date().getMonth() / 3) + 1));
 
     const week = parse.flagSchema(
-      ["week", "w"],
+      ['week', 'w'],
       Schema.NumberFromString.pipe(
         Schema.greaterThanOrEqualTo(1),
-        Schema.lessThanOrEqualTo(13)
-      )
+        Schema.lessThanOrEqualTo(13),
+      ),
     );
 
     return { year, quarter, week } as const;
   }),
 }) {}
 
-const outputDir = path.join(process.cwd(), "outputs", "sabbath-school");
+const outputDir = path.join(process.cwd(), 'outputs', 'sabbath-school');
 
 interface WeekFiles {
   lessonPdf: string;
@@ -127,9 +128,9 @@ interface SabbathSchoolContext {
   week: number;
 }
 
-const findQuarterUrls = Effect.fn("findQuarterUrls")(function* (
+const findQuarterUrls = Effect.fn('findQuarterUrls')(function* (
   year: number,
-  quarter: number
+  quarter: number,
 ) {
   // Parse the base URL once
   const baseUrl = `https://www.sabbath.school/LessonBook?year=${year}&quarter=${quarter}`;
@@ -161,15 +162,15 @@ const findQuarterUrls = Effect.fn("findQuarterUrls")(function* (
   let currentFiles: Partial<WeekFiles> = {};
 
   // Find all anchor tags with the specific class
-  $("a.btn-u.btn-u-sm").each((_, element) => {
+  $('a.btn-u.btn-u-sm').each((_, element) => {
     const text = $(element).text().trim();
-    const href = $(element).attr("href");
+    const href = $(element).attr('href');
 
     if (!href) return;
 
-    if (text === "Lesson PDF") {
+    if (text === 'Lesson PDF') {
       currentFiles.lessonPdf = href;
-    } else if (text === "EGW Notes PDF") {
+    } else if (text === 'EGW Notes PDF') {
       currentFiles.egwPdf = href;
     }
 
@@ -197,7 +198,7 @@ const findQuarterUrls = Effect.fn("findQuarterUrls")(function* (
   return weekUrls;
 });
 
-const downloadFile = Effect.fn("downloadFile")(function* (url: string) {
+const downloadFile = Effect.fn('downloadFile')(function* (url: string) {
   return yield* Effect.tryPromise({
     try: () =>
       fetch(url).then((res) => {
@@ -218,9 +219,9 @@ const getFilePath = (year: number, quarter: number, week: number) => {
   return path.join(outputDir, `${year}-Q${quarter}-W${week}.md`);
 };
 
-const reviseOutline = Effect.fn("reviseOutline")(function* (
+const reviseOutline = Effect.fn('reviseOutline')(function* (
   context: SabbathSchoolContext,
-  text: string
+  text: string,
 ) {
   const model = yield* ModelService;
 
@@ -230,23 +231,23 @@ const reviseOutline = Effect.fn("reviseOutline")(function* (
       generateObject({
         model,
         messages: [
-          { role: "system", content: reviewCheckSystemPrompt },
-          { role: "user", content: reviewCheckUserPrompt(text) },
+          { role: 'system', content: reviewCheckSystemPrompt },
+          { role: 'user', content: reviewCheckUserPrompt(text) },
         ],
         schema: z.object({
           needsRevision: z
             .boolean()
-            .describe("Whether the outline needs revision"),
+            .describe('Whether the outline needs revision'),
           revisionPoints: z
             .array(z.string())
             .describe(
-              "Specific points where the outline FAILS to meet the prompt requirements"
+              'Specific points where the outline FAILS to meet the prompt requirements',
             ),
           comments: z
             .string()
             .optional()
             .describe(
-              "Optional: Brief overall comment on the adherence or specific strengths/weaknesses, but keep it concise"
+              'Optional: Brief overall comment on the adherence or specific strengths/weaknesses, but keep it concise',
             ),
         }),
       }),
@@ -271,10 +272,10 @@ const reviseOutline = Effect.fn("reviseOutline")(function* (
       generateText({
         model,
         messages: [
-          { role: "system", content: outlineSystemPrompt },
-          { role: "system", content: reviseSystemPrompt },
+          { role: 'system', content: outlineSystemPrompt },
+          { role: 'system', content: reviseSystemPrompt },
           {
-            role: "user",
+            role: 'user',
             content: reviseUserPrompt(reviewResponse.object, text),
           },
         ],
@@ -289,14 +290,14 @@ const reviseOutline = Effect.fn("reviseOutline")(function* (
   return Option.some(revisedOutline.text);
 });
 
-const generateOutline = Effect.fn("generateOutline")(function* (
+const generateOutline = Effect.fn('generateOutline')(function* (
   context: {
     year: number;
     quarter: number;
     week: number;
   },
   lessonPdfBuffer: ArrayBuffer,
-  egwPdfBuffer: ArrayBuffer
+  egwPdfBuffer: ArrayBuffer,
 ) {
   const model = yield* ModelService;
 
@@ -307,22 +308,22 @@ const generateOutline = Effect.fn("generateOutline")(function* (
       generateText({
         model,
         messages: [
-          { role: "system", content: outlineSystemPrompt },
+          { role: 'system', content: outlineSystemPrompt },
           {
-            role: "user",
+            role: 'user',
             content: [
               {
-                type: "text",
+                type: 'text',
                 text: outlineUserPrompt(context),
               },
               {
-                type: "file",
-                mimeType: "application/pdf",
+                type: 'file',
+                mimeType: 'application/pdf',
                 data: lessonPdfBuffer,
               },
               {
-                type: "file",
-                mimeType: "application/pdf",
+                type: 'file',
+                mimeType: 'application/pdf',
                 data: egwPdfBuffer,
               },
             ],
@@ -345,8 +346,8 @@ const processQuarter = Effect.gen(function* (_) {
 
   yield* Effect.log(
     `Starting download for Q${quarter} ${year}${
-      Option.isSome(week) ? ` Week ${week.value}` : ""
-    }`
+      Option.isSome(week) ? ` Week ${week.value}` : ''
+    }`,
   );
 
   const weeks = Option.match(week, {
@@ -357,7 +358,7 @@ const processQuarter = Effect.gen(function* (_) {
   const quarterUrls = yield* findQuarterUrls(year, quarter);
 
   yield* Effect.log(
-    `Found ${quarterUrls.length} missing Sabbath School lessons to download...`
+    `Found ${quarterUrls.length} missing Sabbath School lessons to download...`,
   );
 
   const fs = yield* FileSystem.FileSystem;
@@ -371,28 +372,28 @@ const processQuarter = Effect.gen(function* (_) {
         return !exists;
       }),
     {
-      concurrency: "unbounded",
-    }
+      concurrency: 'unbounded',
+    },
   ).pipe(
     Effect.map((weeks) =>
       weeks.map((weekNumber) =>
         Option.fromNullable(
-          quarterUrls.find((urls) => urls.weekNumber === weekNumber)
-        )
-      )
+          quarterUrls.find((urls) => urls.weekNumber === weekNumber),
+        ),
+      ),
     ),
     Effect.map(
-      Option.reduceCompact([] as WeekUrls[], (acc, week) => [...acc, week])
-    )
+      Option.reduceCompact([] as WeekUrls[], (acc, week) => [...acc, week]),
+    ),
   );
 
   if (weeksToDownload.length === 0) {
-    yield* Effect.log("All Sabbath School lessons are already downloaded!");
+    yield* Effect.log('All Sabbath School lessons are already downloaded!');
     return;
   }
 
   yield* Effect.log(
-    `Found ${weeksToDownload.length} missing Sabbath School lessons to download...`
+    `Found ${weeksToDownload.length} missing Sabbath School lessons to download...`,
   );
 
   yield* Stream.fromIterable(weeksToDownload).pipe(
@@ -408,12 +409,12 @@ const processQuarter = Effect.gen(function* (_) {
           let outline = yield* generateOutline(
             { year, quarter, week: urls.weekNumber },
             lessonPdf,
-            egwPdf
+            egwPdf,
           );
 
           const revision = yield* reviseOutline(
             { year, quarter, week: urls.weekNumber },
-            outline
+            outline,
           );
 
           outline = Option.match(revision, {
@@ -422,11 +423,11 @@ const processQuarter = Effect.gen(function* (_) {
           });
 
           yield* Effect.log(
-            `Writing outline to disk and exporting to Apple Notes...`
+            `Writing outline to disk and exporting to Apple Notes...`,
           );
           yield* fs.writeFile(
             getFilePath(year, quarter, urls.weekNumber),
-            new TextEncoder().encode(outline)
+            new TextEncoder().encode(outline),
           );
           yield* Effect.log(`Outline written to disk`);
         }).pipe(
@@ -434,13 +435,13 @@ const processQuarter = Effect.gen(function* (_) {
             year,
             quarter,
             week: urls.weekNumber,
-          })
+          }),
         ),
       {
         concurrency: 3,
-      }
+      },
     ),
-    Stream.runDrain
+    Stream.runDrain,
   );
 
   yield* Effect.log(`\n✅ Download complete`);
@@ -453,8 +454,8 @@ const reviseQuarter = Effect.gen(function* (_) {
 
   yield* Effect.log(
     `Starting outline revision for Q${quarter} ${year}${
-      Option.isSome(week) ? ` Week ${week.value}` : ""
-    }`
+      Option.isSome(week) ? ` Week ${week.value}` : ''
+    }`,
   );
 
   const weeks = Option.match(week, {
@@ -469,11 +470,11 @@ const reviseQuarter = Effect.gen(function* (_) {
       const outlinePath = getFilePath(year, quarter, weekNumber);
       const exists = yield* fs.exists(outlinePath);
       return exists;
-    })
+    }),
   );
 
   if (weeksToRevise.length === 0) {
-    yield* Effect.log("No Sabbath School lessons to revise");
+    yield* Effect.log('No Sabbath School lessons to revise');
     return;
   }
 
@@ -486,7 +487,7 @@ const reviseQuarter = Effect.gen(function* (_) {
         const outlineText = new TextDecoder().decode(outline);
         const revisedOutline = yield* reviseOutline(
           { year, quarter, week: weekNumber },
-          outlineText
+          outlineText,
         );
 
         yield* Option.match(revisedOutline, {
@@ -495,8 +496,8 @@ const reviseQuarter = Effect.gen(function* (_) {
               .writeFile(outlinePath, new TextEncoder().encode(text))
               .pipe(
                 Effect.tap(() =>
-                  Effect.log(`Outline for week ${weekNumber} revised`)
-                )
+                  Effect.log(`Outline for week ${weekNumber} revised`),
+                ),
               ),
           onNone: () => Effect.log(`No revision needed for week ${weekNumber}`),
         });
@@ -507,9 +508,9 @@ const reviseQuarter = Effect.gen(function* (_) {
           week: weekNumber,
           total: weeks.length,
           current: index + 1,
-        })
+        }),
       ),
-    { concurrency: 3 }
+    { concurrency: 3 },
   );
 
   const totalTime = msToMinutes(Date.now() - startTime);
@@ -522,8 +523,8 @@ const exportQuarter = Effect.gen(function* (_) {
 
   yield* Effect.log(
     `Starting outline export for Q${quarter} ${year}${
-      Option.isSome(week) ? ` Week ${week.value}` : ""
-    }`
+      Option.isSome(week) ? ` Week ${week.value}` : ''
+    }`,
   );
 
   const weeks = Option.match(week, {
@@ -538,11 +539,11 @@ const exportQuarter = Effect.gen(function* (_) {
       const outlinePath = getFilePath(year, quarter, weekNumber);
       const exists = yield* fs.exists(outlinePath);
       return exists;
-    })
+    }),
   );
 
   if (weeksToExport.length === 0) {
-    yield* Effect.log("No Sabbath School lessons to export");
+    yield* Effect.log('No Sabbath School lessons to export');
     return;
   }
 
@@ -563,8 +564,8 @@ const exportQuarter = Effect.gen(function* (_) {
         week: weekNumber,
         total: weeks.length,
         current: index + 1,
-      })
-    )
+      }),
+    ),
   );
 });
 
@@ -575,12 +576,12 @@ const program = Effect.gen(function* (_) {
     Match.when(Action.Process, () => processQuarter),
     Match.when(Action.Revise, () => reviseQuarter),
     Match.when(Action.Export, () => exportQuarter),
-    Match.exhaustive
+    Match.exhaustive,
   );
 });
 
 export const main = program.pipe(
   Effect.provide(ActionService.Default),
   Effect.provide(Args.Default),
-  Effect.provide(ModelService.Default)
+  Effect.provide(ModelService.Default),
 );
