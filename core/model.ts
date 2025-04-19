@@ -49,15 +49,24 @@ export class ModelService extends Effect.Service<ModelService>()('Model', {
       Effect.option,
       Effect.map((googleKey) =>
         googleKey.pipe(
-          Option.map((googleKey) => ({
-            model: wrapLanguageModel({
-              model: createGoogleGenerativeAI({
-                apiKey: googleKey,
-              })('gemini-2.5-pro-exp-03-25'),
-              middleware: jsonFixingMiddleware,
-            }),
-            provider: Provider.Gemini,
-          })),
+          Option.map((googleKey) => {
+            const modelProvider = createGoogleGenerativeAI({
+              apiKey: googleKey,
+            });
+            return {
+              models: {
+                high: wrapLanguageModel({
+                  model: modelProvider('gemini-2.5-pro-exp-03-25'),
+                  middleware: jsonFixingMiddleware,
+                }),
+                low: wrapLanguageModel({
+                  model: modelProvider('gemini-2.0-flash-exp'),
+                  middleware: jsonFixingMiddleware,
+                }),
+              },
+              provider: Provider.Gemini,
+            };
+          }),
         ),
       ),
     );
@@ -68,10 +77,17 @@ export class ModelService extends Effect.Service<ModelService>()('Model', {
       Effect.option,
       Effect.map((openaiKey) =>
         openaiKey.pipe(
-          Option.map((openaiKey) => ({
-            model: createOpenAI({ apiKey: openaiKey })('chatgpt-4o-latest'),
-            provider: Provider.OpenAI,
-          })),
+          Option.map((openaiKey) => {
+            return {
+              models: {
+                high: createOpenAI({ apiKey: openaiKey })('gpt-4.1-2025-04-14'),
+                low: createOpenAI({ apiKey: openaiKey })(
+                  'gpt-4.1-mini-2025-04-14',
+                ),
+              },
+              provider: Provider.OpenAI,
+            };
+          }),
         ),
       ),
     );
@@ -82,19 +98,29 @@ export class ModelService extends Effect.Service<ModelService>()('Model', {
       Effect.option,
       Effect.map((anthropicKey) =>
         anthropicKey.pipe(
-          Option.map((anthropicKey) => ({
-            model: createAnthropic({ apiKey: anthropicKey })(
-              'claude-3-5-sonnet-latest',
-            ),
-            provider: Provider.Anthropic,
-          })),
+          Option.map((anthropicKey) => {
+            return {
+              models: {
+                high: createAnthropic({ apiKey: anthropicKey })(
+                  'claude-3-7-sonnet-20250219',
+                ),
+                low: createAnthropic({ apiKey: anthropicKey })(
+                  'claude-3-5-sonnet-20241022',
+                ),
+              },
+              provider: Provider.Anthropic,
+            };
+          }),
         ),
       ),
     );
 
     const models = Option.reduceCompact(
       [google, openai, anthropic],
-      [] as { model: LanguageModelV1; provider: Provider }[],
+      [] as {
+        models: { high: LanguageModelV1; low: LanguageModelV1 };
+        provider: Provider;
+      }[],
       (acc, model) => [...acc, model],
     );
 
@@ -105,7 +131,7 @@ export class ModelService extends Effect.Service<ModelService>()('Model', {
     const model = parse.flag(['model', 'm']).pipe(
       Option.flatMap((model) => matchEnum(Provider, model)),
       Option.flatMap((model) =>
-        Option.fromNullable(models.find((m) => m.provider === model)?.model),
+        Option.fromNullable(models.find((m) => m.provider === model)?.models),
       ),
     );
 
@@ -114,7 +140,7 @@ export class ModelService extends Effect.Service<ModelService>()('Model', {
         select(
           'Select a model',
           models.map((model) => ({
-            value: model.model,
+            value: model.models,
             label: Match.value(model.provider).pipe(
               Match.when(Provider.Gemini, () => 'Gemini'),
               Match.when(Provider.OpenAI, () => 'OpenAI'),

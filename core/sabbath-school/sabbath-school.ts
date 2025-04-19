@@ -223,13 +223,13 @@ const reviseOutline = Effect.fn('reviseOutline')(function* (
   context: SabbathSchoolContext,
   text: string,
 ) {
-  const model = yield* ModelService;
+  const models = yield* ModelService;
 
   yield* Effect.log(`Checking if revision is needed...`);
   const reviewResponse = yield* Effect.tryPromise({
     try: () =>
       generateObject({
-        model,
+        model: models.high,
         messages: [
           { role: 'system', content: reviewCheckSystemPrompt },
           { role: 'user', content: reviewCheckUserPrompt(text) },
@@ -270,7 +270,7 @@ const reviseOutline = Effect.fn('reviseOutline')(function* (
   const revisedOutline = yield* Effect.tryPromise({
     try: () =>
       generateText({
-        model,
+        model: models.high,
         messages: [
           { role: 'system', content: outlineSystemPrompt },
           { role: 'system', content: reviseSystemPrompt },
@@ -299,14 +299,14 @@ const generateOutline = Effect.fn('generateOutline')(function* (
   lessonPdfBuffer: ArrayBuffer,
   egwPdfBuffer: ArrayBuffer,
 ) {
-  const model = yield* ModelService;
+  const models = yield* ModelService;
 
   yield* Effect.log(`Generating outline...`);
 
   const response = yield* Effect.tryPromise({
     try: () =>
       generateText({
-        model,
+        model: models.high,
         messages: [
           { role: 'system', content: outlineSystemPrompt },
           {

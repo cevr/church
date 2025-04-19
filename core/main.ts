@@ -1,6 +1,5 @@
-import { isCancel, select } from '@clack/prompts';
 import { BunFileSystem, BunRuntime } from '@effect/platform-bun';
-import { Effect, Layer, Match, Option } from 'effect';
+import { Effect, Layer, Match } from 'effect';
 
 import { main as eldersDigestMain } from './elders-digest/elders-digest';
 import { main as messagesMain } from './messages/messages';

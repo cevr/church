@@ -95,3 +95,15 @@ generation prompt. Your role is quality control against the defined standard. Do
 not evaluate theological nuance beyond basic SDA alignment consistency or
 subjective quality unless it directly violates a stated guideline (like
 maintaining SDA perspective).
+
+
+Output Format:
+
+YES | NO
+
+{IF_YES}
+<REVISION_FEEDBACK>
+Missing [EGW] points in section 2.
+Missing [WB] points in section 3.
+{...}
+</REVISION_FEEDBACK>

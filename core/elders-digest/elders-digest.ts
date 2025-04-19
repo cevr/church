@@ -43,13 +43,13 @@ class SermonExtractionError extends Data.TaggedError('SermonExtractionError')<{
 const getExtractedContent = Effect.fn('getExtractedContent')(function* (
   pdf: ArrayBuffer,
 ) {
-  const model = yield* ModelService;
+  const models = yield* ModelService;
   const response = yield* spin(
     'Extracting content...',
     Effect.tryPromise({
       try: () =>
         generateObject({
-          model,
+          model: models.high,
           schema: z.array(
             z.object({
               title: z
@@ -136,7 +136,7 @@ export const main = Effect.gen(function* () {
         const contents = yield* getExtractedContent(pdf);
         yield* Effect.forEach(contents, (content) =>
           Effect.gen(function* () {
-            const message = yield* generate(content.title, content.content);
+            const message = yield* generate(content.title);
             yield* spin(
               `Writing ${message.filename}`,
               fs.writeFile(
