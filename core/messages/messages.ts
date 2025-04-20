@@ -133,7 +133,7 @@ export const generate = Effect.fn('generate')(function* (topic: string) {
   const revisedMessage = yield* revise(message);
 
   return {
-    filename,
+    filename: filename.text,
     message: Option.match(revisedMessage, {
       onSome: (i) => i,
       onNone: () => message,
