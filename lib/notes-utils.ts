@@ -24,7 +24,6 @@ export interface NoteListItem {
   name: string;
   creationDate: string; // Dates are returned as strings by AppleScript
   modificationDate: string;
-  content: string; // Add content field
 }
 
 class NoteOperationError extends Data.TaggedError('NoteOperationError')<{
@@ -47,27 +46,27 @@ export const listNotes = Effect.fn('listNotes')(function* () {
     set noteList to {}
     tell application "Notes"
       set allNotes to every note
-      -- Take only the first 20 notes (Notes already sorts by modification date)
-      if (count of allNotes) > 20 then
-        set allNotes to items 1 thru 20 of allNotes
-      end if
+      set noteCount to count of allNotes -- Get total count
+      set counter to 0
+      repeat with i from 1 to noteCount
+        if counter is 20 then exit repeat -- Stop after 20
+        set aNote to item i of allNotes
 
-      repeat with aNote in allNotes
         set noteId to id of aNote
         set noteName to name of aNote
         set noteCreationDate to creation date of aNote as string
         set noteModificationDate to modification date of aNote as string
-        set noteContent to body of aNote
-        set end of noteList to {noteId:noteId, noteName:noteName, creationDate:noteCreationDate, modificationDate:noteModificationDate, content:noteContent}
+        set end of noteList to {noteId:noteId, noteName:noteName, creationDate:noteCreationDate, modificationDate:noteModificationDate}
+        set counter to counter + 1 -- Increment counter
       end repeat
-
-      -- Format the output as a simple, parseable string
-      set output to ""
-      repeat with noteProps in noteList
-        set output to output & noteProps's noteId & "|" & noteProps's noteName & "|" & noteProps's creationDate & "|" & noteProps's modificationDate & "|" & noteProps's content & "\n"
-      end repeat
-      return output
     end tell
+
+    -- Format the output as a simple, parseable string (e.g., ID|Name|Created|Modified newline)
+    set output to ""
+    repeat with noteProps in noteList
+      set output to output & noteProps's noteId & "|" & noteProps's noteName & "|" & noteProps's creationDate & "|" & noteProps's modificationDate & "\n"
+    end repeat
+    return output
   `;
 
   const rawOutput = yield* execCommand(['osascript', '-e', script]).pipe(
@@ -86,17 +85,16 @@ export const listNotes = Effect.fn('listNotes')(function* () {
     .filter((line) => line.trim() !== '') // Remove empty lines
     .map((line) => {
       const parts = line.split('|'); // Split by the delimiter
-      if (parts.length !== 5) {
+      if (parts.length !== 4) {
         // Handle potential parsing errors or unexpected format
         console.warn(`Skipping malformed line: ${line}`);
         return null;
       }
       return {
         id: parts[0],
-        name: parts[1],
+        name: parts[1], // Names might contain special characters, handled by script?
         creationDate: parts[2],
         modificationDate: parts[3],
-        content: parts[4],
       };
     })
     .filter((note): note is NoteListItem => note !== null); // Filter out nulls from malformed lines

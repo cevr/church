@@ -134,10 +134,7 @@ export const generate = Effect.fn('generate')(function* (topic: string) {
 
   return {
     filename: filename.text,
-    message: Option.match(revisedMessage, {
-      onSome: (i) => i,
-      onNone: () => message,
-    }),
+    message: Option.getOrElse(revisedMessage, () => message),
   };
 });
 
