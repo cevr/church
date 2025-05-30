@@ -56,7 +56,7 @@ export class ModelService extends Effect.Service<ModelService>()('Model', {
             return {
               models: {
                 high: wrapLanguageModel({
-                  model: modelProvider('gemini-2.5-pro-exp-03-25'),
+                  model: modelProvider('gemini-2.5-pro-preview-05-06'),
                   middleware: jsonFixingMiddleware,
                 }),
                 low: wrapLanguageModel({
@@ -102,7 +102,7 @@ export class ModelService extends Effect.Service<ModelService>()('Model', {
             return {
               models: {
                 high: createAnthropic({ apiKey: anthropicKey })(
-                  'claude-3-5-sonnet-20241022',
+                  'claude-4-sonnet-20250514',
                 ),
                 low: createAnthropic({ apiKey: anthropicKey })(
                   'claude-3-5-haiku-20241022',
