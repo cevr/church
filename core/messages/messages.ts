@@ -5,7 +5,7 @@ import { FileSystem } from '@effect/platform';
 import { generateText } from 'ai';
 import { format } from 'date-fns';
 import dotenv from 'dotenv';
-import { Data, Effect, Match, Option, Schedule } from 'effect';
+import { Data, Effect, Layer, Match, Option, Schedule } from 'effect';
 import { makeAppleNoteFromMarkdown } from 'lib/markdown-to-notes';
 
 import { log } from '~/lib/log';
@@ -387,6 +387,5 @@ const program = Effect.gen(function* () {
 });
 
 export const main = program.pipe(
-  Effect.provide(ActionService.Default),
-  Effect.provide(Args.Default),
+  Effect.provide(Layer.mergeAll(ActionService.Default, Args.Default)),
 );

@@ -5,7 +5,16 @@ import { FileSystem } from '@effect/platform';
 import { generateObject, generateText } from 'ai';
 import * as cheerio from 'cheerio';
 import dotenv from 'dotenv';
-import { Array, Data, Effect, Match, Option, Schema, Stream } from 'effect';
+import {
+  Array,
+  Data,
+  Effect,
+  Layer,
+  Match,
+  Option,
+  Schema,
+  Stream,
+} from 'effect';
 import { z } from 'zod';
 
 import { ParseService } from '~/core/parse';
@@ -581,7 +590,7 @@ const program = Effect.gen(function* (_) {
 });
 
 export const main = program.pipe(
-  Effect.provide(ActionService.Default),
-  Effect.provide(Args.Default),
-  Effect.provide(ModelService.Default),
+  Effect.provide(
+    Layer.mergeAll(ActionService.Default, Args.Default, ModelService.Default),
+  ),
 );

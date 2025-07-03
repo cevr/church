@@ -40,11 +40,15 @@ const main = Effect.gen(function* () {
     Match.exhaustive,
   );
 }).pipe(
-  Effect.provide(CommandService.Default),
   Effect.provide(
-    Layer.provideMerge(ModelService.Default, ParseService.Default),
+    Layer.mergeAll(
+      Layer.provideMerge(
+        CommandService.Default,
+        Layer.provideMerge(ModelService.Default, ParseService.Default),
+      ),
+      BunFileSystem.layer,
+    ),
   ),
-  Effect.provide(BunFileSystem.layer),
 );
 
 BunRuntime.runMain(main);

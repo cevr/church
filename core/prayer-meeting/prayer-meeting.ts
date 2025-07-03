@@ -12,6 +12,7 @@ import {
   Chunk,
   Data,
   Effect,
+  Layer,
   Match,
   Option,
   Schedule,
@@ -311,7 +312,11 @@ const program = Effect.gen(function* () {
 
 // Provide necessary layers (FileSystem is needed now)
 export const main = program.pipe(
-  Effect.provide(ActionService.Default),
-  Effect.provide(BunFileSystem.layer),
-  Effect.provide(NodeHttpClient.layer),
+  Effect.provide(
+    Layer.mergeAll(
+      ActionService.Default,
+      BunFileSystem.layer,
+      NodeHttpClient.layer,
+    ),
+  ),
 );
