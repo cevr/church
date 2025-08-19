@@ -1,10 +1,8 @@
 import * as path from 'path';
 
-import { isCancel, select } from '@clack/prompts';
 import { FileSystem } from '@effect/platform';
 import { generateObject, generateText } from 'ai';
 import * as cheerio from 'cheerio';
-import dotenv from 'dotenv';
 import {
   Array,
   Data,
@@ -30,8 +28,6 @@ import {
   reviseSystemPrompt,
   reviseUserPrompt,
 } from './prompts';
-
-dotenv.config();
 
 class OutlineError extends Data.TaggedError('OutlineError')<{
   context: SabbathSchoolContext;

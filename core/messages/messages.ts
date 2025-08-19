@@ -4,7 +4,6 @@ import { isCancel, select, text } from '@clack/prompts';
 import { FileSystem } from '@effect/platform';
 import { generateText } from 'ai';
 import { format } from 'date-fns';
-import dotenv from 'dotenv';
 import { Data, Effect, Layer, Match, Option, Schedule } from 'effect';
 import { makeAppleNoteFromMarkdown } from 'lib/markdown-to-notes';
 
@@ -15,8 +14,6 @@ import { msToMinutes, spin } from '../lib';
 import { ModelService } from '../model';
 import { ParseService } from '../parse';
 import { userRevisePrompt } from './prompts/prompts';
-
-dotenv.config();
 
 class PromptError extends Data.TaggedError('PromptError')<{
   cause: unknown;

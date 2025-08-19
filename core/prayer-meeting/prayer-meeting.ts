@@ -6,26 +6,13 @@ import { BunFileSystem } from '@effect/platform-bun';
 import { NodeHttpClient } from '@effect/platform-node';
 import { generateText } from 'ai';
 import { eachDayOfInterval, endOfWeek, format, startOfWeek } from 'date-fns';
-import dotenv from 'dotenv';
-import {
-  Array,
-  Chunk,
-  Data,
-  Effect,
-  Layer,
-  Match,
-  Option,
-  Schedule,
-  Schema,
-} from 'effect';
+import { Array, Data, Effect, Layer, Match, Schedule, Schema } from 'effect';
 
 import { log } from '~/lib/log';
 
 import { msToMinutes, spin } from '../lib';
 import { ModelService } from '../model';
 import { ParseService } from '../parse';
-
-dotenv.config();
 
 const EGW_API_BASE_URL = 'https://a.egwwritings.org';
 
