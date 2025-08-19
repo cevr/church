@@ -1,11 +1,8 @@
 import { createAnthropic } from '@ai-sdk/anthropic';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
+import { createGroq } from '@ai-sdk/groq';
 import { createOpenAI } from '@ai-sdk/openai';
-import {
-  wrapLanguageModel,
-  type LanguageModelV1,
-  type LanguageModelV1Middleware,
-} from 'ai';
+import { type LanguageModel } from 'ai';
 import { Effect, Match, Option, Schema } from 'effect';
 
 import { matchEnum, select } from './lib';
@@ -15,30 +12,9 @@ export enum Provider {
   Gemini = 'gemini',
   OpenAI = 'openai',
   Anthropic = 'anthropic',
+  Groq = 'groq',
 }
 
-const jsonFixingMiddleware: LanguageModelV1Middleware = {
-  async wrapGenerate(options) {
-    const result = await options.doGenerate();
-    if (result.text) {
-      // right now we see that the text is not valid json, so we need to fix it
-      // here's an example of what we see 'ny\n```json...```\n\n'
-      // we need to remove the ```json and ``` tags and the newlines and the random 'ny'
-      let text = result.text;
-      const nyStart = text.indexOf('ny');
-      if (nyStart === 0) {
-        text = text.slice(nyStart + 2);
-        const jsonStart = text.indexOf('```json');
-        const jsonEnd = text.lastIndexOf('```');
-        if (jsonStart !== -1 && jsonEnd !== -1) {
-          const json = text.slice(jsonStart + 7, jsonEnd);
-          result.text = json;
-        }
-      }
-    }
-    return result;
-  },
-};
 export class ModelService extends Effect.Service<ModelService>()('Model', {
   effect: Effect.gen(function* (_) {
     const parse = yield* ParseService;
@@ -55,14 +31,8 @@ export class ModelService extends Effect.Service<ModelService>()('Model', {
             });
             return {
               models: {
-                high: wrapLanguageModel({
-                  model: modelProvider('gemini-2.5-pro-preview-05-06'),
-                  middleware: jsonFixingMiddleware,
-                }),
-                low: wrapLanguageModel({
-                  model: modelProvider('gemini-2.0-flash-exp'),
-                  middleware: jsonFixingMiddleware,
-                }),
+                high: modelProvider('gemini-2.5-pro'),
+                low: modelProvider('gemini-2.0-flash-exp'),
               },
               provider: Provider.Gemini,
             };
@@ -114,11 +84,38 @@ export class ModelService extends Effect.Service<ModelService>()('Model', {
         ),
       ),
     );
-
+    const groq = yield* Schema.Config(
+      'GROQ_API_KEY',
+      Schema.NonEmptyString,
+    ).pipe(
+      Effect.option,
+      Effect.map((groqKey) =>
+        groqKey.pipe(
+          Option.map((groqKey) => {
+            const modelProvider = createGroq({ apiKey: groqKey });
+            return {
+              models: {
+                high: modelProvider('moonshotai/kimi-k2-instruct'),
+                low: modelProvider('moonshotai/kimi-k2-instruct'),
+              },
+              provider: Provider.Groq,
+            };
+          }),
+        ),
+      ),
+    );
     const models = Option.reduceCompact(
-      [google, openai, anthropic],
+      [
+        google,
+        openai,
+        anthropic,
+        groq as unknown as Option.Option<{
+          models: { high: LanguageModel; low: LanguageModel };
+          provider: Provider;
+        }>,
+      ],
       [] as {
-        models: { high: LanguageModelV1; low: LanguageModelV1 };
+        models: { high: LanguageModel; low: LanguageModel };
         provider: Provider;
       }[],
       (acc, model) => [...acc, model],
@@ -145,6 +142,7 @@ export class ModelService extends Effect.Service<ModelService>()('Model', {
               Match.when(Provider.Gemini, () => 'Gemini'),
               Match.when(Provider.OpenAI, () => 'OpenAI'),
               Match.when(Provider.Anthropic, () => 'Anthropic'),
+              Match.when(Provider.Groq, () => 'Groq'),
               Match.exhaustive,
             ),
           })),
