@@ -12,7 +12,7 @@ export enum Provider {
   Gemini = 'gemini',
   OpenAI = 'openai',
   Anthropic = 'anthropic',
-  Groq = 'groq',
+  Kimi = 'kimi',
 }
 
 export class ModelService extends Effect.Service<ModelService>()('Model', {
@@ -50,10 +50,8 @@ export class ModelService extends Effect.Service<ModelService>()('Model', {
           Option.map((openaiKey) => {
             return {
               models: {
-                high: createOpenAI({ apiKey: openaiKey })('gpt-4.1-2025-04-14'),
-                low: createOpenAI({ apiKey: openaiKey })(
-                  'gpt-4.1-mini-2025-04-14',
-                ),
+                high: createOpenAI({ apiKey: openaiKey })('gpt-5'),
+                low: createOpenAI({ apiKey: openaiKey })('gpt-5-nano'),
               },
               provider: Provider.OpenAI,
             };
@@ -84,7 +82,7 @@ export class ModelService extends Effect.Service<ModelService>()('Model', {
         ),
       ),
     );
-    const groq = yield* Schema.Config(
+    const kimi = yield* Schema.Config(
       'GROQ_API_KEY',
       Schema.NonEmptyString,
     ).pipe(
@@ -98,7 +96,7 @@ export class ModelService extends Effect.Service<ModelService>()('Model', {
                 high: modelProvider('moonshotai/kimi-k2-instruct'),
                 low: modelProvider('moonshotai/kimi-k2-instruct'),
               },
-              provider: Provider.Groq,
+              provider: Provider.Kimi,
             };
           }),
         ),
@@ -109,7 +107,7 @@ export class ModelService extends Effect.Service<ModelService>()('Model', {
         google,
         openai,
         anthropic,
-        groq as unknown as Option.Option<{
+        kimi as unknown as Option.Option<{
           models: { high: LanguageModel; low: LanguageModel };
           provider: Provider;
         }>,
@@ -142,7 +140,7 @@ export class ModelService extends Effect.Service<ModelService>()('Model', {
               Match.when(Provider.Gemini, () => 'Gemini'),
               Match.when(Provider.OpenAI, () => 'OpenAI'),
               Match.when(Provider.Anthropic, () => 'Anthropic'),
-              Match.when(Provider.Groq, () => 'Groq'),
+              Match.when(Provider.Kimi, () => 'Kimi'),
               Match.exhaustive,
             ),
           })),
