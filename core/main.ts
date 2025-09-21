@@ -6,11 +6,13 @@ import { main as messagesMain } from './messages/messages';
 import { ModelService } from './model';
 import { ParseService } from './parse';
 import { main as sabbathSchoolMain } from './sabbath-school/sabbath-school';
+import { main as studiesMain } from './studies/studies';
 
 enum Command {
   Messages = 'messages',
   SabbathSchool = 'sabbath-school',
   EldersDigest = 'elders-digest',
+  Studies = 'studies',
 }
 
 class CommandService extends Effect.Service<CommandService>()('Command', {
@@ -22,6 +24,7 @@ class CommandService extends Effect.Service<CommandService>()('Command', {
         [Command.Messages]: 'Messages',
         [Command.SabbathSchool]: 'Sabbath School',
         [Command.EldersDigest]: 'Elders Digest',
+        [Command.Studies]: 'Studies',
       },
     });
     return {
@@ -37,6 +40,7 @@ const main = Effect.gen(function* () {
     Match.when(Command.Messages, () => messagesMain),
     Match.when(Command.SabbathSchool, () => sabbathSchoolMain),
     Match.when(Command.EldersDigest, () => eldersDigestMain),
+    Match.when(Command.Studies, () => studiesMain),
     Match.exhaustive,
   );
 }).pipe(
