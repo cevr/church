@@ -139,8 +139,10 @@ const revise = Effect.fn('revise')(function* (study: string) {
   const models = yield* ModelService;
   const fs = yield* FileSystem.FileSystem;
 
+  let revision: string | undefined;
+
+  yield* log.info('study: \n\n' + study);
   while (true) {
-    yield* log.info('study: \n\n' + study);
     let shouldRevise = yield* Effect.tryPromise({
       try: () =>
         confirm({
@@ -154,7 +156,7 @@ const revise = Effect.fn('revise')(function* (study: string) {
     });
 
     if (isCancel(shouldRevise) || !shouldRevise) {
-      return Option.none<string>();
+      return Option.fromNullable(revision);
     }
 
     const revisions = yield* Effect.tryPromise({
@@ -169,7 +171,7 @@ const revise = Effect.fn('revise')(function* (study: string) {
     });
 
     if (isCancel(revisions)) {
-      return Option.none<string>();
+      return Option.fromNullable(revision);
     }
 
     const systemPrompt = yield* fs
@@ -203,22 +205,7 @@ const revise = Effect.fn('revise')(function* (study: string) {
     );
 
     yield* log.info(`reviseResponse: ${reviseResponse.text}`);
-
-    shouldRevise = yield* Effect.tryPromise({
-      try: () =>
-        confirm({
-          message: 'Should the study be revised further?',
-          initialValue: false,
-        }),
-      catch: (cause: unknown) =>
-        new PromptError({
-          cause,
-        }),
-    });
-
-    if (isCancel(shouldRevise) || shouldRevise) {
-      return Option.some(reviseResponse.text);
-    }
+    revision = reviseResponse.text;
   }
 });
 
