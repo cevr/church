@@ -1,6 +1,6 @@
 import * as path from 'path';
 
-import { isCancel, select, text } from '@clack/prompts';
+import { confirm, isCancel, select, text } from '@clack/prompts';
 import { FileSystem } from '@effect/platform';
 import { generateText } from 'ai';
 import { format } from 'date-fns';
@@ -139,89 +139,74 @@ const revise = Effect.fn('revise')(function* (message: string) {
   const models = yield* ModelService;
   const fs = yield* FileSystem.FileSystem;
 
-  const systemReviewPrompt = yield* fs
-    .readFile(
-      path.join(process.cwd(), 'core', 'messages', 'prompts', 'review.md'),
-    )
-    .pipe(Effect.map((i) => new TextDecoder().decode(i)));
+  let revision: string | undefined;
 
-  const reviewResponse = yield* spin(
-    'Reviewing message',
-    Effect.tryPromise({
+  yield* log.info('message: \n\n' + message);
+  while (true) {
+    let shouldRevise = yield* Effect.tryPromise({
       try: () =>
-        generateText({
-          model: models.high,
-          // schema: z.object({
-          //   needsRevision: z
-          //     .boolean()
-          //     .describe('Whether the message needs revision'),
-          //   revisions: z
-          //     .array(z.string())
-          //     .describe('The specific criteria that need revision'),
-          // }),
-          messages: [
-            {
-              role: 'system',
-              content: systemReviewPrompt,
-            },
-            {
-              role: 'user',
-              content: message,
-            },
-          ],
+        confirm({
+          message: 'Should the message be revised?',
+          initialValue: false,
         }),
       catch: (cause: unknown) =>
-        new ReviewError({
+        new PromptError({
           cause,
         }),
-    }),
-  );
+    });
 
-  const needsRevision = reviewResponse.text.includes('YES');
+    if (isCancel(shouldRevise) || !shouldRevise) {
+      return Option.fromNullable(revision);
+    }
 
-  yield* log.info(`needsRevision: ${needsRevision}`);
+    const revisions = yield* Effect.tryPromise({
+      try: () =>
+        text({
+          message: 'What are the revisions to be made?',
+        }),
+      catch: (cause: unknown) =>
+        new PromptError({
+          cause,
+        }),
+    });
 
-  if (!needsRevision) {
-    return Option.none<string>();
+    if (isCancel(revisions)) {
+      return Option.fromNullable(revision);
+    }
+
+    const systemPrompt = yield* fs
+      .readFile(
+        path.join(process.cwd(), 'core', 'messages', 'prompts', 'generate.md'),
+      )
+      .pipe(Effect.map((i) => new TextDecoder().decode(i)));
+
+    const reviseResponse = yield* spin(
+      'Revising message',
+      Effect.tryPromise({
+        try: () =>
+          generateText({
+            model: models.high,
+            messages: [
+              {
+                role: 'system',
+                content: systemPrompt,
+              },
+              {
+                role: 'user',
+                content: userRevisePrompt(message, revisions),
+              },
+            ],
+          }),
+        catch: (cause: unknown) =>
+          new ReviewError({
+            cause,
+          }),
+      }),
+    );
+
+    yield* log.info(`reviseResponse: ${reviseResponse.text}`);
+    revision = reviseResponse.text;
   }
-
-  const matchedRevisions = reviewResponse.text.match(
-    /<REVISION_FEEDBACK>(.*?)<\/REVISION_FEEDBACK>/,
-  );
-  const revisions =
-    matchedRevisions?.[1]?.split('\n').map((i) => i.trim()) ?? [];
-
-  const systemRevisePrompt = yield* fs
-    .readFile(
-      path.join(process.cwd(), 'core', 'messages', 'prompts', 'revise.md'),
-    )
-    .pipe(Effect.map((i) => new TextDecoder().decode(i)));
-
-  const revisedMessage = yield* spin(
-    'Revising message',
-    Effect.tryPromise({
-      try: () =>
-        generateText({
-          model: models.high,
-          messages: [
-            {
-              role: 'system',
-              content: systemRevisePrompt,
-            },
-            {
-              role: 'user',
-              content: userRevisePrompt(message, revisions),
-            },
-          ],
-        }),
-      catch: (cause: unknown) =>
-        new ReviseError({
-          cause,
-        }),
-    }),
-  );
-
-  return Option.some(revisedMessage.text);
 });
 
 const generateMessage = Effect.gen(function* (_) {
