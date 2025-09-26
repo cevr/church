@@ -127,7 +127,7 @@ export const generate = Effect.fn('generate')(function* (topic: string) {
       }),
   });
 
-  const revisedStudy = yield* revise(study);
+  const revisedStudy = yield* revise(topic, study);
 
   return {
     filename: filename.text,
@@ -135,7 +135,7 @@ export const generate = Effect.fn('generate')(function* (topic: string) {
   };
 });
 
-const revise = Effect.fn('revise')(function* (study: string) {
+const revise = Effect.fn('revise')(function* (prompt: string, study: string) {
   const models = yield* ModelService;
   const fs = yield* FileSystem.FileSystem;
 
@@ -193,7 +193,7 @@ const revise = Effect.fn('revise')(function* (study: string) {
               },
               {
                 role: 'user',
-                content: userRevisePrompt(study, revisions),
+                content: userRevisePrompt(prompt, study, revisions),
               },
             ],
           }),
@@ -294,7 +294,7 @@ const reviseMessage = Effect.gen(function* (_) {
 
   const study = yield* fs.readFile(filePath);
 
-  const revisedStudy = yield* revise(new TextDecoder().decode(study));
+  const revisedStudy = yield* revise('', new TextDecoder().decode(study));
 
   if (Option.isNone(revisedStudy)) {
     return;

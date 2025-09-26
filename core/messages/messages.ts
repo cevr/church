@@ -127,7 +127,7 @@ export const generate = Effect.fn('generate')(function* (topic: string) {
       }),
   });
 
-  const revisedMessage = yield* revise(message);
+  const revisedMessage = yield* revise(topic, message);
 
   return {
     filename: filename.text,
@@ -135,7 +135,7 @@ export const generate = Effect.fn('generate')(function* (topic: string) {
   };
 });
 
-const revise = Effect.fn('revise')(function* (message: string) {
+const revise = Effect.fn('revise')(function* (prompt: string, message: string) {
   const models = yield* ModelService;
   const fs = yield* FileSystem.FileSystem;
 
@@ -193,7 +193,7 @@ const revise = Effect.fn('revise')(function* (message: string) {
               },
               {
                 role: 'user',
-                content: userRevisePrompt(message, revisions),
+                content: userRevisePrompt(prompt, message, revisions),
               },
             ],
           }),
@@ -295,7 +295,7 @@ const reviseMessage = Effect.gen(function* (_) {
 
   const message = yield* fs.readFile(filePath);
 
-  const revisedMessage = yield* revise(new TextDecoder().decode(message));
+  const revisedMessage = yield* revise('', new TextDecoder().decode(message));
 
   if (Option.isNone(revisedMessage)) {
     yield* log.error('No message to revise.');
