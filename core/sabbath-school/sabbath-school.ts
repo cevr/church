@@ -323,12 +323,12 @@ const generateOutline = Effect.fn('generateOutline')(function* (
               },
               {
                 type: 'file',
-                mimeType: 'application/pdf',
+                mediaType: 'application/pdf',
                 data: lessonPdfBuffer,
               },
               {
                 type: 'file',
-                mimeType: 'application/pdf',
+                mediaType: 'application/pdf',
                 data: egwPdfBuffer,
               },
             ],
