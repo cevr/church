@@ -2,12 +2,19 @@ import { Command } from '@effect/cli';
 import { BunContext, BunRuntime } from '@effect/platform-bun';
 import { Effect } from 'effect';
 
+import { exportOutput } from './export-output';
 import { messages } from './messages/messages';
 import { sabbathSchool } from './sabbath-school/sabbath-school';
 import { studies } from './studies/studies';
 
 const command = Command.make('church-tools', {}).pipe(
-  Command.withSubcommands([messages, sabbathSchool, studies]),
+  Command.withSubcommands([
+    //
+    messages,
+    sabbathSchool,
+    studies,
+    exportOutput,
+  ]),
 );
 const cli = Command.run(command, {
   name: 'Church Tools',

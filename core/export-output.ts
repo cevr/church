@@ -1,15 +1,12 @@
 import path from 'node:path';
 
 import { isCancel, multiselect, select } from '@clack/prompts';
+import { Command } from '@effect/cli';
 import { FileSystem } from '@effect/platform';
 import type { PlatformError } from '@effect/platform/Error';
-import { Data, Effect, Option } from 'effect';
+import { Data, Effect } from 'effect';
 
 import { makeAppleNoteFromMarkdown } from '~/lib/markdown-to-notes';
-
-import '@effect/platform-node';
-
-import { BunFileSystem, BunRuntime } from '@effect/platform-bun';
 
 class ArgsError extends Data.TaggedError('ArgsError')<{
   message: string;
@@ -92,22 +89,22 @@ const chooseFiles = (
     return selectedFiles;
   });
 
-const program = Effect.gen(function* () {
-  const fileSystem = yield* FileSystem.FileSystem;
+export const exportOutput = Command.make('export-output', {}, () =>
+  Effect.gen(function* () {
+    const fileSystem = yield* FileSystem.FileSystem;
 
-  const selectedDirectory = yield* selectDirectory(
-    path.join(process.cwd(), 'outputs'),
-  );
+    const selectedDirectory = yield* selectDirectory(
+      path.join(process.cwd(), 'outputs'),
+    );
 
-  const selectedFiles = yield* chooseFiles(selectedDirectory);
+    const selectedFiles = yield* chooseFiles(selectedDirectory);
 
-  const contents = yield* Effect.forEach(selectedFiles, (filePath) =>
-    fileSystem.readFile(filePath),
-  );
+    const contents = yield* Effect.forEach(selectedFiles, (filePath) =>
+      fileSystem.readFile(filePath),
+    );
 
-  yield* Effect.forEach(contents, (content) =>
-    makeAppleNoteFromMarkdown(new TextDecoder().decode(content)),
-  );
-});
-
-BunRuntime.runMain(program.pipe(Effect.provide(BunFileSystem.layer)));
+    yield* Effect.forEach(contents, (content) =>
+      makeAppleNoteFromMarkdown(new TextDecoder().decode(content)),
+    );
+  }),
+);
