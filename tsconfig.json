@@ -15,7 +15,6 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     "noUnusedLocals": true,
-    "noUnusedImports": true,
 
     /* Module Resolution */
     "moduleResolution": "bundler",
