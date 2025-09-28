@@ -7,8 +7,6 @@ import * as cheerio from 'cheerio';
 import { Array, Data, Effect, Option, Schema, Stream } from 'effect';
 import { z } from 'zod';
 
-import { log } from '~/lib/log';
-
 import { makeAppleNoteFromMarkdown } from '../../lib/markdown-to-notes';
 import { msToMinutes } from '../lib';
 import { Model, model } from '../model';
@@ -67,7 +65,9 @@ const quarter = Options.integer('quarter').pipe(
     ),
   ),
   Options.optional,
-  Options.map(Option.getOrElse(() => Math.floor(new Date().getMonth() / 3) + 1)),
+  Options.map(
+    Option.getOrElse(() => Math.floor(new Date().getMonth() / 3) + 1),
+  ),
 );
 
 const week = Options.integer('week').pipe(
@@ -548,9 +548,7 @@ const exportQuarter = Command.make(
     }),
 );
 
-export const sabbathSchool = Command.make('sabbath-school', {}, () =>
-  log.info('sabbath-school'),
-).pipe(
+export const sabbathSchool = Command.make('sabbath-school').pipe(
   Command.withSubcommands([
     //
     processQuarter,

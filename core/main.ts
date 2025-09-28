@@ -7,7 +7,7 @@ import { messages } from './messages/messages';
 import { sabbathSchool } from './sabbath-school/sabbath-school';
 import { studies } from './studies/studies';
 
-const command = Command.make('church-tools', {}).pipe(
+const command = Command.make('church-tools').pipe(
   Command.withSubcommands([
     //
     messages,

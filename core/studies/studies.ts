@@ -336,9 +336,7 @@ const generateFromNoteMessage = Command.make('from-note', { model }, (args) =>
   }),
 );
 
-export const studies = Command.make('studies', {}, () =>
-  log.info('studies'),
-).pipe(
+export const studies = Command.make('studies').pipe(
   Command.withSubcommands([
     //
     generateStudy,
