@@ -5,7 +5,7 @@ import { Command, Options } from '@effect/cli';
 import { FileSystem } from '@effect/platform';
 import { generateText } from 'ai';
 import { format } from 'date-fns';
-import { Data, Effect, Layer, Match, Option, Schedule } from 'effect';
+import { Data, Effect, Option, Schedule } from 'effect';
 import { makeAppleNoteFromMarkdown } from 'lib/markdown-to-notes';
 
 import { log } from '~/lib/log';
@@ -13,7 +13,6 @@ import { getNoteContent, listNotes } from '~/lib/notes-utils';
 
 import { msToMinutes, spin } from '../lib';
 import { extractModel, Model, model } from '../model';
-import { ParseService } from '../parse';
 import { userRevisePrompt } from './prompts/revise';
 
 class PromptError extends Data.TaggedError('PromptError')<{
@@ -25,10 +24,6 @@ class OutlineError extends Data.TaggedError('OutlineError')<{
 }> {}
 
 class ReviewError extends Data.TaggedError('ReviewError')<{
-  cause: unknown;
-}> {}
-
-class ReviseError extends Data.TaggedError('ReviseError')<{
   cause: unknown;
 }> {}
 

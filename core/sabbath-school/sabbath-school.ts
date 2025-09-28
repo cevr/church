@@ -7,7 +7,6 @@ import * as cheerio from 'cheerio';
 import { Array, Data, Effect, Option, Schema, Stream } from 'effect';
 import { z } from 'zod';
 
-import { ParseService } from '~/core/parse';
 import { log } from '~/lib/log';
 
 import { makeAppleNoteFromMarkdown } from '../../lib/markdown-to-notes';

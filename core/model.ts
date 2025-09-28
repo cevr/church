@@ -2,7 +2,7 @@ import { createAnthropic } from '@ai-sdk/anthropic';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { createGroq } from '@ai-sdk/groq';
 import { createOpenAI } from '@ai-sdk/openai';
-import { Options, ValidationError } from '@effect/cli';
+import { Options } from '@effect/cli';
 import { type LanguageModel } from 'ai';
 import { Context, Effect, Match, Option, Schema } from 'effect';
 
