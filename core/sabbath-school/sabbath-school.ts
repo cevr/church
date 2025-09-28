@@ -11,7 +11,7 @@ import { log } from '~/lib/log';
 
 import { makeAppleNoteFromMarkdown } from '../../lib/markdown-to-notes';
 import { msToMinutes } from '../lib';
-import { extractModel, Model, model } from '../model';
+import { Model, model } from '../model';
 import {
   outlineSystemPrompt,
   outlineUserPrompt,
@@ -50,9 +50,18 @@ class ReviseError extends Data.TaggedError('ReviseError')<{
   cause: unknown;
 }> {}
 
-const year = Options.integer('year').pipe(Options.optional);
-const quarter = Options.integer('quarter').pipe(Options.optional);
-const week = Options.integer('week').pipe(Options.optional);
+const year = Options.integer('year').pipe(
+  Options.withAlias('y'),
+  Options.optional,
+);
+const quarter = Options.integer('quarter').pipe(
+  Options.withAlias('q'),
+  Options.optional,
+);
+const week = Options.integer('week').pipe(
+  Options.withAlias('w'),
+  Options.optional,
+);
 
 const parseArgs = Effect.fn('parseArgs')(function* (args: {
   year: Option.Option<number>;
@@ -332,7 +341,6 @@ const processQuarter = Command.make(
   (args) =>
     Effect.gen(function* (_) {
       const { year, quarter, week } = yield* parseArgs(args);
-      const extractedModel = yield* extractModel(args.model);
 
       yield* Effect.log(
         `Starting download for Q${quarter} ${year}${
@@ -400,12 +408,12 @@ const processQuarter = Command.make(
                 { year, quarter, week: urls.weekNumber },
                 lessonPdf,
                 egwPdf,
-              ).pipe(Effect.provideService(Model, extractedModel));
+              ).pipe(Effect.provideService(Model, args.model));
 
               const revision = yield* reviseOutline(
                 { year, quarter, week: urls.weekNumber },
                 outline,
-              ).pipe(Effect.provideService(Model, extractedModel));
+              ).pipe(Effect.provideService(Model, args.model));
 
               outline = Option.match(revision, {
                 onSome: (text) => text,
@@ -445,7 +453,6 @@ const reviseQuarter = Command.make(
     Effect.gen(function* (_) {
       const startTime = Date.now();
       const { year, quarter, week } = yield* parseArgs(args);
-      const extractedModel = yield* extractModel(args.model);
 
       yield* Effect.log(
         `Starting outline revision for Q${quarter} ${year}${
@@ -483,7 +490,7 @@ const reviseQuarter = Command.make(
             const revisedOutline = yield* reviseOutline(
               { year, quarter, week: weekNumber },
               outlineText,
-            ).pipe(Effect.provideService(Model, extractedModel));
+            ).pipe(Effect.provideService(Model, args.model));
 
             yield* Option.match(revisedOutline, {
               onSome: (text) =>

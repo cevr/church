@@ -12,7 +12,7 @@ import { log } from '~/lib/log';
 import { getNoteContent, listNotes } from '~/lib/notes-utils';
 
 import { msToMinutes, spin } from '../lib';
-import { extractModel, Model, model } from '../model';
+import { Model, model } from '../model';
 import { userRevisePrompt } from './prompts/revise';
 
 class PromptError extends Data.TaggedError('PromptError')<{
@@ -173,11 +173,13 @@ const revise = Effect.fn('revise')(function* (prompt: string, study: string) {
   }
 });
 
-const topic = Options.text('topic').pipe(Options.optional);
+const topic = Options.text('topic').pipe(
+  Options.withAlias('t'),
+  Options.optional,
+);
 
 const generateStudy = Command.make('generate', { topic, model }, (args) =>
   Effect.gen(function* (_) {
-    const extractedModel = yield* extractModel(args.model);
     const startTime = Date.now();
 
     const topic = yield* Option.match(args.topic, {
@@ -204,7 +206,7 @@ const generateStudy = Command.make('generate', { topic, model }, (args) =>
     yield* log.info(`topic: ${topic}`);
 
     const { filename, study } = yield* generate(topic).pipe(
-      Effect.provideService(Model, extractedModel),
+      Effect.provideService(Model, args.model),
     );
 
     const studiesDir = path.join(process.cwd(), 'outputs', 'studies');
@@ -236,7 +238,6 @@ const generateStudy = Command.make('generate', { topic, model }, (args) =>
 const reviseMessage = Command.make('revise', { model }, (args) =>
   Effect.gen(function* (_) {
     const fs = yield* FileSystem.FileSystem;
-    const extractedModel = yield* extractModel(args.model);
 
     const studiesDir = path.join(process.cwd(), 'outputs', 'studies');
     const files = yield* fs.readDirectory(studiesDir);
@@ -269,7 +270,7 @@ const reviseMessage = Command.make('revise', { model }, (args) =>
     const revisedStudy = yield* revise(
       '',
       new TextDecoder().decode(study),
-    ).pipe(Effect.provideService(Model, extractedModel));
+    ).pipe(Effect.provideService(Model, args.model));
 
     if (Option.isNone(revisedStudy)) {
       return;
@@ -312,12 +313,11 @@ const generateFromNoteMessage = Command.make(
     Effect.gen(function* (_) {
       const fs = yield* FileSystem.FileSystem;
       const startTime = Date.now();
-      const extractedModel = yield* extractModel(args.model);
 
       const note = yield* getNote;
 
       const { filename, study } = yield* generate(note).pipe(
-        Effect.provideService(Model, extractedModel),
+        Effect.provideService(Model, args.model),
       );
 
       const studiesDir = path.join(process.cwd(), 'outputs', 'studies');

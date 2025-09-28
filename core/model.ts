@@ -2,7 +2,7 @@ import { createAnthropic } from '@ai-sdk/anthropic';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { createGroq } from '@ai-sdk/groq';
 import { createOpenAI } from '@ai-sdk/openai';
-import { Options } from '@effect/cli';
+import { Options, ValidationError } from '@effect/cli';
 import { type LanguageModel } from 'ai';
 import { Context, Effect, Match, Option, Schema } from 'effect';
 
@@ -15,9 +15,7 @@ export enum Provider {
   Kimi = 'kimi',
 }
 
-export const model = Options.text('model').pipe(Options.optional);
-
-export const extractModel = Effect.fn('extractModel')(function* (
+const extractModel = Effect.fn('extractModel')(function* (
   modelOption: Option.Option<string>,
 ) {
   const google = yield* Schema.Config(
@@ -148,6 +146,19 @@ export const extractModel = Effect.fn('extractModel')(function* (
   });
 });
 
+export const model = Options.text('model').pipe(
+  Options.withAlias('m'),
+  Options.optional,
+  Options.mapEffect((x) =>
+    extractModel(x).pipe(
+      Effect.mapError((e) =>
+        ValidationError.invalidArgument({
+          _tag: 'Empty',
+        }),
+      ),
+    ),
+  ),
+);
 export class Model extends Context.Tag('Model')<
   Model,
   Effect.Effect.Success<ReturnType<typeof extractModel>>

@@ -12,7 +12,7 @@ import { log } from '~/lib/log';
 import { getNoteContent, listNotes } from '~/lib/notes-utils';
 
 import { msToMinutes, spin } from '../lib';
-import { extractModel, Model, model } from '../model';
+import { Model, model } from '../model';
 import { userRevisePrompt } from './prompts/prompts';
 
 class PromptError extends Data.TaggedError('PromptError')<{
@@ -173,12 +173,14 @@ const revise = Effect.fn('revise')(function* (prompt: string, message: string) {
   }
 });
 
-const topic = Options.text('topic').pipe(Options.optional);
+const topic = Options.text('topic').pipe(
+  Options.withAlias('t'),
+  Options.optional,
+);
 
 const generateMessage = Command.make('generate', { topic, model }, (args) =>
   Effect.gen(function* (_) {
     const startTime = Date.now();
-    const extractedModel = yield* extractModel(args.model);
 
     const topic = yield* Option.match(args.topic, {
       onSome: (topic) => Effect.succeed(topic),
@@ -204,7 +206,7 @@ const generateMessage = Command.make('generate', { topic, model }, (args) =>
     yield* log.info(`topic: ${topic}`);
 
     const { filename, message } = yield* generate(topic).pipe(
-      Effect.provideService(Model, extractedModel),
+      Effect.provideService(Model, args.model),
     );
 
     const messagesDir = path.join(process.cwd(), 'outputs', 'messages');
@@ -236,7 +238,6 @@ const generateMessage = Command.make('generate', { topic, model }, (args) =>
 const reviseMessage = Command.make('revise', { model }, (args) =>
   Effect.gen(function* (_) {
     const fs = yield* FileSystem.FileSystem;
-    const extractedModel = yield* extractModel(args.model);
 
     const messagesDir = path.join(process.cwd(), 'outputs', 'messages');
     const files = yield* fs.readDirectory(messagesDir);
@@ -269,7 +270,7 @@ const reviseMessage = Command.make('revise', { model }, (args) =>
     const revisedMessage = yield* revise(
       '',
       new TextDecoder().decode(message),
-    ).pipe(Effect.provideService(Model, extractedModel));
+    ).pipe(Effect.provideService(Model, args.model));
 
     if (Option.isNone(revisedMessage)) {
       yield* log.error('No message to revise.');
@@ -318,11 +319,10 @@ const generateFromNoteMessage = Command.make(
     Effect.gen(function* (_) {
       const fs = yield* FileSystem.FileSystem;
       const startTime = Date.now();
-      const extractedModel = yield* extractModel(args.model);
       const note = yield* getNote;
 
       const { filename, message } = yield* generate(note).pipe(
-        Effect.provideService(Model, extractedModel),
+        Effect.provideService(Model, args.model),
       );
 
       const messagesDir = path.join(process.cwd(), 'outputs', 'messages');
