@@ -1,7 +1,7 @@
 import * as path from 'path';
 
 import { confirm, isCancel, select, text } from '@clack/prompts';
-import { Command, Options } from '@effect/cli';
+import { Args, Command } from '@effect/cli';
 import { FileSystem } from '@effect/platform';
 import { generateText } from 'ai';
 import { format } from 'date-fns';
@@ -173,10 +173,9 @@ const revise = Effect.fn('revise')(function* (prompt: string, message: string) {
   }
 });
 
-const topic = Options.text('topic').pipe(
-  Options.withAlias('t'),
-  Options.optional,
-);
+const topic = Args.text({
+  name: 'topic',
+}).pipe(Args.optional);
 
 const generateMessage = Command.make('generate', { topic, model }, (args) =>
   Effect.gen(function* (_) {
