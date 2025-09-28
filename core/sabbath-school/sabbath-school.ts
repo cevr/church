@@ -1,25 +1,18 @@
 import * as path from 'path';
 
+import { Command, Options } from '@effect/cli';
 import { FileSystem } from '@effect/platform';
 import { generateObject, generateText } from 'ai';
 import * as cheerio from 'cheerio';
-import {
-  Array,
-  Data,
-  Effect,
-  Layer,
-  Match,
-  Option,
-  Schema,
-  Stream,
-} from 'effect';
+import { Array, Data, Effect, Option, Schema, Stream } from 'effect';
 import { z } from 'zod';
 
 import { ParseService } from '~/core/parse';
+import { log } from '~/lib/log';
 
 import { makeAppleNoteFromMarkdown } from '../../lib/markdown-to-notes';
 import { msToMinutes } from '../lib';
-import { ModelService } from '../model';
+import { extractModel, Model, model } from '../model';
 import {
   outlineSystemPrompt,
   outlineUserPrompt,
@@ -58,62 +51,51 @@ class ReviseError extends Data.TaggedError('ReviseError')<{
   cause: unknown;
 }> {}
 
-enum Action {
-  Process = 'process',
-  Revise = 'revise',
-  Export = 'export',
-}
+const year = Options.integer('year').pipe(Options.optional);
+const quarter = Options.integer('quarter').pipe(Options.optional);
+const week = Options.integer('week').pipe(Options.optional);
 
-class ActionService extends Effect.Service<ActionService>()('ActionService', {
-  effect: Effect.gen(function* () {
-    const parse = yield* ParseService;
-    const action = yield* parse.command(Action, {
-      message: 'Select an action to perform:',
-      labels: {
-        [Action.Revise]: 'Revise Outlines',
-        [Action.Process]: 'Download and Generate Outlines',
-        [Action.Export]: 'Export to Apple Notes',
-      },
-    });
-    return {
-      action,
-    };
-  }),
-}) {}
-
-class Args extends Effect.Service<Args>()('Args', {
-  effect: Effect.gen(function* (_) {
-    const parse = yield* ParseService;
-    const year = parse
-      .flagSchema(
-        ['year', 'y'],
+const parseArgs = Effect.fn('parseArgs')(function* (args: {
+  year: Option.Option<number>;
+  quarter: Option.Option<number>;
+  week: Option.Option<number>;
+}) {
+  const year = args.year.pipe(
+    Option.flatMap(
+      Schema.decodeUnknownOption(
         Schema.NumberFromString.pipe(
           Schema.lessThanOrEqualTo(new Date().getFullYear()),
         ),
-      )
-      .pipe(Option.getOrElse(() => new Date().getFullYear()));
+      ),
+    ),
+    Option.getOrElse(() => new Date().getFullYear()),
+  );
 
-    const quarter = parse
-      .flagSchema(
-        ['quarter', 'q'],
+  const quarter = args.quarter.pipe(
+    Option.flatMap(
+      Schema.decodeUnknownOption(
         Schema.NumberFromString.pipe(
           Schema.greaterThanOrEqualTo(1),
           Schema.lessThanOrEqualTo(4),
         ),
-      )
-      .pipe(Option.getOrElse(() => Math.floor(new Date().getMonth() / 3) + 1));
-
-    const week = parse.flagSchema(
-      ['week', 'w'],
-      Schema.NumberFromString.pipe(
-        Schema.greaterThanOrEqualTo(1),
-        Schema.lessThanOrEqualTo(13),
       ),
-    );
+    ),
+    Option.getOrElse(() => Math.floor(new Date().getMonth() / 3) + 1),
+  );
 
-    return { year, quarter, week } as const;
-  }),
-}) {}
+  const week = args.week.pipe(
+    Option.flatMap(
+      Schema.decodeUnknownOption(
+        Schema.NumberFromString.pipe(
+          Schema.greaterThanOrEqualTo(1),
+          Schema.lessThanOrEqualTo(13),
+        ),
+      ),
+    ),
+  );
+
+  return { year, quarter, week } as const;
+});
 
 const outputDir = path.join(process.cwd(), 'outputs', 'sabbath-school');
 
@@ -228,7 +210,7 @@ const reviseOutline = Effect.fn('reviseOutline')(function* (
   context: SabbathSchoolContext,
   text: string,
 ) {
-  const models = yield* ModelService;
+  const models = yield* Model;
 
   yield* Effect.log(`Checking if revision is needed...`);
   const reviewResponse = yield* Effect.tryPromise({
@@ -304,7 +286,7 @@ const generateOutline = Effect.fn('generateOutline')(function* (
   lessonPdfBuffer: ArrayBuffer,
   egwPdfBuffer: ArrayBuffer,
 ) {
-  const models = yield* ModelService;
+  const models = yield* Model;
 
   yield* Effect.log(`Generating outline...`);
 
@@ -345,248 +327,256 @@ const generateOutline = Effect.fn('generateOutline')(function* (
   return response.text;
 });
 
-const processQuarter = Effect.gen(function* (_) {
-  const args = yield* Args;
-  const { year, quarter, week } = args;
+const processQuarter = Command.make(
+  'process-quarter',
+  { year, quarter, week, model },
+  (args) =>
+    Effect.gen(function* (_) {
+      const { year, quarter, week } = yield* parseArgs(args);
+      const extractedModel = yield* extractModel(args.model);
 
-  yield* Effect.log(
-    `Starting download for Q${quarter} ${year}${
-      Option.isSome(week) ? ` Week ${week.value}` : ''
-    }`,
-  );
+      yield* Effect.log(
+        `Starting download for Q${quarter} ${year}${
+          Option.isSome(week) ? ` Week ${week.value}` : ''
+        }`,
+      );
 
-  const weeks = Option.match(week, {
-    onSome: (w) => [w],
-    onNone: () => Array.range(1, 13),
-  });
+      const weeks = Option.match(week, {
+        onSome: (w) => [w],
+        onNone: () => Array.range(1, 13),
+      });
 
-  const quarterUrls = yield* findQuarterUrls(year, quarter);
+      const quarterUrls = yield* findQuarterUrls(year, quarter);
 
-  yield* Effect.log(
-    `Found ${quarterUrls.length} missing Sabbath School lessons to download...`,
-  );
+      yield* Effect.log(
+        `Found ${quarterUrls.length} missing Sabbath School lessons to download...`,
+      );
 
-  const fs = yield* FileSystem.FileSystem;
+      const fs = yield* FileSystem.FileSystem;
 
-  const weeksToDownload = yield* Effect.filter(
-    weeks,
-    (weekNumber) =>
-      Effect.gen(function* () {
-        const outlinePath = getFilePath(year, quarter, weekNumber);
-        const exists = yield* fs.exists(outlinePath);
-        return !exists;
-      }),
-    {
-      concurrency: 'unbounded',
-    },
-  ).pipe(
-    Effect.map((weeks) =>
-      weeks.map((weekNumber) =>
-        Option.fromNullable(
-          quarterUrls.find((urls) => urls.weekNumber === weekNumber),
+      const weeksToDownload = yield* Effect.filter(
+        weeks,
+        (weekNumber) =>
+          Effect.gen(function* () {
+            const outlinePath = getFilePath(year, quarter, weekNumber);
+            const exists = yield* fs.exists(outlinePath);
+            return !exists;
+          }),
+        {
+          concurrency: 'unbounded',
+        },
+      ).pipe(
+        Effect.map((weeks) =>
+          weeks.map((weekNumber) =>
+            Option.fromNullable(
+              quarterUrls.find((urls) => urls.weekNumber === weekNumber),
+            ),
+          ),
         ),
-      ),
-    ),
-    Effect.map(
-      Option.reduceCompact([] as WeekUrls[], (acc, week) => [...acc, week]),
-    ),
-  );
+        Effect.map(
+          Option.reduceCompact([] as WeekUrls[], (acc, week) => [...acc, week]),
+        ),
+      );
 
-  if (weeksToDownload.length === 0) {
-    yield* Effect.log('All Sabbath School lessons are already downloaded!');
-    return;
-  }
+      if (weeksToDownload.length === 0) {
+        yield* Effect.log('All Sabbath School lessons are already downloaded!');
+        return;
+      }
 
-  yield* Effect.log(
-    `Found ${weeksToDownload.length} missing Sabbath School lessons to download...`,
-  );
+      yield* Effect.log(
+        `Found ${weeksToDownload.length} missing Sabbath School lessons to download...`,
+      );
 
-  yield* Stream.fromIterable(weeksToDownload).pipe(
-    Stream.mapEffect(
-      (urls) =>
+      yield* Stream.fromIterable(weeksToDownload).pipe(
+        Stream.mapEffect(
+          (urls) =>
+            Effect.gen(function* () {
+              yield* Effect.log(`Downloading PDFs...`);
+              const [lessonPdf, egwPdf] = yield* Effect.all([
+                downloadFile(urls.files.lessonPdf),
+                downloadFile(urls.files.egwPdf),
+              ]);
+
+              let outline = yield* generateOutline(
+                { year, quarter, week: urls.weekNumber },
+                lessonPdf,
+                egwPdf,
+              ).pipe(Effect.provideService(Model, extractedModel));
+
+              const revision = yield* reviseOutline(
+                { year, quarter, week: urls.weekNumber },
+                outline,
+              ).pipe(Effect.provideService(Model, extractedModel));
+
+              outline = Option.match(revision, {
+                onSome: (text) => text,
+                onNone: () => outline,
+              });
+
+              yield* Effect.log(
+                `Writing outline to disk and exporting to Apple Notes...`,
+              );
+              yield* fs.writeFile(
+                getFilePath(year, quarter, urls.weekNumber),
+                new TextEncoder().encode(outline),
+              );
+              yield* Effect.log(`Outline written to disk`);
+            }).pipe(
+              Effect.annotateLogs({
+                year,
+                quarter,
+                week: urls.weekNumber,
+              }),
+            ),
+          {
+            concurrency: 3,
+          },
+        ),
+        Stream.runDrain,
+      );
+
+      yield* Effect.log(`\n✅ Download complete`);
+    }),
+);
+
+const reviseQuarter = Command.make(
+  'revise-quarter',
+  { year, quarter, week, model },
+  (args) =>
+    Effect.gen(function* (_) {
+      const startTime = Date.now();
+      const { year, quarter, week } = yield* parseArgs(args);
+      const extractedModel = yield* extractModel(args.model);
+
+      yield* Effect.log(
+        `Starting outline revision for Q${quarter} ${year}${
+          Option.isSome(week) ? ` Week ${week.value}` : ''
+        }`,
+      );
+
+      const weeks = Option.match(week, {
+        onSome: (w) => [w],
+        onNone: () => Array.range(1, 13),
+      });
+
+      const fs = yield* FileSystem.FileSystem;
+
+      const weeksToRevise = yield* Effect.filter(weeks, (weekNumber) =>
         Effect.gen(function* () {
-          yield* Effect.log(`Downloading PDFs...`);
-          const [lessonPdf, egwPdf] = yield* Effect.all([
-            downloadFile(urls.files.lessonPdf),
-            downloadFile(urls.files.egwPdf),
-          ]);
+          const outlinePath = getFilePath(year, quarter, weekNumber);
+          const exists = yield* fs.exists(outlinePath);
+          return exists;
+        }),
+      );
 
-          let outline = yield* generateOutline(
-            { year, quarter, week: urls.weekNumber },
-            lessonPdf,
-            egwPdf,
-          );
+      if (weeksToRevise.length === 0) {
+        yield* Effect.log('No Sabbath School lessons to revise');
+        return;
+      }
 
-          const revision = yield* reviseOutline(
-            { year, quarter, week: urls.weekNumber },
-            outline,
-          );
+      yield* Effect.forEach(
+        weeksToRevise,
+        (weekNumber, index) =>
+          Effect.gen(function* () {
+            const outlinePath = getFilePath(year, quarter, weekNumber);
+            const outline = yield* fs.readFile(outlinePath);
+            const outlineText = new TextDecoder().decode(outline);
+            const revisedOutline = yield* reviseOutline(
+              { year, quarter, week: weekNumber },
+              outlineText,
+            ).pipe(Effect.provideService(Model, extractedModel));
 
-          outline = Option.match(revision, {
-            onSome: (text) => text,
-            onNone: () => outline,
+            yield* Option.match(revisedOutline, {
+              onSome: (text) =>
+                fs
+                  .writeFile(outlinePath, new TextEncoder().encode(text))
+                  .pipe(
+                    Effect.tap(() =>
+                      Effect.log(`Outline for week ${weekNumber} revised`),
+                    ),
+                  ),
+              onNone: () =>
+                Effect.log(`No revision needed for week ${weekNumber}`),
+            });
+          }).pipe(
+            Effect.annotateLogs({
+              year,
+              quarter,
+              week: weekNumber,
+              total: weeks.length,
+              current: index + 1,
+            }),
+          ),
+        { concurrency: 3 },
+      );
+
+      const totalTime = msToMinutes(Date.now() - startTime);
+      yield* Effect.log(`\n✅ Revision complete (${totalTime})`);
+    }),
+);
+
+const exportQuarter = Command.make(
+  'export-quarter',
+  { year, quarter, week },
+  (args) =>
+    Effect.gen(function* (_) {
+      const { year, quarter, week } = yield* parseArgs(args);
+      yield* Effect.log(
+        `Starting outline export for Q${quarter} ${year}${
+          Option.isSome(week) ? ` Week ${week.value}` : ''
+        }`,
+      );
+
+      const weeks = Option.match(week, {
+        onSome: (w) => [w],
+        onNone: () => Array.range(1, 13),
+      });
+
+      const fs = yield* FileSystem.FileSystem;
+
+      const weeksToExport = yield* Effect.filter(weeks, (weekNumber) =>
+        Effect.gen(function* () {
+          const outlinePath = getFilePath(year, quarter, weekNumber);
+          const exists = yield* fs.exists(outlinePath);
+          return exists;
+        }),
+      );
+
+      if (weeksToExport.length === 0) {
+        yield* Effect.log('No Sabbath School lessons to export');
+        return;
+      }
+
+      yield* Effect.forEach(weeksToExport, (weekNumber, index) =>
+        Effect.gen(function* () {
+          const outlinePath = getFilePath(year, quarter, weekNumber);
+          const outline = yield* fs.readFile(outlinePath);
+          const outlineText = new TextDecoder().decode(outline);
+          yield* Effect.log(`Exporting outline to Apple Notes...`);
+          yield* makeAppleNoteFromMarkdown(outlineText, {
+            activateNotesApp: false,
           });
-
-          yield* Effect.log(
-            `Writing outline to disk and exporting to Apple Notes...`,
-          );
-          yield* fs.writeFile(
-            getFilePath(year, quarter, urls.weekNumber),
-            new TextEncoder().encode(outline),
-          );
-          yield* Effect.log(`Outline written to disk`);
+          yield* Effect.log(`Outline exported to Apple Notes`);
         }).pipe(
           Effect.annotateLogs({
             year,
             quarter,
-            week: urls.weekNumber,
+            week: weekNumber,
+            total: weeks.length,
+            current: index + 1,
           }),
         ),
-      {
-        concurrency: 3,
-      },
-    ),
-    Stream.runDrain,
-  );
-
-  yield* Effect.log(`\n✅ Download complete`);
-});
-
-const reviseQuarter = Effect.gen(function* (_) {
-  const startTime = Date.now();
-  const args = yield* Args;
-  const { year, quarter, week } = args;
-
-  yield* Effect.log(
-    `Starting outline revision for Q${quarter} ${year}${
-      Option.isSome(week) ? ` Week ${week.value}` : ''
-    }`,
-  );
-
-  const weeks = Option.match(week, {
-    onSome: (w) => [w],
-    onNone: () => Array.range(1, 13),
-  });
-
-  const fs = yield* FileSystem.FileSystem;
-
-  const weeksToRevise = yield* Effect.filter(weeks, (weekNumber) =>
-    Effect.gen(function* () {
-      const outlinePath = getFilePath(year, quarter, weekNumber);
-      const exists = yield* fs.exists(outlinePath);
-      return exists;
+      );
     }),
-  );
+);
 
-  if (weeksToRevise.length === 0) {
-    yield* Effect.log('No Sabbath School lessons to revise');
-    return;
-  }
-
-  yield* Effect.forEach(
-    weeksToRevise,
-    (weekNumber, index) =>
-      Effect.gen(function* () {
-        const outlinePath = getFilePath(year, quarter, weekNumber);
-        const outline = yield* fs.readFile(outlinePath);
-        const outlineText = new TextDecoder().decode(outline);
-        const revisedOutline = yield* reviseOutline(
-          { year, quarter, week: weekNumber },
-          outlineText,
-        );
-
-        yield* Option.match(revisedOutline, {
-          onSome: (text) =>
-            fs
-              .writeFile(outlinePath, new TextEncoder().encode(text))
-              .pipe(
-                Effect.tap(() =>
-                  Effect.log(`Outline for week ${weekNumber} revised`),
-                ),
-              ),
-          onNone: () => Effect.log(`No revision needed for week ${weekNumber}`),
-        });
-      }).pipe(
-        Effect.annotateLogs({
-          year,
-          quarter,
-          week: weekNumber,
-          total: weeks.length,
-          current: index + 1,
-        }),
-      ),
-    { concurrency: 3 },
-  );
-
-  const totalTime = msToMinutes(Date.now() - startTime);
-  yield* Effect.log(`\n✅ Revision complete (${totalTime})`);
-});
-
-const exportQuarter = Effect.gen(function* (_) {
-  const args = yield* Args;
-  const { year, quarter, week } = args;
-
-  yield* Effect.log(
-    `Starting outline export for Q${quarter} ${year}${
-      Option.isSome(week) ? ` Week ${week.value}` : ''
-    }`,
-  );
-
-  const weeks = Option.match(week, {
-    onSome: (w) => [w],
-    onNone: () => Array.range(1, 13),
-  });
-
-  const fs = yield* FileSystem.FileSystem;
-
-  const weeksToExport = yield* Effect.filter(weeks, (weekNumber) =>
-    Effect.gen(function* () {
-      const outlinePath = getFilePath(year, quarter, weekNumber);
-      const exists = yield* fs.exists(outlinePath);
-      return exists;
-    }),
-  );
-
-  if (weeksToExport.length === 0) {
-    yield* Effect.log('No Sabbath School lessons to export');
-    return;
-  }
-
-  yield* Effect.forEach(weeksToExport, (weekNumber, index) =>
-    Effect.gen(function* () {
-      const outlinePath = getFilePath(year, quarter, weekNumber);
-      const outline = yield* fs.readFile(outlinePath);
-      const outlineText = new TextDecoder().decode(outline);
-      yield* Effect.log(`Exporting outline to Apple Notes...`);
-      yield* makeAppleNoteFromMarkdown(outlineText, {
-        activateNotesApp: false,
-      });
-      yield* Effect.log(`Outline exported to Apple Notes`);
-    }).pipe(
-      Effect.annotateLogs({
-        year,
-        quarter,
-        week: weekNumber,
-        total: weeks.length,
-        current: index + 1,
-      }),
-    ),
-  );
-});
-
-const program = Effect.gen(function* (_) {
-  const { action } = yield* ActionService;
-
-  return yield* Match.value(action).pipe(
-    Match.when(Action.Process, () => processQuarter),
-    Match.when(Action.Revise, () => reviseQuarter),
-    Match.when(Action.Export, () => exportQuarter),
-    Match.exhaustive,
-  );
-});
-
-export const main = program.pipe(
-  Effect.provide(
-    Layer.mergeAll(ActionService.Default, Args.Default, ModelService.Default),
-  ),
+export const sabbathSchool = Command.make('sabbath-school', {}, () =>
+  log.info('sabbath-school'),
+).pipe(
+  Command.withSubcommands([
+    //
+    processQuarter,
+    reviseQuarter,
+    exportQuarter,
+  ]),
 );

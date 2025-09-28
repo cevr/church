@@ -1,58 +1,21 @@
-import { BunFileSystem, BunRuntime } from '@effect/platform-bun';
-import { Effect, Layer, Match } from 'effect';
+import { Command } from '@effect/cli';
+import { BunContext, BunRuntime } from '@effect/platform-bun';
+import { Effect } from 'effect';
 
-import { main as eldersDigestMain } from './elders-digest/elders-digest';
-import { main as messagesMain } from './messages/messages';
-import { ModelService } from './model';
-import { ParseService } from './parse';
-import { main as sabbathSchoolMain } from './sabbath-school/sabbath-school';
-import { main as studiesMain } from './studies/studies';
+import { messages } from './messages/messages';
+import { sabbathSchool } from './sabbath-school/sabbath-school';
+import { studies } from './studies/studies';
 
-enum Command {
-  Messages = 'messages',
-  SabbathSchool = 'sabbath-school',
-  EldersDigest = 'elders-digest',
-  Studies = 'studies',
-}
-
-class CommandService extends Effect.Service<CommandService>()('Command', {
-  effect: Effect.gen(function* () {
-    const parse = yield* ParseService;
-    let command = yield* parse.command(Command, {
-      message: 'Select a command',
-      labels: {
-        [Command.Messages]: 'Messages',
-        [Command.SabbathSchool]: 'Sabbath School',
-        [Command.EldersDigest]: 'Elders Digest',
-        [Command.Studies]: 'Studies',
-      },
-    });
-    return {
-      command,
-    };
-  }),
-}) {}
-
-const main = Effect.gen(function* () {
-  const { command } = yield* CommandService;
-
-  return yield* Match.value(command).pipe(
-    Match.when(Command.Messages, () => messagesMain),
-    Match.when(Command.SabbathSchool, () => sabbathSchoolMain),
-    Match.when(Command.EldersDigest, () => eldersDigestMain),
-    Match.when(Command.Studies, () => studiesMain),
-    Match.exhaustive,
-  );
-}).pipe(
-  Effect.provide(
-    Layer.mergeAll(
-      Layer.provideMerge(
-        CommandService.Default,
-        Layer.provideMerge(ModelService.Default, ParseService.Default),
-      ),
-      BunFileSystem.layer,
-    ),
-  ),
+// Combine all commands into the main 'minigit' command
+const command = Command.make('church-tools', {}).pipe(
+  Command.withSubcommands([messages, sabbathSchool, studies]),
 );
 
-BunRuntime.runMain(main);
+// Initialize and run the CLI application
+const cli = Command.run(command, {
+  name: 'Church Tools',
+  version: 'v1.0.0',
+});
+
+
+cli(process.argv).pipe(Effect.provide(BunContext.layer), BunRuntime.runMain);

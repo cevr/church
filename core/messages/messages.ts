@@ -1,6 +1,7 @@
 import * as path from 'path';
 
 import { confirm, isCancel, select, text } from '@clack/prompts';
+import { Command, Options } from '@effect/cli';
 import { FileSystem } from '@effect/platform';
 import { generateText } from 'ai';
 import { format } from 'date-fns';
@@ -11,7 +12,7 @@ import { log } from '~/lib/log';
 import { getNoteContent, listNotes } from '~/lib/notes-utils';
 
 import { msToMinutes, spin } from '../lib';
-import { ModelService } from '../model';
+import { extractModel, Model, model } from '../model';
 import { ParseService } from '../parse';
 import { userRevisePrompt } from './prompts/prompts';
 
@@ -35,40 +36,8 @@ class FilenameError extends Data.TaggedError('FilenameError')<{
   cause: unknown;
 }> {}
 
-enum Actions {
-  Generate = 'generate',
-  GenerateFromNote = 'generate-from-note',
-  Revise = 'revise',
-}
-
-class ActionService extends Effect.Service<ActionService>()('Action', {
-  effect: Effect.gen(function* () {
-    const parse = yield* ParseService;
-    let action = yield* parse.command(Actions, {
-      message: 'What would you like to do?',
-      labels: {
-        [Actions.Generate]: 'Generate',
-        [Actions.GenerateFromNote]: 'Generate from note',
-        [Actions.Revise]: 'Revise',
-      },
-    });
-
-    return {
-      action,
-    };
-  }),
-}) {}
-
-class Args extends Effect.Service<Args>()('Args', {
-  effect: Effect.gen(function* () {
-    const parse = yield* ParseService;
-    const topic = parse.flag(['topic', 't']);
-    return { topic };
-  }),
-}) {}
-
 export const generate = Effect.fn('generate')(function* (topic: string) {
-  const models = yield* ModelService;
+  const models = yield* Model;
   const fs = yield* FileSystem.FileSystem;
 
   const systemMessagePrompt = yield* fs
@@ -136,7 +105,7 @@ export const generate = Effect.fn('generate')(function* (topic: string) {
 });
 
 const revise = Effect.fn('revise')(function* (prompt: string, message: string) {
-  const models = yield* ModelService;
+  const models = yield* Model;
   const fs = yield* FileSystem.FileSystem;
 
   let revision: string | undefined;
@@ -209,101 +178,116 @@ const revise = Effect.fn('revise')(function* (prompt: string, message: string) {
   }
 });
 
-const generateMessage = Effect.gen(function* (_) {
-  const startTime = Date.now();
-  const args = yield* Args;
+const topic = Options.text('topic').pipe(Options.optional);
 
-  const topic = yield* Option.match(args.topic, {
-    onSome: (topic) => Effect.succeed(topic),
-    onNone: () =>
-      Effect.tryPromise({
-        try: () =>
-          text({
-            message: 'What would you like the message to be about?',
-            placeholder: 'e.g., The Power of Prayer',
-          }),
-        catch: (cause: unknown) =>
-          new PromptError({
-            cause,
-          }),
-      }),
-  });
+const generateMessage = Command.make('generate', { topic, model }, (args) =>
+  Effect.gen(function* (_) {
+    const startTime = Date.now();
+    const extractedModel = yield* extractModel(args.model);
 
-  if (isCancel(topic)) {
-    yield* Effect.dieMessage('Operation cancelled.');
-    return;
-  }
+    const topic = yield* Option.match(args.topic, {
+      onSome: (topic) => Effect.succeed(topic),
+      onNone: () =>
+        Effect.tryPromise({
+          try: () =>
+            text({
+              message: 'What would you like the message to be about?',
+              placeholder: 'e.g., The Power of Prayer',
+            }),
+          catch: (cause: unknown) =>
+            new PromptError({
+              cause,
+            }),
+        }),
+    });
 
-  yield* log.info(`topic: ${topic}`);
+    if (isCancel(topic)) {
+      yield* Effect.dieMessage('Operation cancelled.');
+      return;
+    }
 
-  const { filename, message } = yield* generate(topic);
+    yield* log.info(`topic: ${topic}`);
 
-  const messagesDir = path.join(process.cwd(), 'outputs', 'messages');
+    const { filename, message } = yield* generate(topic).pipe(
+      Effect.provideService(Model, extractedModel),
+    );
 
-  const fileName = `${format(new Date(), 'yyyy-MM-dd')}-${filename}.md`;
-  const filePath = path.join(messagesDir, fileName);
+    const messagesDir = path.join(process.cwd(), 'outputs', 'messages');
 
-  const fs = yield* FileSystem.FileSystem;
+    const fileName = `${format(new Date(), 'yyyy-MM-dd')}-${filename}.md`;
+    const filePath = path.join(messagesDir, fileName);
 
-  yield* spin(
-    'Ensuring messages directory exists',
-    fs.makeDirectory(messagesDir).pipe(Effect.ignore),
-  );
+    const fs = yield* FileSystem.FileSystem;
 
-  yield* spin(
-    'Writing message to file: ' + fileName,
-    fs.writeFile(filePath, new TextEncoder().encode(message)),
-  );
+    yield* spin(
+      'Ensuring messages directory exists',
+      fs.makeDirectory(messagesDir).pipe(Effect.ignore),
+    );
 
-  yield* spin('Adding message to notes', makeAppleNoteFromMarkdown(message));
+    yield* spin(
+      'Writing message to file: ' + fileName,
+      fs.writeFile(filePath, new TextEncoder().encode(message)),
+    );
 
-  const totalTime = msToMinutes(Date.now() - startTime);
-  yield* log.success(
-    `Message generated successfully! (Total time: ${totalTime})`,
-  );
-});
+    yield* spin('Adding message to notes', makeAppleNoteFromMarkdown(message));
 
-const reviseMessage = Effect.gen(function* (_) {
-  const fs = yield* FileSystem.FileSystem;
-  const startTime = Date.now();
+    const totalTime = msToMinutes(Date.now() - startTime);
+    yield* log.success(
+      `Message generated successfully! (Total time: ${totalTime})`,
+    );
+  }),
+);
 
-  const messagesDir = path.join(process.cwd(), 'outputs', 'messages');
-  const files = yield* fs.readDirectory(messagesDir);
+const reviseMessage = Command.make('revise', { model }, (args) =>
+  Effect.gen(function* (_) {
+    const fs = yield* FileSystem.FileSystem;
+    const startTime = Date.now();
+    const extractedModel = yield* extractModel(args.model);
 
-  const filePaths = files.map((file) => path.join(messagesDir, file));
+    const messagesDir = path.join(process.cwd(), 'outputs', 'messages');
+    const files = yield* fs.readDirectory(messagesDir);
 
-  const filePath = yield* Effect.tryPromise({
-    try: () =>
-      select({
-        message: 'Which message would you like to revise?',
-        options: filePaths.map((filePath) => ({
-          label: path.basename(filePath),
-          value: filePath,
-        })),
-        maxItems: 5,
-      }),
-    catch: (cause: unknown) =>
-      new PromptError({
-        cause,
-      }),
-  });
+    const filePaths = files.map((file) => path.join(messagesDir, file));
 
-  if (isCancel(filePath)) {
-    yield* Effect.dieMessage('Operation cancelled.');
-    return;
-  }
+    const filePath = yield* Effect.tryPromise({
+      try: () =>
+        select({
+          message: 'Which message would you like to revise?',
+          options: filePaths.map((filePath) => ({
+            label: path.basename(filePath),
+            value: filePath,
+          })),
+          maxItems: 5,
+        }),
+      catch: (cause: unknown) =>
+        new PromptError({
+          cause,
+        }),
+    });
 
-  const message = yield* fs.readFile(filePath);
+    if (isCancel(filePath)) {
+      yield* Effect.dieMessage('Operation cancelled.');
+      return;
+    }
 
-  const revisedMessage = yield* revise('', new TextDecoder().decode(message));
+    const message = yield* fs.readFile(filePath);
 
-  if (Option.isNone(revisedMessage)) {
-    yield* log.error('No message to revise.');
-    return;
-  }
+    const revisedMessage = yield* revise(
+      '',
+      new TextDecoder().decode(message),
+    ).pipe(Effect.provideService(Model, extractedModel));
 
-  yield* fs.writeFile(filePath, new TextEncoder().encode(revisedMessage.value));
-});
+    if (Option.isNone(revisedMessage)) {
+      yield* log.error('No message to revise.');
+      return;
+    }
+
+    yield* fs.writeFile(
+      filePath,
+      new TextEncoder().encode(revisedMessage.value),
+    );
+  }),
+);
 
 const getNote = Effect.gen(function* (_) {
   const notes = yield* listNotes();
@@ -331,43 +315,51 @@ const getNote = Effect.gen(function* (_) {
   return yield* getNoteContent(noteId);
 });
 
-const generateFromNoteMessage = Effect.gen(function* (_) {
-  const fs = yield* FileSystem.FileSystem;
-  const startTime = Date.now();
+const generateFromNoteMessage = Command.make(
+  'generate-from-note',
+  {
+    model,
+  },
+  (args) =>
+    Effect.gen(function* (_) {
+      const fs = yield* FileSystem.FileSystem;
+      const startTime = Date.now();
+      const extractedModel = yield* extractModel(args.model);
+      const note = yield* getNote;
 
-  const note = yield* getNote;
+      const { filename, message } = yield* generate(note).pipe(
+        Effect.provideService(Model, extractedModel),
+      );
 
-  const { filename, message } = yield* generate(note);
+      const messagesDir = path.join(process.cwd(), 'outputs', 'messages');
 
-  const messagesDir = path.join(process.cwd(), 'outputs', 'messages');
+      const fileName = `${format(new Date(), 'yyyy-MM-dd')}-${filename}.md`;
+      const filePath = path.join(messagesDir, fileName);
 
-  const fileName = `${format(new Date(), 'yyyy-MM-dd')}-${filename}.md`;
-  const filePath = path.join(messagesDir, fileName);
+      yield* spin(
+        'Writing message to file: ' + fileName,
+        fs.writeFile(filePath, new TextEncoder().encode(message)),
+      );
 
-  yield* spin(
-    'Writing message to file: ' + fileName,
-    fs.writeFile(filePath, new TextEncoder().encode(message)),
-  );
+      yield* spin(
+        'Adding message to notes',
+        makeAppleNoteFromMarkdown(message),
+      );
 
-  yield* spin('Adding message to notes', makeAppleNoteFromMarkdown(message));
+      const totalTime = msToMinutes(Date.now() - startTime);
+      yield* log.success(
+        `Message generated successfully! (Total time: ${totalTime})`,
+      );
+    }),
+);
 
-  const totalTime = msToMinutes(Date.now() - startTime);
-  yield* log.success(
-    `Message generated successfully! (Total time: ${totalTime})`,
-  );
-});
-
-const program = Effect.gen(function* () {
-  const { action } = yield* ActionService;
-
-  return yield* Match.value(action).pipe(
-    Match.when(Actions.Generate, () => generateMessage),
-    Match.when(Actions.GenerateFromNote, () => generateFromNoteMessage),
-    Match.when(Actions.Revise, () => reviseMessage),
-    Match.exhaustive,
-  );
-});
-
-export const main = program.pipe(
-  Effect.provide(Layer.mergeAll(ActionService.Default, Args.Default)),
+export const messages = Command.make('messages', {}, () =>
+  log.info('messages'),
+).pipe(
+  Command.withSubcommands([
+    //
+    generateMessage,
+    reviseMessage,
+    generateFromNoteMessage,
+  ]),
 );
