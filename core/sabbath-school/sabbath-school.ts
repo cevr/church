@@ -52,58 +52,34 @@ class ReviseError extends Data.TaggedError('ReviseError')<{
 
 const year = Options.integer('year').pipe(
   Options.withAlias('y'),
+  Options.withSchema(
+    Schema.Number.pipe(Schema.lessThanOrEqualTo(new Date().getFullYear())),
+  ),
   Options.optional,
+  Options.map(Option.getOrElse(() => new Date().getFullYear())),
 );
 const quarter = Options.integer('quarter').pipe(
   Options.withAlias('q'),
+  Options.withSchema(
+    Schema.Number.pipe(
+      Schema.greaterThanOrEqualTo(1),
+      Schema.lessThanOrEqualTo(4),
+    ),
+  ),
   Options.optional,
+  Options.map(Option.getOrElse(() => Math.floor(new Date().getMonth() / 3) + 1)),
 );
+
 const week = Options.integer('week').pipe(
   Options.withAlias('w'),
+  Options.withSchema(
+    Schema.Number.pipe(
+      Schema.greaterThanOrEqualTo(1),
+      Schema.lessThanOrEqualTo(13),
+    ),
+  ),
   Options.optional,
 );
-
-const parseArgs = Effect.fn('parseArgs')(function* (args: {
-  year: Option.Option<number>;
-  quarter: Option.Option<number>;
-  week: Option.Option<number>;
-}) {
-  const year = args.year.pipe(
-    Option.flatMap(
-      Schema.decodeUnknownOption(
-        Schema.NumberFromString.pipe(
-          Schema.lessThanOrEqualTo(new Date().getFullYear()),
-        ),
-      ),
-    ),
-    Option.getOrElse(() => new Date().getFullYear()),
-  );
-
-  const quarter = args.quarter.pipe(
-    Option.flatMap(
-      Schema.decodeUnknownOption(
-        Schema.NumberFromString.pipe(
-          Schema.greaterThanOrEqualTo(1),
-          Schema.lessThanOrEqualTo(4),
-        ),
-      ),
-    ),
-    Option.getOrElse(() => Math.floor(new Date().getMonth() / 3) + 1),
-  );
-
-  const week = args.week.pipe(
-    Option.flatMap(
-      Schema.decodeUnknownOption(
-        Schema.NumberFromString.pipe(
-          Schema.greaterThanOrEqualTo(1),
-          Schema.lessThanOrEqualTo(13),
-        ),
-      ),
-    ),
-  );
-
-  return { year, quarter, week } as const;
-});
 
 const outputDir = path.join(process.cwd(), 'outputs', 'sabbath-school');
 
@@ -336,12 +312,10 @@ const generateOutline = Effect.fn('generateOutline')(function* (
 });
 
 const processQuarter = Command.make(
-  'process-quarter',
+  'process',
   { year, quarter, week, model },
-  (args) =>
+  ({ year, quarter, week, model }) =>
     Effect.gen(function* (_) {
-      const { year, quarter, week } = yield* parseArgs(args);
-
       yield* Effect.log(
         `Starting download for Q${quarter} ${year}${
           Option.isSome(week) ? ` Week ${week.value}` : ''
@@ -408,12 +382,12 @@ const processQuarter = Command.make(
                 { year, quarter, week: urls.weekNumber },
                 lessonPdf,
                 egwPdf,
-              ).pipe(Effect.provideService(Model, args.model));
+              ).pipe(Effect.provideService(Model, model));
 
               const revision = yield* reviseOutline(
                 { year, quarter, week: urls.weekNumber },
                 outline,
-              ).pipe(Effect.provideService(Model, args.model));
+              ).pipe(Effect.provideService(Model, model));
 
               outline = Option.match(revision, {
                 onSome: (text) => text,
@@ -447,12 +421,11 @@ const processQuarter = Command.make(
 );
 
 const reviseQuarter = Command.make(
-  'revise-quarter',
+  'revise',
   { year, quarter, week, model },
-  (args) =>
+  ({ year, quarter, week, model }) =>
     Effect.gen(function* (_) {
       const startTime = Date.now();
-      const { year, quarter, week } = yield* parseArgs(args);
 
       yield* Effect.log(
         `Starting outline revision for Q${quarter} ${year}${
@@ -490,7 +463,7 @@ const reviseQuarter = Command.make(
             const revisedOutline = yield* reviseOutline(
               { year, quarter, week: weekNumber },
               outlineText,
-            ).pipe(Effect.provideService(Model, args.model));
+            ).pipe(Effect.provideService(Model, model));
 
             yield* Option.match(revisedOutline, {
               onSome: (text) =>
@@ -522,11 +495,10 @@ const reviseQuarter = Command.make(
 );
 
 const exportQuarter = Command.make(
-  'export-quarter',
+  'export',
   { year, quarter, week },
-  (args) =>
+  ({ year, quarter, week }) =>
     Effect.gen(function* (_) {
-      const { year, quarter, week } = yield* parseArgs(args);
       yield* Effect.log(
         `Starting outline export for Q${quarter} ${year}${
           Option.isSome(week) ? ` Week ${week.value}` : ''

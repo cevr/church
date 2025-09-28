@@ -311,7 +311,7 @@ const getNote = Effect.gen(function* (_) {
 });
 
 const generateFromNoteMessage = Command.make(
-  'generate-from-note',
+  'from-note',
   {
     model,
   },

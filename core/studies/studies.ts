@@ -306,37 +306,34 @@ const getNote = Effect.gen(function* (_) {
   return yield* getNoteContent(noteId);
 });
 
-const generateFromNoteMessage = Command.make(
-  'generate-from-note',
-  { model },
-  (args) =>
-    Effect.gen(function* (_) {
-      const fs = yield* FileSystem.FileSystem;
-      const startTime = Date.now();
+const generateFromNoteMessage = Command.make('from-note', { model }, (args) =>
+  Effect.gen(function* (_) {
+    const fs = yield* FileSystem.FileSystem;
+    const startTime = Date.now();
 
-      const note = yield* getNote;
+    const note = yield* getNote;
 
-      const { filename, study } = yield* generate(note).pipe(
-        Effect.provideService(Model, args.model),
-      );
+    const { filename, study } = yield* generate(note).pipe(
+      Effect.provideService(Model, args.model),
+    );
 
-      const studiesDir = path.join(process.cwd(), 'outputs', 'studies');
+    const studiesDir = path.join(process.cwd(), 'outputs', 'studies');
 
-      const fileName = `${format(new Date(), 'yyyy-MM-dd')}-${filename}.md`;
-      const filePath = path.join(studiesDir, fileName);
+    const fileName = `${format(new Date(), 'yyyy-MM-dd')}-${filename}.md`;
+    const filePath = path.join(studiesDir, fileName);
 
-      yield* spin(
-        'Writing study to file: ' + fileName,
-        fs.writeFile(filePath, new TextEncoder().encode(study)),
-      );
+    yield* spin(
+      'Writing study to file: ' + fileName,
+      fs.writeFile(filePath, new TextEncoder().encode(study)),
+    );
 
-      yield* spin('Adding message to notes', makeAppleNoteFromMarkdown(study));
+    yield* spin('Adding message to notes', makeAppleNoteFromMarkdown(study));
 
-      const totalTime = msToMinutes(Date.now() - startTime);
-      yield* log.success(
-        `Study generated successfully! (Total time: ${totalTime})`,
-      );
-    }),
+    const totalTime = msToMinutes(Date.now() - startTime);
+    yield* log.success(
+      `Study generated successfully! (Total time: ${totalTime})`,
+    );
+  }),
 );
 
 export const studies = Command.make('studies', {}, () =>
