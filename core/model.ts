@@ -69,10 +69,10 @@ const extractModel = Effect.fn('extractModel')(
             return {
               models: {
                 high: createAnthropic({ apiKey: anthropicKey })(
-                  'claude-4-sonnet-20250514',
+                  'claude-sonnet-4-5',
                 ),
                 low: createAnthropic({ apiKey: anthropicKey })(
-                  'claude-3-5-haiku-20241022',
+                  'claude-3-5-haiku-latest',
                 ),
               },
               provider: Provider.Anthropic,
