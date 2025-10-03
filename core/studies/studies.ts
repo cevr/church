@@ -241,7 +241,9 @@ const reviseMessage = Command.make('revise', { model }, (args) =>
     const studiesDir = path.join(process.cwd(), 'outputs', 'studies');
     const files = yield* fs.readDirectory(studiesDir);
 
-    const filePaths = files.map((file) => path.join(studiesDir, file));
+    const filePaths = files
+      .map((file) => path.join(studiesDir, file))
+      .sort((a, b) => a.localeCompare(b));
 
     const filePath = yield* Effect.tryPromise({
       try: () =>

@@ -241,7 +241,10 @@ const reviseMessage = Command.make('revise', { model }, (args) =>
     const messagesDir = path.join(process.cwd(), 'outputs', 'messages');
     const files = yield* fs.readDirectory(messagesDir);
 
-    const filePaths = files.map((file) => path.join(messagesDir, file));
+    const filePaths = files
+      .map((file) => path.join(messagesDir, file))
+      // most are named with the date (YYYY-MM-DD), so sort descending
+      .sort((a, b) => b.localeCompare(a));
 
     const filePath = yield* Effect.tryPromise({
       try: () =>
