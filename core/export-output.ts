@@ -1,16 +1,11 @@
 import path from 'node:path';
 
-import { isCancel, multiselect, select } from '@clack/prompts';
 import { Command } from '@effect/cli';
+import { multiSelect, select } from '@effect/cli/Prompt';
 import { FileSystem } from '@effect/platform';
-import type { PlatformError } from '@effect/platform/Error';
-import { Data, Effect } from 'effect';
+import { Effect } from 'effect';
 
 import { makeAppleNoteFromMarkdown } from '~/lib/markdown-to-notes';
-
-class ArgsError extends Data.TaggedError('ArgsError')<{
-  message: string;
-}> {}
 
 const selectDirectory = Effect.fn('selectDirectory')(function* (
   filepath: string,
@@ -20,14 +15,14 @@ const selectDirectory = Effect.fn('selectDirectory')(function* (
   const paths = files
     .map((file) => path.join(filepath, file))
     .sort((a, b) => a.localeCompare(b));
-  const options = yield* Effect.forEach(
+  const choices = yield* Effect.forEach(
     paths,
     (filePath) =>
       Effect.gen(function* () {
         const stat = yield* fileSystem.stat(filePath);
         const isDirectory = stat.type === 'Directory';
         return {
-          label: `${path.basename(filePath)} (${
+          title: `${path.basename(filePath)} (${
             isDirectory ? 'directory' : 'file'
           })`,
           value: filePath,
@@ -37,57 +32,39 @@ const selectDirectory = Effect.fn('selectDirectory')(function* (
       concurrency: 'unbounded',
     },
   );
-  const selectedPath = yield* Effect.tryPromise({
-    try: () =>
-      select({
-        message: 'Select a file',
-        options,
-        maxItems: 10,
-      }),
-    catch: () => new ArgsError({ message: 'No file selected' }),
+  const selectedPath = yield* select({
+    message: 'Select a file',
+    choices,
+    maxPerPage: 10,
   });
-  if (isCancel(selectedPath)) {
-    return yield* Effect.dieMessage('No file selected');
-  }
   return selectedPath;
 });
 
-const chooseFiles = (
-  filepath: string,
-): Effect.Effect<string[], ArgsError | PlatformError, FileSystem.FileSystem> =>
-  Effect.gen(function* () {
-    const fileSystem = yield* FileSystem.FileSystem;
-    const stat = yield* fileSystem.stat(filepath);
-    const isDirectory = stat.type === 'Directory';
+const chooseFiles = Effect.fn('chooseFiles')(function* (filepath: string) {
+  const fileSystem = yield* FileSystem.FileSystem;
+  const stat = yield* fileSystem.stat(filepath);
+  const isDirectory = stat.type === 'Directory';
 
-    if (!isDirectory) {
-      return yield* Effect.dieMessage('Not a directory');
-    }
+  if (!isDirectory) {
+    return yield* Effect.dieMessage('Not a directory');
+  }
 
-    const files = yield* fileSystem.readDirectory(filepath);
-    const paths = files
-      .map((file) => path.join(filepath, file))
-      .sort((a, b) => a.localeCompare(b))
-      .filter((path) => path.endsWith('.md'));
+  const files = yield* fileSystem.readDirectory(filepath);
+  const paths = files
+    .map((file) => path.join(filepath, file))
+    .sort((a, b) => b.localeCompare(a))
+    .filter((path) => path.endsWith('.md'));
 
-    const selectedFiles = yield* Effect.tryPromise({
-      try: () =>
-        multiselect({
-          message: 'Select files',
-          options: paths.map((p) => ({
-            label: path.basename(p),
-            value: p,
-          })),
-        }),
-      catch: () => new ArgsError({ message: 'No file selected' }),
-    });
-
-    if (isCancel(selectedFiles)) {
-      return yield* Effect.dieMessage('No file selected');
-    }
-
-    return selectedFiles;
+  const selectedFiles = yield* multiSelect({
+    message: 'Select files',
+    choices: paths.map((p) => ({
+      title: path.basename(p),
+      value: p,
+    })),
   });
+
+  return selectedFiles;
+});
 
 export const exportOutput = Command.make('export-output', {}, () =>
   Effect.gen(function* () {
