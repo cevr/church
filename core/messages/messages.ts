@@ -1,8 +1,6 @@
-import * as path from 'path';
-
 import { Args, Command } from '@effect/cli';
 import { confirm, select, text } from '@effect/cli/Prompt';
-import { FileSystem } from '@effect/platform';
+import { FileSystem, Path } from '@effect/platform';
 import { generateText } from 'ai';
 import { format } from 'date-fns';
 import { Data, Effect, Option, Schedule } from 'effect';
@@ -12,7 +10,7 @@ import { getNoteContent, listNotes } from '~/prelude/notes-utils';
 
 import { msToMinutes, spin } from '../../prelude/general';
 import { Model, model } from '../model';
-import { userRevisePrompt } from './prompts/prompts';
+import { userRevisePrompt } from './prompts/revise';
 
 class OutlineError extends Data.TaggedError('OutlineError')<{
   cause: unknown;
@@ -29,6 +27,7 @@ class FilenameError extends Data.TaggedError('FilenameError')<{
 export const generate = Effect.fn('generate')(function* (topic: string) {
   const models = yield* Model;
   const fs = yield* FileSystem.FileSystem;
+  const path = yield* Path.Path;
 
   const systemMessagePrompt = yield* fs
     .readFile(
@@ -97,6 +96,7 @@ export const generate = Effect.fn('generate')(function* (topic: string) {
 const revise = Effect.fn('revise')(function* (prompt: string, message: string) {
   const models = yield* Model;
   const fs = yield* FileSystem.FileSystem;
+  const path = yield* Path.Path;
 
   let revision: string | undefined;
 
@@ -157,6 +157,7 @@ const topic = Args.text({
 const generateMessage = Command.make('generate', { topic, model }, (args) =>
   Effect.gen(function* (_) {
     const startTime = Date.now();
+    const path = yield* Path.Path;
 
     const topic = yield* Option.match(args.topic, {
       onSome: (topic) => Effect.succeed(topic),
@@ -201,6 +202,7 @@ const generateMessage = Command.make('generate', { topic, model }, (args) =>
 const reviseMessage = Command.make('revise', { model }, (args) =>
   Effect.gen(function* (_) {
     const fs = yield* FileSystem.FileSystem;
+    const path = yield* Path.Path;
 
     const messagesDir = path.join(process.cwd(), 'outputs', 'messages');
     const files = yield* fs.readDirectory(messagesDir);
@@ -261,6 +263,7 @@ const generateFromNoteMessage = Command.make(
   (args) =>
     Effect.gen(function* (_) {
       const fs = yield* FileSystem.FileSystem;
+      const path = yield* Path.Path;
       const startTime = Date.now();
       const note = yield* getNote;
 

@@ -1,8 +1,6 @@
-import * as path from 'path';
-
 import { Args, Command } from '@effect/cli';
 import { confirm, select, text } from '@effect/cli/Prompt';
-import { FileSystem } from '@effect/platform';
+import { FileSystem, Path } from '@effect/platform';
 import { generateText } from 'ai';
 import { format } from 'date-fns';
 import { Data, Effect, Option, Schedule } from 'effect';
@@ -29,6 +27,7 @@ class FilenameError extends Data.TaggedError('FilenameError')<{
 export const generate = Effect.fn('generate')(function* (topic: string) {
   const models = yield* Model;
   const fs = yield* FileSystem.FileSystem;
+  const path = yield* Path.Path;
 
   const systemMessagePrompt = yield* fs
     .readFile(
@@ -97,6 +96,7 @@ export const generate = Effect.fn('generate')(function* (topic: string) {
 const revise = Effect.fn('revise')(function* (prompt: string, study: string) {
   const models = yield* Model;
   const fs = yield* FileSystem.FileSystem;
+  const path = yield* Path.Path;
 
   let revision: string | undefined;
 
@@ -156,6 +156,7 @@ const topic = Args.text({
 
 const generateStudy = Command.make('generate', { topic, model }, (args) =>
   Effect.gen(function* (_) {
+    const path = yield* Path.Path;
     const startTime = Date.now();
 
     const topic = yield* Option.match(args.topic, {
@@ -201,6 +202,7 @@ const generateStudy = Command.make('generate', { topic, model }, (args) =>
 const reviseMessage = Command.make('revise', { model }, (args) =>
   Effect.gen(function* (_) {
     const fs = yield* FileSystem.FileSystem;
+    const path = yield* Path.Path;
 
     const studiesDir = path.join(process.cwd(), 'outputs', 'studies');
     const files = yield* fs.readDirectory(studiesDir);
@@ -251,6 +253,8 @@ const getNote = Effect.gen(function* (_) {
 const generateFromNoteMessage = Command.make('from-note', { model }, (args) =>
   Effect.gen(function* (_) {
     const fs = yield* FileSystem.FileSystem;
+    const path = yield* Path.Path;
+
     const startTime = Date.now();
 
     const note = yield* getNote;

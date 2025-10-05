@@ -1,14 +1,12 @@
-import * as path from 'path';
-
 import { Command, Options } from '@effect/cli';
-import { FileSystem } from '@effect/platform';
+import { FileSystem, Path } from '@effect/platform';
 import { generateObject, generateText } from 'ai';
 import * as cheerio from 'cheerio';
 import { Array, Data, Effect, Option, Schema, Stream } from 'effect';
 import { z } from 'zod';
 
-import { makeAppleNoteFromMarkdown } from '../../prelude/markdown-to-notes';
 import { msToMinutes } from '../../prelude/general';
+import { makeAppleNoteFromMarkdown } from '../../prelude/markdown-to-notes';
 import { Model, model } from '../model';
 import {
   outlineSystemPrompt,
@@ -80,8 +78,6 @@ const week = Options.integer('week').pipe(
   ),
   Options.optional,
 );
-
-const outputDir = path.join(process.cwd(), 'outputs', 'sabbath-school');
 
 interface WeekFiles {
   lessonPdf: string;
@@ -186,9 +182,15 @@ const downloadFile = Effect.fn('downloadFile')(function* (url: string) {
   });
 });
 
-const getFilePath = (year: number, quarter: number, week: number) => {
+const getFilePath = Effect.fn('getFilePath')(function* (
+  year: number,
+  quarter: number,
+  week: number,
+) {
+  const path = yield* Path.Path;
+  const outputDir = path.join(process.cwd(), 'outputs', 'sabbath-school');
   return path.join(outputDir, `${year}-Q${quarter}-W${week}.md`);
-};
+});
 
 const reviseOutline = Effect.fn('reviseOutline')(function* (
   context: SabbathSchoolContext,
@@ -339,7 +341,7 @@ const processQuarter = Command.make(
         weeks,
         (weekNumber) =>
           Effect.gen(function* () {
-            const outlinePath = getFilePath(year, quarter, weekNumber);
+            const outlinePath = yield* getFilePath(year, quarter, weekNumber);
             const exists = yield* fs.exists(outlinePath);
             return !exists;
           }),
@@ -398,7 +400,7 @@ const processQuarter = Command.make(
                 `Writing outline to disk and exporting to Apple Notes...`,
               );
               yield* fs.writeFile(
-                getFilePath(year, quarter, urls.weekNumber),
+                yield* getFilePath(year, quarter, urls.weekNumber),
                 new TextEncoder().encode(outline),
               );
               yield* Effect.log(`Outline written to disk`);
@@ -442,7 +444,7 @@ const reviseQuarter = Command.make(
 
       const weeksToRevise = yield* Effect.filter(weeks, (weekNumber) =>
         Effect.gen(function* () {
-          const outlinePath = getFilePath(year, quarter, weekNumber);
+          const outlinePath = yield* getFilePath(year, quarter, weekNumber);
           const exists = yield* fs.exists(outlinePath);
           return exists;
         }),
@@ -457,7 +459,7 @@ const reviseQuarter = Command.make(
         weeksToRevise,
         (weekNumber, index) =>
           Effect.gen(function* () {
-            const outlinePath = getFilePath(year, quarter, weekNumber);
+            const outlinePath = yield* getFilePath(year, quarter, weekNumber);
             const outline = yield* fs.readFile(outlinePath);
             const outlineText = new TextDecoder().decode(outline);
             const revisedOutline = yield* reviseOutline(
@@ -514,7 +516,7 @@ const exportQuarter = Command.make(
 
       const weeksToExport = yield* Effect.filter(weeks, (weekNumber) =>
         Effect.gen(function* () {
-          const outlinePath = getFilePath(year, quarter, weekNumber);
+          const outlinePath = yield* getFilePath(year, quarter, weekNumber);
           const exists = yield* fs.exists(outlinePath);
           return exists;
         }),
@@ -527,7 +529,7 @@ const exportQuarter = Command.make(
 
       yield* Effect.forEach(weeksToExport, (weekNumber, index) =>
         Effect.gen(function* () {
-          const outlinePath = getFilePath(year, quarter, weekNumber);
+          const outlinePath = yield* getFilePath(year, quarter, weekNumber);
           const outline = yield* fs.readFile(outlinePath);
           const outlineText = new TextDecoder().decode(outline);
           yield* Effect.log(`Exporting outline to Apple Notes...`);

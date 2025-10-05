@@ -1,8 +1,6 @@
-import path from 'node:path';
-
 import { Command } from '@effect/cli';
 import { multiSelect, select } from '@effect/cli/Prompt';
-import { FileSystem } from '@effect/platform';
+import { FileSystem, Path } from '@effect/platform';
 import { Effect } from 'effect';
 
 import { makeAppleNoteFromMarkdown } from '~/prelude/markdown-to-notes';
@@ -11,6 +9,7 @@ const selectDirectory = Effect.fn('selectDirectory')(function* (
   filepath: string,
 ) {
   const fileSystem = yield* FileSystem.FileSystem;
+  const path = yield* Path.Path;
   const files = yield* fileSystem.readDirectory(filepath);
   const paths = files
     .map((file) => path.join(filepath, file))
@@ -42,6 +41,7 @@ const selectDirectory = Effect.fn('selectDirectory')(function* (
 
 const chooseFiles = Effect.fn('chooseFiles')(function* (filepath: string) {
   const fileSystem = yield* FileSystem.FileSystem;
+  const path = yield* Path.Path;
   const stat = yield* fileSystem.stat(filepath);
   const isDirectory = stat.type === 'Directory';
 
@@ -69,7 +69,7 @@ const chooseFiles = Effect.fn('chooseFiles')(function* (filepath: string) {
 export const exportOutput = Command.make('export-output', {}, () =>
   Effect.gen(function* () {
     const fileSystem = yield* FileSystem.FileSystem;
-
+    const path = yield* Path.Path;
     const selectedDirectory = yield* selectDirectory(
       path.join(process.cwd(), 'outputs'),
     );

@@ -2,7 +2,7 @@ import { spinner } from '@clack/prompts';
 import { Effect, Option } from 'effect';
 import { matchSorter } from 'match-sorter';
 
-export const spin = Effect.fn('lib/spin')(function* <V, E, R>(
+export const spin = Effect.fn('prelude/spin')(function* <V, E, R>(
   message: string,
   job: Effect.Effect<V, E, R>,
 ) {
