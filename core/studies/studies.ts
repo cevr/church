@@ -8,16 +8,11 @@ import { format } from 'date-fns';
 import { Data, Effect, Option, Schedule } from 'effect';
 import { makeAppleNoteFromMarkdown } from 'lib/markdown-to-notes';
 
-import { log } from '~/lib/log';
 import { getNoteContent, listNotes } from '~/lib/notes-utils';
 
 import { msToMinutes, spin } from '../lib';
 import { Model, model } from '../model';
 import { userRevisePrompt } from './prompts/revise';
-
-class PromptError extends Data.TaggedError('PromptError')<{
-  cause: unknown;
-}> {}
 
 class OutlineError extends Data.TaggedError('OutlineError')<{
   cause: unknown;
@@ -105,7 +100,7 @@ const revise = Effect.fn('revise')(function* (prompt: string, study: string) {
 
   let revision: string | undefined;
 
-  yield* log.info('study: \n\n' + study);
+  yield* Effect.log('study: \n\n' + study);
   while (true) {
     let shouldRevise = yield* confirm({
       message: 'Should the study be revised?',
@@ -150,7 +145,7 @@ const revise = Effect.fn('revise')(function* (prompt: string, study: string) {
       }),
     );
 
-    yield* log.info(`reviseResponse: ${reviseResponse.text}`);
+    yield* Effect.log(`reviseResponse: ${reviseResponse.text}`);
     revision = reviseResponse.text;
   }
 });
@@ -171,7 +166,7 @@ const generateStudy = Command.make('generate', { topic, model }, (args) =>
         }),
     });
 
-    yield* log.info(`topic: ${topic}`);
+    yield* Effect.log(`topic: ${topic}`);
 
     const { filename, study } = yield* generate(topic).pipe(
       Effect.provideService(Model, args.model),
@@ -197,7 +192,7 @@ const generateStudy = Command.make('generate', { topic, model }, (args) =>
     yield* spin('Adding study to notes', makeAppleNoteFromMarkdown(study));
 
     const totalTime = msToMinutes(Date.now() - startTime);
-    yield* log.success(
+    yield* Effect.log(
       `Study generated successfully! (Total time: ${totalTime})`,
     );
   }),
@@ -277,7 +272,7 @@ const generateFromNoteMessage = Command.make('from-note', { model }, (args) =>
     yield* spin('Adding message to notes', makeAppleNoteFromMarkdown(study));
 
     const totalTime = msToMinutes(Date.now() - startTime);
-    yield* log.success(
+    yield* Effect.log(
       `Study generated successfully! (Total time: ${totalTime})`,
     );
   }),
@@ -285,7 +280,6 @@ const generateFromNoteMessage = Command.make('from-note', { model }, (args) =>
 
 export const studies = Command.make('studies').pipe(
   Command.withSubcommands([
-    //
     generateStudy,
     reviseMessage,
     generateFromNoteMessage,

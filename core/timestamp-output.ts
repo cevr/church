@@ -7,8 +7,6 @@ import { Effect } from 'effect';
 
 import { spin } from '~/core/lib';
 
-import { log } from './log';
-
 const chooseDirectory = Effect.fn('chooseDirectory')(function* (
   baseDir: string,
 ) {
@@ -67,7 +65,7 @@ const command = Command.make('timestamp-output', {}, () =>
         const yearRegex = /^(\d{4}-\d{2}-\d{2})-/;
 
         if (yearRegex.test(baseName)) {
-          yield* log.info(`${baseName} already has a timestamp`);
+          yield* Effect.log(`${baseName} already has a timestamp`);
           return;
         }
 

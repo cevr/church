@@ -8,16 +8,11 @@ import { format } from 'date-fns';
 import { Data, Effect, Option, Schedule } from 'effect';
 import { makeAppleNoteFromMarkdown } from 'lib/markdown-to-notes';
 
-import { log } from '~/lib/log';
 import { getNoteContent, listNotes } from '~/lib/notes-utils';
 
 import { msToMinutes, spin } from '../lib';
 import { Model, model } from '../model';
 import { userRevisePrompt } from './prompts/prompts';
-
-class PromptError extends Data.TaggedError('PromptError')<{
-  cause: unknown;
-}> {}
 
 class OutlineError extends Data.TaggedError('OutlineError')<{
   cause: unknown;
@@ -105,7 +100,7 @@ const revise = Effect.fn('revise')(function* (prompt: string, message: string) {
 
   let revision: string | undefined;
 
-  yield* log.info('message: \n\n' + message);
+  yield* Effect.log('message: \n\n' + message);
   while (true) {
     let shouldRevise = yield* confirm({
       message: 'Should the message be revised?',
@@ -150,7 +145,7 @@ const revise = Effect.fn('revise')(function* (prompt: string, message: string) {
       }),
     );
 
-    yield* log.info(`reviseResponse: ${reviseResponse.text}`);
+    yield* Effect.log(`reviseResponse: ${reviseResponse.text}`);
     revision = reviseResponse.text;
   }
 });
@@ -171,7 +166,7 @@ const generateMessage = Command.make('generate', { topic, model }, (args) =>
         }),
     });
 
-    yield* log.info(`topic: ${topic}`);
+    yield* Effect.log(`topic: ${topic}`);
 
     const { filename, message } = yield* generate(topic).pipe(
       Effect.provideService(Model, args.model),
@@ -197,7 +192,7 @@ const generateMessage = Command.make('generate', { topic, model }, (args) =>
     yield* spin('Adding message to notes', makeAppleNoteFromMarkdown(message));
 
     const totalTime = msToMinutes(Date.now() - startTime);
-    yield* log.success(
+    yield* Effect.log(
       `Message generated successfully! (Total time: ${totalTime})`,
     );
   }),
@@ -232,7 +227,7 @@ const reviseMessage = Command.make('revise', { model }, (args) =>
     ).pipe(Effect.provideService(Model, args.model));
 
     if (Option.isNone(revisedMessage)) {
-      yield* log.error('No message to revise.');
+      yield* Effect.logError('No message to revise.');
       return;
     }
 
@@ -289,7 +284,7 @@ const generateFromNoteMessage = Command.make(
       );
 
       const totalTime = msToMinutes(Date.now() - startTime);
-      yield* log.success(
+      yield* Effect.log(
         `Message generated successfully! (Total time: ${totalTime})`,
       );
     }),
