@@ -83,8 +83,10 @@ scriptures, _interleaved with the supporting elements below_.
 1.  **Title**: Clear, compelling title communicating the core message.
 2.  **Topic Tags**: 4-6 searchable category tags with # symbol (e.g., #grace
     #salvation #restoration #education #lastdays).
-3.  **Opening Hymn**: Include hymn number and first verse of lyrics.
-4.  **Closing Hymn**: Include hymn number and first verse of lyrics.
+3.  **Opening Hymn**: Include _SDA Hymnal_ hymn number and first verse of
+    lyrics.
+4.  **Closing Hymn**: Include _SDA Hymnal_ hymn number and first verse of
+    lyrics.
 5.  **Central Bible Verse**: Key scripture encapsulating the main theme.
 6.  **Key Supporting Verses**: List 3-5 _additional_ key verses or short
     passages that form the core biblical foundation for the study's flow.
