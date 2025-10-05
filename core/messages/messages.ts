@@ -1,7 +1,7 @@
 import * as path from 'path';
 
-import { confirm, isCancel, select, text } from '@clack/prompts';
 import { Args, Command } from '@effect/cli';
+import { confirm, select, text } from '@effect/cli/Prompt';
 import { FileSystem } from '@effect/platform';
 import { generateText } from 'ai';
 import { format } from 'date-fns';
@@ -107,36 +107,18 @@ const revise = Effect.fn('revise')(function* (prompt: string, message: string) {
 
   yield* log.info('message: \n\n' + message);
   while (true) {
-    let shouldRevise = yield* Effect.tryPromise({
-      try: () =>
-        confirm({
-          message: 'Should the message be revised?',
-          initialValue: false,
-        }),
-      catch: (cause: unknown) =>
-        new PromptError({
-          cause,
-        }),
+    let shouldRevise = yield* confirm({
+      message: 'Should the message be revised?',
+      initial: false,
     });
 
-    if (isCancel(shouldRevise) || !shouldRevise) {
+    if (!shouldRevise) {
       return Option.fromNullable(revision);
     }
 
-    const revisions = yield* Effect.tryPromise({
-      try: () =>
-        text({
-          message: 'What are the revisions to be made?',
-        }),
-      catch: (cause: unknown) =>
-        new PromptError({
-          cause,
-        }),
+    const revisions = yield* text({
+      message: 'What are the revisions to be made?',
     });
-
-    if (isCancel(revisions)) {
-      return Option.fromNullable(revision);
-    }
 
     const systemPrompt = yield* fs
       .readFile(
@@ -184,23 +166,10 @@ const generateMessage = Command.make('generate', { topic, model }, (args) =>
     const topic = yield* Option.match(args.topic, {
       onSome: (topic) => Effect.succeed(topic),
       onNone: () =>
-        Effect.tryPromise({
-          try: () =>
-            text({
-              message: 'What would you like the message to be about?',
-              placeholder: 'e.g., The Power of Prayer',
-            }),
-          catch: (cause: unknown) =>
-            new PromptError({
-              cause,
-            }),
+        text({
+          message: 'What would you like the message to be about?',
         }),
     });
-
-    if (isCancel(topic)) {
-      yield* Effect.dieMessage('Operation cancelled.');
-      return;
-    }
 
     yield* log.info(`topic: ${topic}`);
 
@@ -246,26 +215,14 @@ const reviseMessage = Command.make('revise', { model }, (args) =>
       // most are named with the date (YYYY-MM-DD), so sort descending
       .sort((a, b) => b.localeCompare(a));
 
-    const filePath = yield* Effect.tryPromise({
-      try: () =>
-        select({
-          message: 'Which message would you like to revise?',
-          options: filePaths.map((filePath) => ({
-            label: path.basename(filePath),
-            value: filePath,
-          })),
-          maxItems: 5,
-        }),
-      catch: (cause: unknown) =>
-        new PromptError({
-          cause,
-        }),
+    const filePath = yield* select({
+      message: 'Which message would you like to revise?',
+      choices: filePaths.map((filePath) => ({
+        title: path.basename(filePath),
+        value: filePath,
+      })),
+      maxPerPage: 5,
     });
-
-    if (isCancel(filePath)) {
-      yield* Effect.dieMessage('Operation cancelled.');
-      return;
-    }
 
     const message = yield* fs.readFile(filePath);
 
@@ -289,25 +246,14 @@ const reviseMessage = Command.make('revise', { model }, (args) =>
 const getNote = Effect.gen(function* (_) {
   const notes = yield* listNotes();
 
-  const noteId = yield* Effect.tryPromise({
-    try: () =>
-      select({
-        message: 'Which note would you like to generate a message from?',
-        options: notes.map((note) => ({
-          label: note.name,
-          value: note.id,
-        })),
-        maxItems: 5,
-      }),
-    catch: (cause: unknown) =>
-      new PromptError({
-        cause,
-      }),
+  const noteId = yield* select({
+    message: 'Which note would you like to generate a message from?',
+    choices: notes.map((note) => ({
+      title: note.name,
+      value: note.id,
+    })),
+    maxPerPage: 5,
   });
-
-  if (isCancel(noteId)) {
-    return yield* Effect.dieMessage('Operation cancelled.');
-  }
 
   return yield* getNoteContent(noteId);
 });

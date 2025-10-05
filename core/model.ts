@@ -3,10 +3,11 @@ import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { createGroq } from '@ai-sdk/groq';
 import { createOpenAI } from '@ai-sdk/openai';
 import { Options, ValidationError } from '@effect/cli';
+import { select } from '@effect/cli/Prompt';
 import { type LanguageModel } from 'ai';
 import { Context, Effect, Match, Option, Schema } from 'effect';
 
-import { matchEnum, select } from './lib';
+import { matchEnum } from './lib';
 
 export enum Provider {
   Gemini = 'gemini',
@@ -131,11 +132,11 @@ const extractModel = Effect.fn('extractModel')(
 
     return yield* Option.match(model, {
       onNone: () =>
-        select(
-          'Select a model',
-          models.map((model) => ({
+        select({
+          message: 'Select a model',
+          choices: models.map((model) => ({
             value: model.models,
-            label: Match.value(model.provider).pipe(
+            title: Match.value(model.provider).pipe(
               Match.when(Provider.Gemini, () => 'Gemini'),
               Match.when(Provider.OpenAI, () => 'OpenAI'),
               Match.when(Provider.Anthropic, () => 'Anthropic'),
@@ -143,7 +144,7 @@ const extractModel = Effect.fn('extractModel')(
               Match.exhaustive,
             ),
           })),
-        ),
+        }),
       onSome: Effect.succeed,
     });
   },
