@@ -7,8 +7,8 @@ import * as cheerio from 'cheerio';
 import { Array, Data, Effect, Option, Schema, Stream } from 'effect';
 import { z } from 'zod';
 
-import { makeAppleNoteFromMarkdown } from '../../lib/markdown-to-notes';
-import { msToMinutes } from '../lib';
+import { makeAppleNoteFromMarkdown } from '../../prelude/markdown-to-notes';
+import { msToMinutes } from '../../prelude/general';
 import { Model, model } from '../model';
 import {
   outlineSystemPrompt,

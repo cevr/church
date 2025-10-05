@@ -6,11 +6,11 @@ import { FileSystem } from '@effect/platform';
 import { generateText } from 'ai';
 import { format } from 'date-fns';
 import { Data, Effect, Option, Schedule } from 'effect';
-import { makeAppleNoteFromMarkdown } from 'lib/markdown-to-notes';
 
-import { getNoteContent, listNotes } from '~/lib/notes-utils';
+import { makeAppleNoteFromMarkdown } from '~/prelude/markdown-to-notes';
+import { getNoteContent, listNotes } from '~/prelude/notes-utils';
 
-import { msToMinutes, spin } from '../lib';
+import { msToMinutes, spin } from '../../prelude/general';
 import { Model, model } from '../model';
 import { userRevisePrompt } from './prompts/prompts';
 
