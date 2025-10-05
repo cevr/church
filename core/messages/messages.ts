@@ -295,7 +295,6 @@ const generateFromNoteMessage = Command.make(
 
 export const messages = Command.make('messages').pipe(
   Command.withSubcommands([
-    //
     generateMessage,
     reviseMessage,
     generateFromNoteMessage,
