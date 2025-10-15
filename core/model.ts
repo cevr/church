@@ -73,7 +73,7 @@ const extractModel = Effect.fn('extractModel')(
                   'claude-sonnet-4-5',
                 ),
                 low: createAnthropic({ apiKey: anthropicKey })(
-                  'claude-3-5-haiku-latest',
+                  'claude-haiku-4-5',
                 ),
               },
               provider: Provider.Anthropic,
