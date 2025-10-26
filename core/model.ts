@@ -7,7 +7,7 @@ import { select } from '@effect/cli/Prompt';
 import { type LanguageModel } from 'ai';
 import { Context, Effect, Match, Option, Schema } from 'effect';
 
-import { matchEnum } from '../prelude/general';
+import { matchEnum } from '../lib/general';
 
 export enum Provider {
   Gemini = 'gemini',

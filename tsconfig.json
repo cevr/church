@@ -35,5 +35,5 @@
       }
     ]
   },
-  "include": ["core/**/*.ts", "prelude/**/*.ts"]
+  "include": ["core/**/*.ts", "lib/**/*.ts"]
 }

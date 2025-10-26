@@ -3,7 +3,7 @@ import { multiSelect, select } from '@effect/cli/Prompt';
 import { FileSystem, Path } from '@effect/platform';
 import { Effect } from 'effect';
 
-import { makeAppleNoteFromMarkdown } from '~/prelude/markdown-to-notes';
+import { makeAppleNoteFromMarkdown } from '~/lib/markdown-to-notes';
 
 const selectDirectory = Effect.fn('selectDirectory')(function* (
   filepath: string,

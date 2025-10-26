@@ -1,154 +1,16 @@
 import { Args, Command } from '@effect/cli';
-import { confirm, select, text } from '@effect/cli/Prompt';
+import { select, text } from '@effect/cli/Prompt';
 import { FileSystem, Path } from '@effect/platform';
-import { generateText } from 'ai';
 import { format } from 'date-fns';
-import { Data, Effect, Option, Schedule } from 'effect';
+import { Effect, Option } from 'effect';
 
-import { makeAppleNoteFromMarkdown } from '~/prelude/markdown-to-notes';
-import { getNoteContent, listNotes } from '~/prelude/notes-utils';
+import { generate } from '~/lib/generate';
+import { makeAppleNoteFromMarkdown } from '~/lib/markdown-to-notes';
+import { getNoteContent, listNotes } from '~/lib/notes-utils';
+import { revise } from '~/lib/revise';
 
-import { msToMinutes, spin } from '../../prelude/general';
+import { msToMinutes, spin } from '../../lib/general';
 import { Model, model } from '../model';
-import { userRevisePrompt } from './prompts/revise';
-
-class OutlineError extends Data.TaggedError('OutlineError')<{
-  cause: unknown;
-}> {}
-
-class ReviewError extends Data.TaggedError('ReviewError')<{
-  cause: unknown;
-}> {}
-
-class FilenameError extends Data.TaggedError('FilenameError')<{
-  cause: unknown;
-}> {}
-
-export const generate = Effect.fn('generate')(function* (topic: string) {
-  const models = yield* Model;
-  const fs = yield* FileSystem.FileSystem;
-  const path = yield* Path.Path;
-
-  const systemMessagePrompt = yield* fs
-    .readFile(
-      path.join(process.cwd(), 'core', 'studies', 'prompts', 'generate.md'),
-    )
-    .pipe(Effect.map((i) => new TextDecoder().decode(i)));
-
-  const response = yield* spin(
-    'Generating study outline',
-    Effect.tryPromise({
-      try: () =>
-        generateText({
-          model: models.high,
-          messages: [
-            {
-              role: 'system',
-              content: systemMessagePrompt,
-            },
-            {
-              role: 'user',
-              content: topic,
-            },
-          ],
-        }),
-      catch: (cause: unknown) =>
-        new OutlineError({
-          cause,
-        }),
-    }).pipe(
-      Effect.retry({
-        times: 3,
-        schedule: Schedule.spaced(500),
-      }),
-    ),
-  );
-
-  const study = response.text;
-
-  const filename = yield* Effect.tryPromise({
-    try: () =>
-      generateText({
-        model: models.low,
-        messages: [
-          {
-            role: 'system',
-            content:
-              'Generate a filename for the following SDA bible study. Kebab case. No extension. IMPORTANT: Only the filename, no other text. eg: christ-in-me-the-hope-of-glory',
-          },
-          { role: 'user', content: study },
-        ],
-      }),
-    catch: (cause: unknown) =>
-      new FilenameError({
-        cause,
-      }),
-  });
-
-  const revisedStudy = yield* revise(topic, study);
-
-  return {
-    filename: filename.text,
-    study: Option.getOrElse(revisedStudy, () => study),
-  };
-});
-
-const revise = Effect.fn('revise')(function* (prompt: string, study: string) {
-  const models = yield* Model;
-  const fs = yield* FileSystem.FileSystem;
-  const path = yield* Path.Path;
-
-  let revision: string | undefined;
-
-  yield* Effect.log('study: \n\n' + study);
-  while (true) {
-    let shouldRevise = yield* confirm({
-      message: 'Should the study be revised?',
-      initial: false,
-    });
-
-    if (!shouldRevise) {
-      return Option.fromNullable(revision);
-    }
-
-    const revisions = yield* text({
-      message: 'What are the revisions to be made?',
-    });
-
-    const systemPrompt = yield* fs
-      .readFile(
-        path.join(process.cwd(), 'core', 'studies', 'prompts', 'generate.md'),
-      )
-      .pipe(Effect.map((i) => new TextDecoder().decode(i)));
-
-    const reviseResponse = yield* spin(
-      'Revising study',
-      Effect.tryPromise({
-        try: () =>
-          generateText({
-            model: models.high,
-            messages: [
-              {
-                role: 'system',
-                content: systemPrompt,
-              },
-              {
-                role: 'user',
-                content: userRevisePrompt(prompt, study, revisions),
-              },
-            ],
-          }),
-        catch: (cause: unknown) =>
-          new ReviewError({
-            cause,
-          }),
-      }),
-    );
-
-    yield* Effect.log(`reviseResponse: ${reviseResponse.text}`);
-    revision = reviseResponse.text;
-  }
-});
 
 const topic = Args.text({
   name: 'topic',
@@ -156,6 +18,7 @@ const topic = Args.text({
 
 const generateStudy = Command.make('generate', { topic, model }, (args) =>
   Effect.gen(function* (_) {
+    const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
     const startTime = Date.now();
 
@@ -169,7 +32,13 @@ const generateStudy = Command.make('generate', { topic, model }, (args) =>
 
     yield* Effect.log(`topic: ${topic}`);
 
-    const { filename, study } = yield* generate(topic).pipe(
+    const systemPrompt = yield* fs
+      .readFile(
+        path.join(process.cwd(), 'core', 'studies', 'prompts', 'generate.md'),
+      )
+      .pipe(Effect.map((i) => new TextDecoder().decode(i)));
+
+    const { filename, response } = yield* generate(systemPrompt, topic).pipe(
       Effect.provideService(Model, args.model),
     );
 
@@ -178,8 +47,6 @@ const generateStudy = Command.make('generate', { topic, model }, (args) =>
     const fileName = `${format(new Date(), 'yyyy-MM-dd')}-${filename}.md`;
     const filePath = path.join(studiesDir, fileName);
 
-    const fs = yield* FileSystem.FileSystem;
-
     yield* spin(
       'Ensuring studies directory exists',
       fs.makeDirectory(studiesDir).pipe(Effect.ignore),
@@ -187,10 +54,10 @@ const generateStudy = Command.make('generate', { topic, model }, (args) =>
 
     yield* spin(
       'Writing study to file: ' + fileName,
-      fs.writeFile(filePath, new TextEncoder().encode(study)),
+      fs.writeFile(filePath, new TextEncoder().encode(response)),
     );
 
-    yield* spin('Adding study to notes', makeAppleNoteFromMarkdown(study));
+    yield* spin('Adding study to notes', makeAppleNoteFromMarkdown(response));
 
     const totalTime = msToMinutes(Date.now() - startTime);
     yield* Effect.log(
@@ -220,12 +87,25 @@ const reviseMessage = Command.make('revise', { model }, (args) =>
       maxPerPage: 5,
     });
 
-    const study = yield* fs.readFile(filePath);
+    const study = yield* fs
+      .readFile(filePath)
+      .pipe(Effect.map((i) => new TextDecoder().decode(i)));
 
-    const revisedStudy = yield* revise(
-      '',
-      new TextDecoder().decode(study),
-    ).pipe(Effect.provideService(Model, args.model));
+    const systemMessagePrompt = yield* fs
+      .readFile(
+        path.join(process.cwd(), 'core', 'studies', 'prompts', 'generate.md'),
+      )
+      .pipe(Effect.map((i) => new TextDecoder().decode(i)));
+
+    const revisedStudy = yield* revise({
+      cycles: [
+        {
+          prompt: '',
+          response: study,
+        },
+      ],
+      systemPrompt: systemMessagePrompt,
+    }).pipe(Effect.provideService(Model, args.model));
 
     if (Option.isNone(revisedStudy)) {
       return;
@@ -259,7 +139,13 @@ const generateFromNoteMessage = Command.make('from-note', { model }, (args) =>
 
     const note = yield* getNote;
 
-    const { filename, study } = yield* generate(note).pipe(
+    const systemPrompt = yield* fs
+      .readFile(
+        path.join(process.cwd(), 'core', 'studies', 'prompts', 'generate.md'),
+      )
+      .pipe(Effect.map((i) => new TextDecoder().decode(i)));
+
+    const { filename, response } = yield* generate(systemPrompt, note).pipe(
       Effect.provideService(Model, args.model),
     );
 
@@ -270,10 +156,10 @@ const generateFromNoteMessage = Command.make('from-note', { model }, (args) =>
 
     yield* spin(
       'Writing study to file: ' + fileName,
-      fs.writeFile(filePath, new TextEncoder().encode(study)),
+      fs.writeFile(filePath, new TextEncoder().encode(response)),
     );
 
-    yield* spin('Adding message to notes', makeAppleNoteFromMarkdown(study));
+    yield* spin('Adding message to notes', makeAppleNoteFromMarkdown(response));
 
     const totalTime = msToMinutes(Date.now() - startTime);
     yield* Effect.log(

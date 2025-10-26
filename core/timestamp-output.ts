@@ -5,7 +5,7 @@ import { BunContext, BunRuntime } from '@effect/platform-bun';
 import { format } from 'date-fns';
 import { Effect } from 'effect';
 
-import { spin } from '~/prelude/general';
+import { spin } from '~/lib/general';
 
 const chooseDirectory = Effect.fn('chooseDirectory')(function* (
   baseDir: string,
