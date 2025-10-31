@@ -3,6 +3,7 @@ import { Data, Effect, Option, Schedule } from 'effect';
 
 import { Model } from '~/core/model';
 
+import { doneChime } from './done-chime';
 import { spin } from './general';
 import { revise } from './revise';
 
@@ -71,6 +72,8 @@ export const generate = Effect.fn('generate')(function* (
         cause,
       }),
   });
+
+  yield* doneChime;
 
   const revisedResponse = yield* revise({
     cycles: [

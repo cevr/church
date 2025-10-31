@@ -14,7 +14,7 @@ structure, flow, key content points, and engagement prompts.
 **Required Notations:**
 
 - **Ellen G. White Quotes:**
-  `- [EGW]: 'Quote text...' (Reference, e.g., DA 451.1)`
+  `- [EGW]: 'Quote text...' (Reference, e.g., DA 301.1)`
 - **Whiteboard Prompts:** `- [WB]: Text/Diagram description (Linked Verse Ref)`
 - **Illustrations/Asides:**
   `- [Aside]: Brief illustrative text (2-3 sentences max).`
@@ -41,11 +41,11 @@ scriptures, _interleaved with the supporting elements below_.
 
 ## Time Management and Presentation Length
 
-- Design outlines for a 45-minute speaking timeframe.
+- Design outlines for a 30-minute speaking timeframe.
 - Prioritize conciseness and eliminate redundancy. Focus on key points derived
   from scripture.
 - Focus on total content length rather than strict section count; organize
-  content logically to fit within the 45-minute timeframe.
+  content logically to fit within the 30-minute timeframe.
 - Include a time allocation guide with minutes per section.
 - Prioritize depth over breadth on selected key points derived directly from the
   studied texts.
@@ -54,10 +54,10 @@ scriptures, _interleaved with the supporting elements below_.
 - Example time breakdown (adjust section count as needed):
   ```
   Example time breakdown:
-  - Introduction (5 min)
-  - Main Content Section 1 (10 min) - Biblical Foundation (Key Texts & Helpers)
-  - Main Content Section 2 (12 min) - Theological Unpacking & Verse Exploration [*] (with Helpers, emphasizing restoration/education themes where applicable)
-  - Main Content Section 3 (12 min) - Practical Application from Verses (Character Building/Unlearning/Learning, with Helpers)
+  - Introduction (6 min)
+  - Main Content Section 1 (6 min) - Biblical Foundation (Key Texts & Helpers)
+  - Main Content Section 2 (6 min) - Theological Unpacking & Verse Exploration [*] (with Helpers, emphasizing restoration/education themes where applicable)
+  - Main Content Section 3 (6 min) - Practical Application from Verses (Character Building/Unlearning/Learning, with Helpers)
   - Conclusion and Appeal (6 min)
   *Sections marked with [*] can be condensed if time is limited
   ```
@@ -83,13 +83,13 @@ scriptures, _interleaved with the supporting elements below_.
 1.  **Title**: Clear, compelling title communicating the core message.
 2.  **Topic Tags**: 4-6 searchable category tags with # symbol (e.g., #grace
     #salvation #restoration #education #lastdays).
-3.  **Opening Hymn**: Include _SDA Hymnal_ hymn number and first verse of
-    lyrics.
-4.  **Closing Hymn**: Include _SDA Hymnal_ hymn number and first verse of
-    lyrics.
-5.  **Central Bible Verse**: Key scripture encapsulating the main theme.
+3.  **Opening Hymns**: Include 3 _SDA Hymnal_ hymn numbers and titles.
+4.  **Closing Hymn**: Include 3 _SDA Hymnal_ hymn numbers and titles.
+5.  **Central Bible Verse**: Key scripture encapsulating the main theme (one for
+    each section).
 6.  **Key Supporting Verses**: List 3-5 _additional_ key verses or short
-    passages that form the core biblical foundation for the study's flow.
+    passages that form the core biblical foundation for the study's flow (one
+    for each section).
 
 **Example:**
 
@@ -98,9 +98,9 @@ scriptures, _interleaved with the supporting elements below_.
 
 **Tags:** #restoration #education #character #salvation #lastdays #SDA
 
-**Opening Hymn:** #300 "Rock of Ages, Cleft for Me" "Rock of Ages, cleft for me, Let me hide myself in Thee..."
+**Opening Hymns:** #300, #301, #302
 
-**Closing Hymn:** #602 "O Brother, Be Faithful" "O brother, be faithful! Soon Jesus will come..."
+**Closing Hymns:** #600, #601, #602
 
 **Central Bible Verse:** 2 Corinthians 3:18 - "But we all, with open face beholding as in a glass the glory of the Lord, are changed into the same image from glory to glory, even as by the Spirit of the Lord."
 
@@ -119,7 +119,9 @@ scriptures, _interleaved with the supporting elements below_.
 
 - Anchor _every major point and sub-point_ firmly in _specific, relevant_
   scripture references (include citation directly with the point). **The goal is
-  a verse-rich outline.**
+  a verse-rich outline.** Ensure each verse is fully referenced eg. "Romans 12:2
+  Be not conformed to this world, but be transformed by the renewing of your
+  mind..." and not just "Romans 12:2".
 - Use the _sequence of Key Supporting Verses_ (along with the Central Verse and
   others as needed) as the primary skeletal structure, guiding the flow of the
   study.
@@ -141,7 +143,8 @@ scriptures, _interleaved with the supporting elements below_.
   - `[Aside]:` illustrations to bridge the biblical truth to relatable
     experience (Include 1-2 total per outline).
   - **`[EB]:` Extra Bible points for optional deeper dives on related topics
-    (Include 3-5 total per outline, distributed appropriately).**
+    (Include 3-5 total per outline, distributed appropriately). Ensure each
+    verse has one short sentence or phrase to support the point.**
 - Present biblical texts in their proper historical and literary context.
 
 ### Theological Flow & Character Development

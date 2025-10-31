@@ -5,6 +5,7 @@ import type { NonEmptyArray } from 'effect/Array';
 
 import { Model } from '~/core/model';
 
+import { doneChime } from './done-chime';
 import { spin } from './general';
 
 class ReviewError extends Data.TaggedError('ReviewError')<{
@@ -63,6 +64,8 @@ export const revise = Effect.fn('revise')(function* ({
           }),
       }),
     );
+
+    yield* doneChime;
 
     yield* Effect.log(`reviseResponse: ${reviseResponse.text}`);
     revisions.push({
