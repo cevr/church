@@ -1,8 +1,9 @@
 import { Args, Command } from '@effect/cli';
 import { select, text } from '@effect/cli/Prompt';
 import { FileSystem, Path } from '@effect/platform';
+import { generateText } from 'ai';
 import { format } from 'date-fns';
-import { Effect, Option } from 'effect';
+import { Data, Effect, Option, Schedule } from 'effect';
 
 import { generate } from '~/lib/generate';
 import { makeAppleNoteFromMarkdown } from '~/lib/markdown-to-notes';
@@ -11,6 +12,7 @@ import { revise } from '~/lib/revise';
 
 import { msToMinutes, spin } from '../../lib/general';
 import { Model, model } from '../model';
+import { generateTopicPrompt } from './prompts/generate-topic';
 
 const topic = Args.text({
   name: 'topic',
@@ -184,10 +186,58 @@ const generateFromNoteMessage = Command.make(
     }),
 );
 
+class GenerateTopicResponseError extends Data.TaggedError(
+  'GenerateTopicResponseError',
+)<{
+  cause: unknown;
+}> {}
+
+const generateTopic = Command.make('generate-topic', { model }, (args) =>
+  Effect.gen(function* (_) {
+    const fs = yield* FileSystem.FileSystem;
+    const path = yield* Path.Path;
+
+    const previousMessages = yield* fs.readDirectory(
+      path.join(process.cwd(), 'outputs', 'messages'),
+    );
+
+    const systemPrompt = generateTopicPrompt(previousMessages);
+
+    const response = yield* spin(
+      'Generating...',
+      Effect.tryPromise({
+        try: () =>
+          generateText({
+            model: args.model.high,
+            messages: [
+              {
+                role: 'system',
+                content: systemPrompt,
+              },
+            ],
+          }),
+        catch: (cause: unknown) =>
+          new GenerateTopicResponseError({
+            cause,
+          }),
+      }).pipe(
+        Effect.retry({
+          times: 3,
+          schedule: Schedule.spaced(500),
+        }),
+      ),
+    );
+
+    const message = response.text;
+    yield* Effect.log(`topic: \n\n ${message}`);
+  }),
+);
+
 export const messages = Command.make('messages').pipe(
   Command.withSubcommands([
     generateMessage,
     reviseMessage,
     generateFromNoteMessage,
+    generateTopic,
   ]),
 );
