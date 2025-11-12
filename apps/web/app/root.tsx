@@ -7,7 +7,7 @@ import {
   ScrollRestoration,
 } from "react-router";
 
-import type { Route } from "./+types/root";
+import type { Route } from "web/app/+types/root";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [
