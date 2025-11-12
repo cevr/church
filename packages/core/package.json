@@ -1,5 +1,5 @@
 {
-  "name": "@bible-tools/lib",
+  "name": "@bible-tools/core",
   "private": true,
   "type": "module",
   "scripts": {
