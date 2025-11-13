@@ -11,6 +11,6 @@ export {
   DatabaseQueryError,
   ParagraphNotFoundError,
   SchemaInitializationError,
-} from "./book-database.js";
-export type { ParagraphDatabaseError } from "./book-database.js";
-export type { ParagraphRow } from "./book-database.js";
+} from './book-database.js';
+export type { ParagraphDatabaseError } from './book-database.js';
+export type { ParagraphRow } from './book-database.js';

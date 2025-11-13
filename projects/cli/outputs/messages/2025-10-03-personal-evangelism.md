@@ -55,9 +55,7 @@ stars for ever and ever."
   distribution but about transformation testimony. We don't merely pass along
   facts—we share how truth has transformed our lives."_
 - Three dimensions of the divine commission:
-
   1. **The Command** - Christ's clear instruction
-
      - **Mark 16:15** - "Go ye into all the world, and preach the gospel to
        every creature"
      - **2 Timothy 4:2** - "Preach the word; be instant in season, out of
@@ -68,7 +66,6 @@ stars for ever and ever."
        commission."_
 
   2. **The Connection** - Our relationship with God manifested
-
      - **John 15:8** - "Herein is my Father glorified, that ye bear much fruit;
        so shall ye be my disciples"
      - **Matthew 5:16** - "Let your light so shine before men, that they may see
@@ -105,9 +102,7 @@ stars for ever and ever."
   with salvation alone, having built nothing upon their foundation in Christ.
   Both are in heaven, but their experiences are vastly different."_
 - Understanding eternal rewards:
-
   1. **The crowns promised to faithful servants**
-
      - **1 Thessalonians 2:19-20** - "For what is our hope, or joy, or crown of
        rejoicing? Are not even ye in the presence of our Lord Jesus Christ at
        his coming? For ye are our glory and joy."
@@ -119,7 +114,6 @@ stars for ever and ever."
        Christ gives for faithful service are eternal."_
 
   2. **Stars in the crown - souls won for Christ**
-
      - **Daniel 12:3** - "They that turn many to righteousness as the stars for
        ever and ever"
      - _Speaking note: "Imagine meeting someone in heaven who says to you, 'I'm
@@ -155,9 +149,7 @@ stars for ever and ever."
   requires different approaches. Sometimes we're called to one phase, sometimes
   another, but all are essential."_
 - Five approaches to personal evangelism:
-
   1. **Relational evangelism** - Friendship as a bridge
-
      - **John 1:40-42** - "Andrew... findeth his own brother Simon, and saith
        unto him, We have found the Messias... And he brought him to Jesus"
      - _Speaking note: "Consider your 'oikos'—your circle of influence: family,
@@ -171,7 +163,6 @@ stars for ever and ever."
        - Practice listening well before speaking
 
   2. **Testimonial evangelism** - The power of personal stories
-
      - **Mark 5:19** - "Go home to thy friends, and tell them how great things
        the Lord hath done for thee"
      - _Speaking note: "Your personal testimony is like a key that can unlock
@@ -184,7 +175,6 @@ stars for ever and ever."
        - Current walk with God
 
   3. **Literature evangelism** - Sharing truth through print and digital media
-
      - **Isaiah 55:11** - "So shall my word be that goeth forth out of my mouth:
        it shall not return unto me void"
      - _Speaking note: "A tract or book can go where you cannot go and speak
@@ -197,7 +187,6 @@ stars for ever and ever."
        - Leave publications in strategic locations
 
   4. **Service evangelism** - Meeting needs as a pathway to hearts
-
      - **Matthew 5:16** - "Let your light so shine before men, that they may see
        your good works, and glorify your Father which is in heaven"
      - _Speaking note: "Service is the universal language that every heart
@@ -240,9 +229,7 @@ stars for ever and ever."
   actual experience. And with practice, what once seemed terrifying becomes
   natural."_
 - Four common fears in evangelism:
-
   1. **Fear of rejection** - Concern about negative responses
-
      - **John 15:18-20** - "If the world hate you, ye know that it hated me
        before it hated you"
      - _Speaking note: "Remember that people are not rejecting you personally
@@ -255,7 +242,6 @@ stars for ever and ever."
        - Remember that rejection is part of the sifting process
 
   2. **Fear of inadequacy** - Feeling unprepared or unqualified
-
      - **Exodus 4:10-12** - Moses' objection and God's response
      - _Speaking note: "God doesn't call the qualified; He qualifies the called.
        Like a father teaching a child to swim, He doesn't expect perfection at
@@ -268,7 +254,6 @@ stars for ever and ever."
        - Knowledge grows through practice, not just study
 
   3. **Fear of awkwardness** - Concern about social discomfort
-
      - **2 Timothy 2:15** - "Study to shew thyself approved unto God, a workman
        that needeth not to be ashamed"
      - _Speaking note: "Social awkwardness diminishes with practice. Think of
@@ -309,9 +294,7 @@ stars for ever and ever."
   but also those who share it. The more we participate in God's work of
   redemption, the more our own characters are refined and prepared for heaven."_
 - Three dimensions of evangelism's eternal impact:
-
   1. **Character development for eternity**
-
      - **Matthew 25:34-40** - The parable of the sheep and goats
      - _Speaking note: "Sharing our faith helps develop the character qualities
        needed for heaven—selflessness, compassion, courage, and dependence on
@@ -319,7 +302,6 @@ stars for ever and ever."
        develop as we practice them in witnessing."_
 
   2. **The authenticity of our faith**
-
      - **Acts 4:20** - "We cannot but speak the things which we have seen and
        heard"
      - _Speaking note: "True conversion naturally overflows into witness—not
@@ -360,7 +342,6 @@ stars for ever and ever."
     for the lost. Duty-driven evangelism quickly burns out, but love-driven
     evangelism sustains itself."_
 - Soul-winning is heaven's business:
-
   - **John 9:4** - "I must work the works of him that sent me, while it is day:
     the night cometh, when no man can work"
   - _Speaking note: "We only have a limited window of opportunity to reach the
@@ -368,7 +349,6 @@ stars for ever and ever."
     still time, we must work while it is day."_
 
 - **Appeal steps:**
-
   1. For those who have never witnessed: Would you commit to praying for one
      specific unsaved person for 30 days?
   2. For occasional witnesses: Would you commit to intentionally sharing your
@@ -377,7 +357,6 @@ stars for ever and ever."
      evangelism?
 
 - Close with a visualization:
-
   - _Speaking note: "Close your eyes for a moment and imagine this scene: You're
     standing in heaven, surrounded by indescribable beauty. Suddenly someone
     approaches you with tears of joy and says, 'Thank you for sharing Christ

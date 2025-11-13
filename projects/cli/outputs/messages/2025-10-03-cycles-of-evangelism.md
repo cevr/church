@@ -40,9 +40,7 @@ the harvest is come."
   effective evangelism begins long before a Bible study or sermon."_
 
 - Three essential soil preparation activities:
-
   1. **Prayer cultivation** - softening hearts through intercession
-
      - **Ezekiel 36:26** - "A new heart also will I give you, and a new spirit
        will I put within you"
      - _Speaking note: "Prayer is like the rain that softens hardened ground.
@@ -50,7 +48,6 @@ the harvest is come."
        hearts to accept truth—but prayer prepares the way."_
 
   2. **Relationship building** - establishing trust and credibility
-
      - **1 Corinthians 3:6-7** - "I have planted, Apollos watered; but God gave
        the increase"
      - The principle of earning the right to be heard
@@ -83,9 +80,7 @@ the harvest is come."
   presenting biblical truth requires discernment about methods and timing."_
 
 - Principles of effective seed-sowing:
-
   1. **Truth progression** - planting in proper sequence
-
      - **Isaiah 28:10** - "For precept must be upon precept, precept upon
        precept; line upon line, line upon line; here a little, and there a
        little"
@@ -94,7 +89,6 @@ the harvest is come."
        Planting out of sequence risks the harvest."_
 
   2. **Contextual relevance** - matching message to current needs
-
      - **1 Corinthians 9:22** - "I am made all things to all men, that I might
        by all means save some"
      - The importance of answering questions people are actually asking
@@ -124,9 +118,7 @@ the harvest is come."
   attention. This middle phase of evangelism is where many efforts fail."_
 
 - Essential cultivation activities:
-
   1. **Removing weeds** - addressing obstacles to growth
-
      - **Matthew 13:22** - "He also that received seed among the thorns is he
        that heareth the word; and the care of this world, and the deceitfulness
        of riches, choke the word"
@@ -138,7 +130,6 @@ the harvest is come."
        removal of these hindrances."_
 
   2. **Watering consistently** - providing ongoing spiritual nurture
-
      - **Psalm 1:3** - "And he shall be like a tree planted by the rivers of
        water, that bringeth forth his fruit in his season"
      - The importance of systematic follow-up and consistent contact
@@ -176,9 +167,7 @@ the harvest is come."
   invitations."_
 
 - Principles of effective harvesting:
-
   1. **Recognizing ripeness** - discerning readiness for decisions
-
      - **Mark 4:29** - "But when the fruit is brought forth, immediately he
        putteth in the sickle, because the harvest is come"
      - Signs of spiritual readiness: asking questions, applying Scripture,
@@ -189,7 +178,6 @@ the harvest is come."
        commitment."_
 
   2. **Clear appeals** - making specific invitations
-
      - **Acts 2:37-38** - "Men and brethren, what shall we do? Then Peter said
        unto them, Repent, and be baptized every one of you"
      - The necessity of direct, unambiguous calls to action
@@ -224,9 +212,7 @@ the harvest is come."
   isn't just decisions but disciples who reproduce."_
 
 - Two essential post-harvest activities:
-
   1. **Careful storage** - integrating new believers into church life
-
      - **Acts 2:42** - "And they continued stedfastly in the apostles' doctrine
        and fellowship, and in breaking of bread, and in prayers"
      - The four areas of integration: biblical knowledge, community
@@ -265,9 +251,7 @@ the harvest is come."
   resist."_
 
 - Seasonal wisdom for evangelistic planning:
-
   1. **Times of preparation** - periods focused on prayer and training
-
      - **Luke 10:1-2** - Christ's preparation of the seventy before sending them
        out
      - _Speaking note: "Just as winter is the farmer's planning season, every
@@ -275,14 +259,12 @@ the harvest is come."
        vision-casting, and skill development before major outreach."_
 
   2. **Times of planting** - intensive outreach periods
-
      - **Acts 2:1-41** - The Day of Pentecost as a massive planting opportunity
      - _Speaking note: "Spring planting represents a concentrated effort—all
        hands on deck. Similarly, churches need specific, limited-duration
        outreach initiatives when the entire congregation mobilizes."_
 
   3. **Times of harvesting** - decision-focused events
-
      - **Acts 2:37-41** - The mass response to Peter's Pentecost sermon
      - _Speaking note: "Harvest festivals were community events requiring many
        workers. Likewise, evangelistic reaping events work best when designed as
@@ -314,16 +296,13 @@ the harvest is come."
   the celebration of souls saved for eternity."_
 
 - Three levels of commitment invitation:
-
   1. For those new to evangelism:
-
      - Commit to one specific phase of the process (prayer cultivation,
        relationship building, Bible studies)
      - _Speaking note: "You don't need to master the entire process to
        participate. Start with what matches your gifts and gradually expand."_
 
   2. For experienced soul-winners:
-
      - Identify your strongest phase and mentor someone else in that area
      - _Speaking note: "The multiplication mandate requires passing on our
        skills. Who could you take under your wing this month?"_

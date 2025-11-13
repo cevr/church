@@ -46,9 +46,7 @@ and ye shall receive the gift of the Holy Ghost."
   need next."_
 
 - Five stages in the pre-decision journey:
-
   1. **Awareness stage** - initial exposure to truth
-
      - **Acts 17:19-20** - "May we know what this new doctrine, whereof thou
        speakest, is? For thou bringest certain strange things to our ears."
      - _Speaking note: "In this first stage, people become aware of biblical
@@ -61,7 +59,6 @@ and ye shall receive the gift of the Holy Ghost."
        - Willingness to listen but reluctance to discuss deeply
 
   2. **Interest stage** - engaged exploration
-
      - **Acts 17:11** - "These were more noble than those in Thessalonica, in
        that they received the word with all readiness of mind, and searched the
        scriptures daily, whether those things were so."
@@ -75,7 +72,6 @@ and ye shall receive the gift of the Holy Ghost."
        - Comparing new information with previous beliefs
 
   3. **Consideration stage** - personal application begins
-
      - **Acts 2:37** - "Now when they heard this, they were pricked in their
        heart, and said unto Peter and to the rest of the apostles, Men and
        brethren, what shall we do?"
@@ -89,7 +85,6 @@ and ye shall receive the gift of the Holy Ghost."
        - "What if" questions considering life implications
 
   4. **Conviction stage** - internal decision forming
-
      - **Acts 16:29-30** - The Philippian jailer: "Then he called for a light,
        and sprang in, and came trembling, and fell down before Paul and Silas,
        And brought them out, and said, Sirs, what must I do to be saved?"
@@ -133,9 +128,7 @@ and ye shall receive the gift of the Holy Ghost."
   conviction."_
 
 - Four dimensions of knowledge development:
-
   1. **Systematic biblical knowledge** - comprehensive understanding
-
      - **Acts 20:27** - "For I have not shunned to declare unto you all the
        counsel of God."
      - _Speaking note: "Genuine conviction requires a coherent understanding of
@@ -148,7 +141,6 @@ and ye shall receive the gift of the Holy Ghost."
        - Visual aids showing the interconnected nature of biblical truth
 
   2. **Personal relevance knowledge** - application understanding
-
      - **James 1:22-25** - "But be ye doers of the word, and not hearers only,
        deceiving your own selves."
      - _Speaking note: "Abstract knowledge alone rarely produces decisions.
@@ -161,7 +153,6 @@ and ye shall receive the gift of the Holy Ghost."
        - Testimonies showing truth applied in similar life situations
 
   3. **Objection-addressing knowledge** - answering barriers
-
      - **1 Peter 3:15** - "But sanctify the Lord God in your hearts: and be
        ready always to give an answer to every man that asketh you a reason of
        the hope that is in you with meekness and fear."
@@ -207,9 +198,7 @@ and ye shall receive the gift of the Holy Ghost."
   intellectual faculties."_
 
 - Five approaches to heart engagement:
-
   1. **Narrative engagement** - story-based connection
-
      - **Luke 15:1-32** - Jesus' use of parables to bypass intellectual defenses
      - _Speaking note: "Jesus consistently used stories to bypass intellectual
        defenses and speak directly to the heart. Stories create emotional
@@ -222,7 +211,6 @@ and ye shall receive the gift of the Holy Ghost."
        - Contemporary parables illustrating spiritual principles
 
   2. **Visual and experiential engagement** - multi-sensory learning
-
      - **Jeremiah 19:1-11** - God instructing Jeremiah to break a clay jar as
        visual teaching
      - **John 13:3-17** - Jesus washing disciples' feet as experiential teaching
@@ -236,7 +224,6 @@ and ye shall receive the gift of the Holy Ghost."
        - Service activities that demonstrate faith principles in action
 
   3. **Relational engagement** - truth in community
-
      - **Acts 2:42-47** - The early church's communal experience of faith
      - _Speaking note: "Truth experienced in isolation rarely produces the same
        conviction as truth experienced in community. Creating opportunities for
@@ -248,7 +235,6 @@ and ye shall receive the gift of the Holy Ghost."
        - Intergenerational mentoring relationships that model faith
 
   4. **Emotional honesty engagement** - addressing heart barriers
-
      - **Mark 10:17-22** - Jesus addressing the rich young ruler's emotional
        attachment
      - _Speaking note: "Many people intellectually accept truth while
@@ -295,9 +281,7 @@ and ye shall receive the gift of the Holy Ghost."
   addressing these barriers is crucial in the cultivation phase."_
 
 - Four common decision barriers:
-
   1. **Social and relational barriers** - fear of others' reactions
-
      - **John 12:42-43** - "Nevertheless among the chief rulers also many
        believed on him; but because of the Pharisees they did not confess him,
        lest they should be put out of the synagogue: For they loved the praise
@@ -312,7 +296,6 @@ and ye shall receive the gift of the Holy Ghost."
        - Testimonies of others who overcame similar social barriers
 
   2. **Lifestyle and habit barriers** - resistance to change
-
      - **Mark 10:21-22** - "Then Jesus beholding him loved him, and said unto
        him, One thing thou lackest... And he was sad at that saying, and went
        away grieved: for he had great possessions."
@@ -326,7 +309,6 @@ and ye shall receive the gift of the Holy Ghost."
        - Connecting with others who have successfully navigated similar changes
 
   3. **Intellectual uncertainty barriers** - unanswered questions
-
      - **John 3:9** - "Nicodemus answered and said unto him, How can these
        things be?"
      - _Speaking note: "Some people hesitate because significant questions
@@ -370,9 +352,7 @@ and ye shall receive the gift of the Holy Ghost."
   spiritual responsibility."_
 
 - Five principles for effective decision invitations:
-
   1. **Progressive decision pathway** - step-by-step commitment
-
      - **John 1:35-42** - Jesus' gradual engagement with future disciples
      - _Speaking note: "Major life decisions rarely happen in a single moment
        but through a series of smaller commitments. Creating a pathway of
@@ -384,7 +364,6 @@ and ye shall receive the gift of the Holy Ghost."
        - Creating clear next steps after each decision
 
   2. **Decision clarity** - specific response requests
-
      - **Acts 2:37-38** - "Men and brethren, what shall we do? Then Peter said
        unto them, Repent, and be baptized every one of you"
      - _Speaking note: "Vague invitations produce vague responses. Effective
@@ -397,7 +376,6 @@ and ye shall receive the gift of the Holy Ghost."
        - Specific action steps following decision
 
   3. **Personal readiness discernment** - timing sensitivity
-
      - **Mark 8:27-30, 16:15-16** - Jesus' progressive revelation timingwith
        disciples
      - _Speaking note: "While we create decision opportunities, we must remain
@@ -410,7 +388,6 @@ and ye shall receive the gift of the Holy Ghost."
        - Expressions of personal spiritual hunger
 
   4. **Balanced appeals** - head and heart engagement
-
      - **Acts 2:14-41** - Peter's Pentecost appeal combining evidence and
        emotion
      - _Speaking note: "Effective decision invitations engage both intellectual
@@ -454,9 +431,7 @@ and ye shall receive the gift of the Holy Ghost."
   decisions significantly impacts their stability after making them."_
 
 - Four transition preparation elements:
-
   1. **Expectation setting** - realistic post-decision understanding
-
      - **John 16:1-4** - "These things have I spoken unto you, that ye should
        not be offended."
      - _Speaking note: "Jesus prepared disciples for post-decision challenges
@@ -469,7 +444,6 @@ and ye shall receive the gift of the Holy Ghost."
        - Normal experiences of doubt and questioning
 
   2. **Community connection** - relational integration preparation
-
      - **1 Corinthians 12:12-27** - The body of Christ metaphor
      - _Speaking note: "Decisions made in isolation often fail without community
        support. During the cultivation phase, we must begin integration into
@@ -481,7 +455,6 @@ and ye shall receive the gift of the Holy Ghost."
        - Small group connection with balanced spiritual maturity mix
 
   3. **Practical next steps** - clear post-decision pathway
-
      - **Acts 2:41-42** - "Then they that gladly received his word were
        baptized... And they continued stedfastly in the apostles' doctrine and
        fellowship, and in breaking of bread, and in prayers."
@@ -524,7 +497,6 @@ and ye shall receive the gift of the Holy Ghost."
   into conviction and conviction into commitment."_
 
 - Summary of the cultivation process:
-
   - Understanding the stages between interest and decision
   - Building comprehensive knowledge that supports conviction
   - Engaging heart as well as mind in the truth journey
@@ -533,9 +505,7 @@ and ye shall receive the gift of the Holy Ghost."
   - Preparing for successful post-decision transition
 
 - Three levels of commitment invitation:
-
   1. For those new to cultivation ministry:
-
      - Commit to working with one interested person through a complete Bible
        study series
      - Begin prayer partnership with an experienced cultivation minister
@@ -545,7 +515,6 @@ and ye shall receive the gift of the Holy Ghost."
        deeper understanding?"_
 
   2. For experienced cultivation ministers:
-
      - Evaluate current approaches for balanced head/heart engagement
      - Develop specific strategies for common decision barriers in your context
      - _Speaking note: "Those with experience in Bible studies may need to

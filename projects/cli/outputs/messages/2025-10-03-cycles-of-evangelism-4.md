@@ -40,9 +40,7 @@ that reapeth may rejoice together."
   harvest? behold, I say unto you, Lift up your eyes, and look on the fields;
   for they are white already to harvest."
 - Five indicators of spiritual harvest readiness:
-
   1. **Questions of application** - moving from theory to practice
-
      - **Acts 2:37** - "Now when they heard this, they were pricked in their
        heart, and said unto Peter and to the rest of the apostles, Men and
        brethren, what shall we do?"
@@ -51,17 +49,14 @@ that reapeth may rejoice together."
        decision."_
 
   2. **Emotional resonance** - heart engagement with truth
-
      - **Luke 24:32** - "And they said one to another, Did not our heart burn
        within us, while he talked with us by the way, and while he opened to us
        the scriptures?"
 
   3. **Diminishing objections** - resolution of major barriers
-
      - **Matthew 19:16-22** - The rich young ruler's single remaining obstacle
 
   4. **Anticipatory language** - future-oriented speech
-
      - **Acts 8:36** - "And as they went on their way, they came unto a certain
        water: and the eunuch said, See, here is water; what doth hinder me to be
        baptized?"
@@ -79,23 +74,19 @@ that reapeth may rejoice together."
   God did beseech you by us: we pray you in Christ's stead, be ye reconciled to
   God."
 - Four biblical patterns of divine appeal:
-
   1. **Direct question appeals** - decision-prompting inquiries
-
      - **Joshua 24:15** - "Choose you this day whom ye will serve... but as for
        me and my house, we will serve the LORD."
      - **1 Kings 18:21** - "How long halt ye between two opinions? if the LORD
        be God, follow him: but if Baal, then follow him."
 
   2. **Urgency appeals** - timely response invitations
-
      - **Hebrews 3:15** - "Today if ye will hear his voice, harden not your
        hearts."
      - **2 Corinthians 6:2** - "Behold, now is the accepted time; behold, now is
        the day of salvation."
 
   3. **Cost-counting appeals** - honest decision evaluation
-
      - **Luke 14:28-30** - "For which of you, intending to build a tower,
        sitteth not down first, and counteth the cost, whether he have sufficient
        to finish it?"
@@ -114,23 +105,18 @@ that reapeth may rejoice together."
 
 - **Acts 26:27-29** - Paul's masterful appeal to King Agrippa
 - Five essential elements of the appeal process:
-
   1. **Truth review** - summarizing the decision foundation
-
      - **Acts 2:14-36** - Peter's Pentecost sermon reviewing Jesus' life, death,
        and resurrection
 
   2. **Implications clarification** - explaining the decision meaning
-
      - **Deuteronomy 30:15-18** - "See, I have set before thee this day life and
        good, and death and evil... therefore choose life."
 
   3. **Objection resolution** - addressing final barriers
-
      - **Isaiah 1:18** - "Come now, and let us reason together..."
 
   4. **Decision request** - the direct invitation
-
      - **Joshua 24:15** - "Choose you this day whom ye will serve."
      - **Acts 2:38** - "Repent, and be baptized every one of you."
 
@@ -147,19 +133,15 @@ that reapeth may rejoice together."
 - **1 Corinthians 9:22** - "I am made all things to all men, that I might by all
   means save some."
 - Four effective appeal approaches:
-
   1. **Public corporate appeals** - group decision invitations
-
      - **Joshua 24:1-15** - Joshua gathering all Israel for public commitment
      - **Acts 2:14-41** - Peter's Pentecost sermon to the crowd
 
   2. **Private personal appeals** - individual decision invitations
-
      - **John 3:1-21** - Jesus' private appeal to Nicodemus
      - **Acts 8:26-40** - Philip's individual work with the Ethiopian eunuch
 
   3. **Incremental step appeals** - progressive decision pathways
-
      - **Mark 10:17-22** - Jesus' progressive challenge to the rich young ruler
 
   4. **Written commitment appeals** - documented decision recording
@@ -173,25 +155,20 @@ that reapeth may rejoice together."
 
 - **Matthew 13:18-23** - The varied responses to the sower's seed
 - Five common response patterns:
-
   1. **Immediate positive response** - ready acceptance
-
      - **Acts 16:14-15** - "And a certain woman named Lydia... whose heart the
        Lord opened... was baptized, and her household."
 
   2. **Partial response** - incomplete commitment
-
      - **Acts 26:28** - "Then Agrippa said unto Paul, Almost thou persuadest me
        to be a Christian."
      - **Mark 10:17-22** - The rich young ruler who went away sorrowful
 
   3. **Delayed response** - postponed decision
-
      - **Acts 24:25** - "Felix answered, Go thy way for this time; when I have a
        convenient season, I will call for thee."
 
   4. **Confused response** - uncertainty and mixed signals
-
      - **Acts 19:1-3** - The disciples who hadn't heard of the Holy Spirit
 
   5. **Negative response** - active rejection
@@ -210,23 +187,18 @@ that reapeth may rejoice together."
   manifestation of the truth commending ourselves to every man's conscience in
   the sight of God."
 - Five ethical harvest principles:
-
   1. **Full disclosure** - complete information sharing
-
      - **Luke 14:25-33** - Jesus' candid cost-counting challenge
 
   2. **Emotional balance** - appropriate feeling engagement
-
      - **Acts 26:25** - "But he said, I am not mad, most noble Festus; but speak
        forth the words of truth and soberness."
 
   3. **Decision ownership** - personal choice respect
-
      - **Revelation 22:17** - "And let him that is athirst come. And whosoever
        will, let him take the water of life freely."
 
   4. **Truth centeredness** - evidence-based appeals
-
      - **Acts 17:2-3** - "And Paul, as his manner was... reasoned with them out
        of the scriptures, Opening and alleging..."
 
@@ -246,14 +218,11 @@ that reapeth may rejoice together."
   rejoice together."
 - Summary of the harvest principles
 - Three levels of commitment invitation:
-
   1. For those new to harvest ministry:
-
      - Commit to making one direct, clear appeal this month during a Bible study
      - Begin praying specifically for individuals showing readiness signs
 
   2. For experienced soul-winners:
-
      - Evaluate and expand your appeal approach repertoire
      - Mentor someone less experienced in harvest ministry
 

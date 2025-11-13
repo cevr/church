@@ -45,9 +45,7 @@ your body, and in your spirit, which are God's."
     road—they don't limit our journey; they protect us from going over the
     cliff."_
 - Biblical foundation reveals three primary purposes:
-
   1. **Physical well-being and longevity**
-
      - **Exodus 15:26** - "I will put none of these diseases upon thee... for I
        am the LORD that healeth thee."
      - **Psalm 91:16** - "With long life will I satisfy him, and shew him my
@@ -57,7 +55,6 @@ your body, and in your spirit, which are God's."
        service."_
 
   2. **Clear mind for spiritual discernment**
-
      - **Daniel 1:8-20** - Daniel and his friends' mental superiority through
        dietary faithfulness
      - **1 Peter 1:13** - "Wherefore gird up the loins of your mind, be
@@ -78,7 +75,6 @@ your body, and in your spirit, which are God's."
 ## II. The Biblical Wholeness Paradigm: Body and Soul Unity (12 minutes)
 
 - The false dichotomy between physical and spiritual
-
   - **Genesis 2:7** - "The LORD God formed man of the dust of the ground, and
     breathed into his nostrils the breath of life; and man became a living
     soul."
@@ -87,9 +83,7 @@ your body, and in your spirit, which are God's."
     union of body and breath of life."_
 
 - Three biblical principles of wholeness:
-
   1. **The state of the dead truth reveals body-soul unity**
-
      - **Ecclesiastes 9:5-6** - "The dead know not any thing..."
      - **Psalm 146:4** - "His breath goeth forth, he returneth to his earth; in
        that very day his thoughts perish."
@@ -99,7 +93,6 @@ your body, and in your spirit, which are God's."
        impacts your spiritual life."_
 
   2. **Physical condition affects spiritual perception**
-
      - **Luke 21:34** - "Take heed to yourselves, lest at any time your hearts
        be overcharged with surfeiting, and drunkenness, and cares of this
        life..."
@@ -122,14 +115,12 @@ your body, and in your spirit, which are God's."
 
 - **Revelation 14:6-12** - The Three Angels' Messages and its connection to
   health
-
   - _Speaking note: "The health message isn't a side note to our prophetic
     message—it's an integral part of it. Just as a car needs both an engine and
     wheels to function, our end-time message needs both spiritual truth and
     practical health principles."_
 
 - Health reform as preparation for the latter rain
-
   - **Joel 2:23, 28-29** - The promise of the latter rain
   - **Hosea 6:3** - "Then shall we know, if we follow on to know the LORD: his
     going forth is prepared as the morning..."
@@ -154,9 +145,7 @@ your body, and in your spirit, which are God's."
   happened."_
 
 - Current scientific validation:
-
   1. **Adventist longevity studies**
-
      - Blue Zone research findings
      - Loma Linda Adventist health studies
      - _Speaking note: "When National Geographic researchers sought the
@@ -165,7 +154,6 @@ your body, and in your spirit, which are God's."
        1860s, has now been validated by the most rigorous scientific research."_
 
   2. **Mental health benefits of plant-based diet**
-
      - Depression, anxiety, and cognitive decline research
      - _Speaking note: "Recent studies have shown that what we eat affects not
        just our bodies but our minds. The gut-brain connection is so strong that
@@ -182,15 +170,12 @@ your body, and in your spirit, which are God's."
 - **Colossians 2:16-17** - "Let no man therefore judge you in meat, or in
   drink..."
 - Health principles vs. legalism
-
   - _Speaking note: "Health reform should be practiced with the joy of a
     marathon runner training for a race, not the burden of a prisoner dragging a
     ball and chain."_
 
 - Three clarifications about the health message:
-
   1. **It's progressive, not perfectionist**
-
      - **Proverbs 4:18** - "The path of the just is as the shining light, that
        shineth more and more unto the perfect day."
      - _Speaking note: "Health reform is a journey, not a destination. Each step
@@ -198,7 +183,6 @@ your body, and in your spirit, which are God's."
        values progress over perfection."_
 
   2. **It's principles, not rigid rules**
-
      - **Matthew 12:1-8** - Jesus and his disciples picking grain on Sabbath
      - _Speaking note: "The health message is like a compass pointing north, not
        a straitjacket. Different cultures, geographies, and individual needs may
@@ -223,15 +207,12 @@ your body, and in your spirit, which are God's."
   peace of Eden and anticipate the restoration to come."_
 
 - Ethical considerations of diet:
-
   1. **Revelation 21:4** - "There shall be no more death..."
-
      - _Speaking note: "In heaven, we won't be killing animals for food. The
        more our lives align with heaven's principles now, the better prepared
        we'll be for eternity."_
 
   2. **Isaiah 11:6-9** - Peaceful coexistence in the restored earth
-
      - _Speaking note: "The prophet Isaiah paints a beautiful picture of the
        restored earth where the wolf and lamb feed together. This vegetarian
        paradise is both our past in Eden and our future in the new earth."_
@@ -250,9 +231,7 @@ your body, and in your spirit, which are God's."
   healthier habits frees you to experience life more abundantly."_
 
 - Progressive implementation approach:
-
   1. **Start where you are**
-
      - **Matthew 25:21** - "Well done, thou good and faithful servant: thou hast
        been faithful over a few things..."
      - _Speaking note: "Don't wait until you can do everything perfectly to
@@ -260,7 +239,6 @@ your body, and in your spirit, which are God's."
        build upon that success."_
 
   2. **Focus on additions before subtractions**
-
      - **Genesis 1:29** - God's original diet began with "I have given you..."
      - _Speaking note: "Instead of focusing first on what to eliminate, start by
        adding good things—more water, more fresh fruits and vegetables, more
@@ -286,14 +264,12 @@ your body, and in your spirit, which are God's."
   instead of candy isn't restricting freedom but showing care."_
 
 - The health message as a gift, not a burden
-
   - **Matthew 11:28-30** - "For my yoke is easy, and my burden is light."
   - _Speaking note: "Far from being a burden, God's health principles are like
     wings—they don't weigh us down; they lift us up to a better quality of life
     now and prepare us for eternity."_
 
 - Three levels of commitment:
-
   1. For those just beginning: Would you commit to studying one aspect of the
      health message this week?
   2. For those already practicing: Would you prayerfully consider one area where

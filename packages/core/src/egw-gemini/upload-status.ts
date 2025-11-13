@@ -6,9 +6,9 @@
  * Tracks individual paragraphs, assuming one paragraph is uploaded at a time.
  */
 
-import { FileSystem, Path } from "@effect/platform";
-import { Config, Data, Effect, Option } from "effect";
-import { Database } from "bun:sqlite";
+import { FileSystem, Path } from '@effect/platform';
+import { Database } from 'bun:sqlite';
+import { Config, Data, Effect, Option } from 'effect';
 
 /**
  * Upload Status Errors - Granular error types for different failure scenarios
@@ -18,7 +18,7 @@ import { Database } from "bun:sqlite";
  * Database connection or initialization error
  */
 export class DatabaseConnectionError extends Data.TaggedError(
-  "DatabaseConnectionError"
+  'DatabaseConnectionError',
 )<{
   readonly cause: unknown;
   readonly message: string;
@@ -27,7 +27,7 @@ export class DatabaseConnectionError extends Data.TaggedError(
 /**
  * Database query execution error
  */
-export class DatabaseQueryError extends Data.TaggedError("DatabaseQueryError")<{
+export class DatabaseQueryError extends Data.TaggedError('DatabaseQueryError')<{
   readonly cause: unknown;
   readonly operation: string;
   readonly storeDisplayName: string;
@@ -38,7 +38,7 @@ export class DatabaseQueryError extends Data.TaggedError("DatabaseQueryError")<{
  * Paragraph upload record not found error
  */
 export class ParagraphUploadNotFoundError extends Data.TaggedError(
-  "ParagraphUploadNotFoundError"
+  'ParagraphUploadNotFoundError',
 )<{
   readonly storeDisplayName: string;
   readonly refCode: string;
@@ -48,7 +48,7 @@ export class ParagraphUploadNotFoundError extends Data.TaggedError(
  * Database schema initialization error
  */
 export class SchemaInitializationError extends Data.TaggedError(
-  "SchemaInitializationError"
+  'SchemaInitializationError',
 )<{
   readonly cause: unknown;
   readonly message: string;
@@ -67,7 +67,7 @@ export type UploadStatusError =
  * Paragraph Upload Status
  */
 export interface ParagraphUploadStatus {
-  readonly status: "in-progress" | "complete" | "failed";
+  readonly status: 'in-progress' | 'complete' | 'failed';
   readonly refCode: string;
   readonly bookId: number;
   readonly uploadedAt?: string;
@@ -78,7 +78,7 @@ export interface ParagraphUploadStatus {
  * Book Upload Status (aggregated from paragraph statuses)
  */
 export interface BookUploadStatus {
-  readonly status: "in-progress" | "complete" | "failed";
+  readonly status: 'in-progress' | 'complete' | 'failed';
   readonly documentsUploaded: number;
   readonly expectedDocuments: number;
   readonly uploadedAt?: string;
@@ -112,15 +112,15 @@ interface ParagraphUploadRow {
  * EGW Upload Status Service
  */
 export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
-  "lib/EGWGemini/UploadStatus",
+  'lib/EGWGemini/UploadStatus',
   {
     scoped: Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
 
       // Get database file path from config or use default
-      const dbFile = yield* Config.string("EGW_UPLOAD_STATUS_DB").pipe(
-        Config.withDefault("data/egw-upload-status.db")
+      const dbFile = yield* Config.string('EGW_UPLOAD_STATUS_DB').pipe(
+        Config.withDefault('data/egw-upload-status.db'),
       );
 
       const dbPath = path.resolve(dbFile);
@@ -167,7 +167,7 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
         },
         catch: (error) =>
           new SchemaInitializationError({
-            message: "Failed to initialize database schema",
+            message: 'Failed to initialize database schema',
             cause: error,
           }),
       });
@@ -216,7 +216,7 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
       const markParagraphInProgress = (
         storeDisplayName: string,
         refCode: string,
-        bookId: number
+        bookId: number,
       ): Effect.Effect<void, UploadStatusError> =>
         Effect.gen(function* () {
           const now = new Date().toISOString();
@@ -226,7 +226,7 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
                 $storeDisplayName: storeDisplayName,
                 $refCode: refCode,
                 $bookId: bookId,
-                $status: "in-progress",
+                $status: 'in-progress',
                 $uploadedAt: null,
                 $error: null,
                 $createdAt: now,
@@ -235,7 +235,7 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
             },
             catch: (error) =>
               new DatabaseQueryError({
-                operation: "markParagraphInProgress",
+                operation: 'markParagraphInProgress',
                 storeDisplayName,
                 refCode,
                 cause: error,
@@ -249,7 +249,7 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
       const markParagraphComplete = (
         storeDisplayName: string,
         refCode: string,
-        bookId: number
+        bookId: number,
       ): Effect.Effect<void, UploadStatusError> =>
         Effect.gen(function* () {
           const now = new Date().toISOString();
@@ -263,7 +263,7 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
               }),
             catch: (error) =>
               new DatabaseQueryError({
-                operation: "getParagraphUploadStatus",
+                operation: 'getParagraphUploadStatus',
                 storeDisplayName,
                 refCode,
                 cause: error,
@@ -278,7 +278,7 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
                 $storeDisplayName: storeDisplayName,
                 $refCode: refCode,
                 $bookId: bookId,
-                $status: "complete",
+                $status: 'complete',
                 $uploadedAt: now,
                 $error: null,
                 $createdAt: createdAt,
@@ -287,7 +287,7 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
             },
             catch: (error) =>
               new DatabaseQueryError({
-                operation: "markParagraphComplete",
+                operation: 'markParagraphComplete',
                 storeDisplayName,
                 refCode,
                 cause: error,
@@ -302,7 +302,7 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
         storeDisplayName: string,
         refCode: string,
         bookId: number,
-        error: string
+        error: string,
       ): Effect.Effect<void, UploadStatusError> =>
         Effect.gen(function* () {
           const now = new Date().toISOString();
@@ -316,7 +316,7 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
               }),
             catch: (error) =>
               new DatabaseQueryError({
-                operation: "getParagraphUploadStatus",
+                operation: 'getParagraphUploadStatus',
                 storeDisplayName,
                 refCode,
                 cause: error,
@@ -331,7 +331,7 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
                 $storeDisplayName: storeDisplayName,
                 $refCode: refCode,
                 $bookId: bookId,
-                $status: "failed",
+                $status: 'failed',
                 $uploadedAt: null,
                 $error: error,
                 $createdAt: createdAt,
@@ -340,7 +340,7 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
             },
             catch: (error) =>
               new DatabaseQueryError({
-                operation: "markParagraphFailed",
+                operation: 'markParagraphFailed',
                 storeDisplayName,
                 refCode,
                 cause: error,
@@ -353,7 +353,7 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
        */
       const getParagraphUploadStatus = (
         storeDisplayName: string,
-        refCode: string
+        refCode: string,
       ): Effect.Effect<
         Option.Option<ParagraphUploadStatus>,
         UploadStatusError
@@ -367,7 +367,7 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
               }),
             catch: (error) =>
               new DatabaseQueryError({
-                operation: "getParagraphUploadStatus",
+                operation: 'getParagraphUploadStatus',
                 storeDisplayName,
                 refCode,
                 cause: error,
@@ -379,7 +379,7 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
           }
 
           const status: ParagraphUploadStatus = {
-            status: row.status as "in-progress" | "complete" | "failed",
+            status: row.status as 'in-progress' | 'complete' | 'failed',
             refCode: row.ref_code,
             bookId: row.book_id,
             ...(row.uploaded_at && { uploadedAt: row.uploaded_at }),
@@ -394,7 +394,7 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
        */
       const getBookUploadStatus = (
         storeDisplayName: string,
-        bookId: number
+        bookId: number,
       ): Effect.Effect<Option.Option<BookUploadStatus>, UploadStatusError> =>
         Effect.gen(function* () {
           const rows = yield* Effect.try({
@@ -405,7 +405,7 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
               }),
             catch: (error) =>
               new DatabaseQueryError({
-                operation: "getBookUploadStatus",
+                operation: 'getBookUploadStatus',
                 storeDisplayName,
                 refCode: `book:${bookId}`,
                 cause: error,
@@ -417,22 +417,22 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
           }
 
           const completeCount = rows.filter(
-            (r) => r.status === "complete"
+            (r) => r.status === 'complete',
           ).length;
-          const failedCount = rows.filter((r) => r.status === "failed").length;
+          const failedCount = rows.filter((r) => r.status === 'failed').length;
           const inProgressCount = rows.filter(
-            (r) => r.status === "in-progress"
+            (r) => r.status === 'in-progress',
           ).length;
           const totalCount = rows.length;
 
           // Determine overall status
-          let overallStatus: "in-progress" | "complete" | "failed";
+          let overallStatus: 'in-progress' | 'complete' | 'failed';
           if (completeCount === totalCount) {
-            overallStatus = "complete";
+            overallStatus = 'complete';
           } else if (failedCount > 0 && inProgressCount === 0) {
-            overallStatus = "failed";
+            overallStatus = 'failed';
           } else {
-            overallStatus = "in-progress";
+            overallStatus = 'in-progress';
           }
 
           // Get latest uploaded_at timestamp
@@ -452,7 +452,7 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
             documentsUploaded: completeCount,
             expectedDocuments: totalCount,
             ...(latestUploadedAt && { uploadedAt: latestUploadedAt }),
-            ...(errors.length > 0 && { error: errors.join("; ") }),
+            ...(errors.length > 0 && { error: errors.join('; ') }),
           };
 
           return yield* Effect.succeed(Option.some(status));
@@ -466,10 +466,10 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
           },
           catch: (error) =>
             new DatabaseConnectionError({
-              message: "Failed to close database connection",
+              message: 'Failed to close database connection',
               cause: error,
             }),
-        }).pipe(Effect.ignore)
+        }).pipe(Effect.ignore),
       );
 
       return {
@@ -481,5 +481,5 @@ export class EGWUploadStatus extends Effect.Service<EGWUploadStatus>()(
       } as const;
     }),
     dependencies: [],
-  }
+  },
 ) {}

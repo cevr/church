@@ -46,9 +46,7 @@ place?"
   our assumptions about them."_
 
 - Three levels of community assessment:
-
   1. **Demographic understanding** - who lives in your community
-
      - **Acts 17:16-23** - Paul's observations of Athens before his presentation
      - _Speaking note: "Paul didn't deliver a standardized sermon in Athens—he
        first observed their culture, read their literature, and noted their
@@ -56,7 +54,6 @@ place?"
      - Practical tools: census data, community surveys, local history research
 
   2. **Needs assessment** - identifying felt and unfelt needs
-
      - **Matthew 9:36** - "But when he saw the multitudes, he was moved with
        compassion on them, because they fainted, and were scattered abroad, as
        sheep having no shepherd."
@@ -93,9 +90,7 @@ place?"
   must be addressed."_
 
 - Three major categories of misconceptions requiring attention:
-
   1. **Theological misconceptions** - false ideas about God and Scripture
-
      - **John 4:19-24** - Jesus addressing the Samaritan woman's theological
        confusion
      - _Speaking note: "The Samaritan woman held confused ideas about worship
@@ -108,7 +103,6 @@ place?"
        - Prayer as wishful thinking vs. genuine communion with God
 
   2. **Church misconceptions** - false ideas about organized religion
-
      - **Matthew 23:13-15** - Jesus addressing religious hypocrisy
      - _Speaking note: "One of the biggest barriers to evangelism isn't atheism
        but bad experiences with religion. Many reject not Christ but religious
@@ -148,9 +142,7 @@ place?"
   addressed through prayer."_
 
 - Three aspects of spiritual soil preparation:
-
   1. **Intercessory prayer** - pleading for specific individuals
-
      - **Job 42:10** - "And the LORD turned the captivity of Job, when he prayed
        for his friends"
      - _Speaking note: "Prayer is not merely preparation for the work—it is the
@@ -162,7 +154,6 @@ place?"
        - Prayer walking: on-site, location-specific prayer
 
   2. **Spiritual resistance** - addressing demonic opposition
-
      - **Ephesians 6:12** - "For we wrestle not against flesh and blood, but
        against principalities, against powers, against the rulers of the
        darkness of this world"
@@ -204,9 +195,7 @@ place?"
   Before people care what we know, they need to know that we care."_
 
 - Four relationship-building approaches:
-
   1. **Non-threatening contact points** - creating natural connections
-
      - **Acts 17:17** - "Therefore disputed he in the synagogue with the Jews,
        and with the devout persons, and in the market daily with them that met
        with him."
@@ -219,7 +208,6 @@ place?"
        - Family-oriented programs
 
   2. **Intentional hospitality** - opening homes and hearts
-
      - **Romans 12:13** - "Distributing to the necessity of saints; given to
        hospitality."
      - _Speaking note: "In our increasingly isolated society, genuine
@@ -231,7 +219,6 @@ place?"
        - Hosting small discussion groups in homes
 
   3. **Active listening** - understanding before being understood
-
      - **James 1:19** - "Wherefore, my beloved brethren, let every man be swift
        to hear, slow to speak, slow to wrath."
      - _Speaking note: "True evangelism begins with two open ears, not one open
@@ -274,9 +261,7 @@ place?"
   anyone but stewardly focusing limited resources where the soil is ready."_
 
 - Four levels of spiritual receptivity:
-
   1. **Actively resistant** - opposed to spiritual conversations
-
      - **Matthew 7:6** - "Give not that which is holy unto the dogs, neither
        cast ye your pearls before swine"
      - _Speaking note: "With resistant individuals, continued prayer and loving
@@ -289,7 +274,6 @@ place?"
        - Patience for God's timing
 
   2. **Casually curious** - intellectually interested but personally distant
-
      - **John 3:1-10** - Nicodemus's initial nighttime enquiry
      - _Speaking note: "Nicodemus began with intellectual curiosity that later
        deepened to commitment. With the casually curious, we provide thoughtful
@@ -300,7 +284,6 @@ place?"
        - Maintaining contact without pressure
 
   3. **Actively seeking** - pursuing answers to spiritual questions
-
      - **Acts 8:26-39** - The Ethiopian eunuch reading Isaiah
      - _Speaking note: "The Ethiopian was actively seeking before Philip
        arrived. God often prepares hearts through life circumstances, creating
@@ -342,9 +325,7 @@ place?"
   and corporate readiness are essential for effective evangelism."_
 
 - Three dimensions of sower preparation:
-
   1. **Personal spiritual preparation** - individual readiness
-
      - **Isaiah 6:5-8** - Isaiah's purification before commissioning
      - _Speaking note: "Isaiah couldn't say 'Here am I, send me' until his own
        lips were cleansed. Similarly, our effectiveness in reaching others is
@@ -355,7 +336,6 @@ place?"
        - Cultivation of genuine compassion for the lost
 
   2. **Skill development** - practical evangelistic training
-
      - **2 Timothy 2:15** - "Study to shew thyself approved unto God, a workman
        that needeth not to be ashamed, rightly dividing the word of truth."
      - _Speaking note: "While the Holy Spirit empowers evangelism, He doesn't
@@ -397,9 +377,7 @@ place?"
   time preparing the ground as we do lamenting poor results?"_
 
 - Three levels of commitment invitation:
-
   1. For individual members:
-
      - Identify one specific soil preparation ministry to join
      - Commit to regular prayer for five specific non-believing friends
      - _Speaking note: "Everyone can participate in preparing the soil,
@@ -407,7 +385,6 @@ place?"
        available to all."_
 
   2. For church leadership:
-
      - Develop a comprehensive community assessment plan
      - Schedule regular prayer initiatives focused on evangelistic preparation
      - _Speaking note: "Leadership determines direction. When leaders prioritize

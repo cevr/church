@@ -48,7 +48,6 @@ is not far from each one of us."
   invisible attributes are clearly seen, being understood by the things that are
   made, even His eternal power and Godhead, so that they are without excuse."
 - God's original revelation to all humanity
-
   - **Genesis 1-11** - Common human ancestry and early history
   - **Genesis 10-11** - The Table of Nations and dispersion at Babel
   - _Speaking note: "Picture humanity as a single tree with many branches.
@@ -56,7 +55,6 @@ is not far from each one of us."
     same root and carry some memory of their origin."_
 
 - The Great Controversy framework
-
   - **Revelation 12:7-9** - "War broke out in heaven: Michael and his angels
     fought with the dragon...the great dragon was cast out, that serpent of old,
     called the Devil and Satan, who deceives the whole world."
@@ -94,16 +92,13 @@ is not far from each one of us."
   carefully gather the good grain while identifying the weeds."_
 
 - Elements of truth in major world religions:
-
   - Monotheistic faiths (Judaism, Islam)
-
     - **Isaiah 44:6** - "I am the First and I am the Last; Besides Me there is
       no God."
     - Shared recognition of one Creator God
     - Common moral principles derived from the Abrahamic tradition
 
   - Eastern traditions (Hinduism, Buddhism)
-
     - **Acts 17:27** - "That they should seek the Lord, in the hope that they
       might grope for Him and find Him, though He is not far from each one of
       us."
@@ -136,9 +131,7 @@ is not far from each one of us."
   counterfeit believable."_
 
 - The pattern of spiritual counterfeits:
-
   1. **Adding to Scripture**
-
      - **Deuteronomy 4:2** - "You shall not add to the word which I command you,
        nor take from it..."
      - **Revelation 22:18** - "If anyone adds to these things, God will add to
@@ -148,7 +141,6 @@ is not far from each one of us."
        containing mostly good elements."_
 
   2. **Substituting human mediators for Christ**
-
      - **1 Timothy 2:5** - "For there is one God and one Mediator between God
        and men, the Man Christ Jesus."
      - **Colossians 2:18** - "Let no one cheat you of your reward, taking
@@ -159,7 +151,6 @@ is not far from each one of us."
        elsewhere."_
 
   3. **Works-based salvation**
-
      - **Ephesians 2:8-9** - "For by grace you have been saved through faith,
        and that not of yourselves; it is the gift of God, not of works, lest
        anyone should boast."
@@ -193,7 +184,6 @@ is not far from each one of us."
   origin."_
 
 - Satan's claim of dominion over the nations
-
   - **Luke 4:5-7** - "Then the devil, taking Him up on a high mountain, showed
     Him all the kingdoms of the world in a moment of time. And the devil said to
     Him, 'All this authority I will give You, and their glory; for this has been
@@ -229,16 +219,13 @@ is not far from each one of us."
   toward the God revealed in Jesus."_
 
 - Christ fulfills legitimate spiritual desires found in world religions:
-
   - The desire for direct communion with God
-
     - **John 14:6-7** - "I am the way, the truth, and the life. No one comes to
       the Father except through Me."
     - **Hebrews 10:19-22** - "Therefore, brethren, having boldness to enter the
       Holiest by the blood of Jesus..."
 
   - The longing for freedom from suffering
-
     - **Revelation 21:4** - "And God will wipe away every tear from their eyes;
       there shall be no more death, nor sorrow, nor crying."
     - **Romans 8:18-19** - "For I consider that the sufferings of this present
@@ -246,7 +233,6 @@ is not far from each one of us."
       in us."
 
   - The search for moral transformation
-
     - **2 Corinthians 5:17** - "Therefore, if anyone is in Christ, he is a new
       creation; old things have passed away; behold, all things have become
       new."
@@ -276,9 +262,7 @@ is not far from each one of us."
   truth."_
 
 - Principles for Christ-like interfaith dialogue:
-
   1. **Begin with respect and understanding**
-
      - **1 Peter 3:15** - "But sanctify the Lord God in your hearts, and always
        be ready to give a defense to everyone who asks you a reason for the hope
        that is in you, with meekness and fear."
@@ -289,7 +273,6 @@ is not far from each one of us."
        and genuinely seeking to understand their perspective."_
 
   2. **Affirm truth wherever it appears**
-
      - **Philippians 4:8** - "Whatever things are true, whatever things are
        noble, whatever things are just... if there is any virtue and if there is
        anything praiseworthy—meditate on these things."
@@ -300,7 +283,6 @@ is not far from each one of us."
        for sharing the fuller truth in Christ."_
 
   3. **Present Christ as the fulfillment, not merely as competition**
-
      - **Luke 24:27** - "And beginning at Moses and all the Prophets, He
        expounded to them in all the Scriptures the things concerning Himself."
      - **Matthew 5:17** - "Do not think that I came to destroy the Law or the
@@ -329,9 +311,7 @@ is not far from each one of us."
   spiritual background of those they encounter."_
 
 - Preparation for meaningful dialogue:
-
   1. **Study to understand accurately**
-
      - **Proverbs 18:13** - "He who answers a matter before he hears it, it is
        folly and shame to him."
      - Learn the basic beliefs and practices of major religions in your
@@ -341,7 +321,6 @@ is not far from each one of us."
        and earns the right to be heard."_
 
   2. **Pray for spiritual discernment**
-
      - **1 Kings 3:9** - "Therefore give to Your servant an understanding heart
        to judge Your people, that I may discern between good and evil."
      - **James 1:5** - "If any of you lacks wisdom, let him ask of God, who
@@ -362,9 +341,7 @@ is not far from each one of us."
        friendship creates channels for truth to flow naturally."_
 
 - Specific approaches for different religious backgrounds:
-
   1. **For those from monotheistic backgrounds (Judaism, Islam)**
-
      - Begin with shared belief in one Creator God and reverence for the
        prophets
      - Use Old Testament prophecies to establish Jesus as the promised Messiah
@@ -375,7 +352,6 @@ is not far from each one of us."
        they've only seen individual members."_
 
   2. **For those from Eastern religious backgrounds (Hinduism, Buddhism)**
-
      - Connect with their recognition of suffering and spiritual reality beyond
        materialism
      - Present Christ as the solution to suffering and separation from God
@@ -387,7 +363,6 @@ is not far from each one of us."
        entered our suffering."_
 
   3. **For those from secular or atheistic backgrounds**
-
      - Begin with evidence for design in creation and universal moral intuitions
      - Address rational and emotional barriers to faith
      - **Romans 1:20** - "For since the creation of the world His invisible
@@ -419,9 +394,7 @@ is not far from each one of us."
   returns."_
 
 - Universal elements of the final message:
-
   1. **The call to worship the Creator**
-
      - **Revelation 14:7** - "Fear God and give glory to Him, for the hour of
        His judgment has come; and worship Him who made heaven and earth, the sea
        and springs of water."
@@ -431,7 +404,6 @@ is not far from each one of us."
        proper object—the Creator God revealed in Scripture and nature."_
 
   2. **The warning against false religious systems**
-
      - **Revelation 14:8** - "Babylon is fallen, is fallen, that great city,
        because she has made all nations drink of the wine of the wrath of her
        fornication."
@@ -468,7 +440,6 @@ is not far from each one of us."
   fullness of biblical truth."_
 
 - Appeal for spiritual discernment:
-
   - **1 John 4:1** - "Beloved, do not believe every spirit, but test the
     spirits, whether they are of God..."
   - Are you approaching other religions with both biblical discernment and
@@ -476,7 +447,6 @@ is not far from each one of us."
   - Will you commit to praying for those trapped in false religious systems?
 
 - Appeal for evangelistic action:
-
   - **Mark 16:15** - "Go into all the world and preach the gospel to every
     creature."
   - Are you prepared to share Christ with friends from different faith

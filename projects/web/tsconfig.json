@@ -3,8 +3,9 @@
     "**/*",
     "**/.server/**/*",
     "**/.client/**/*",
-    ".react-router/types/**/*"
-, "../../packages/lib"  ],
+    ".react-router/types/**/*",
+    "../../packages/lib"
+  ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "types": ["node", "vite/client"],
@@ -25,6 +26,6 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noUnusedParameters": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": true
   }
 }

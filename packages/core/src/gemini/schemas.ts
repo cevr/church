@@ -3,7 +3,7 @@
  * Based on the Gemini File Search API documentation
  */
 
-import { Schema } from "effect";
+import { Schema } from 'effect';
 
 /**
  * File Search Store Configuration
@@ -12,7 +12,9 @@ export const FileSearchStoreConfig = Schema.Struct({
   displayName: Schema.String,
 });
 
-export type FileSearchStoreConfig = Schema.Schema.Type<typeof FileSearchStoreConfig>;
+export type FileSearchStoreConfig = Schema.Schema.Type<
+  typeof FileSearchStoreConfig
+>;
 
 /**
  * File Search Store
@@ -30,13 +32,17 @@ export type FileSearchStore = Schema.Schema.Type<typeof FileSearchStore>;
 export const CreateStoreOperation = Schema.Struct({
   name: Schema.String,
   done: Schema.Boolean,
-  error: Schema.optional(Schema.Struct({
-    code: Schema.Number,
-    message: Schema.String,
-  })),
+  error: Schema.optional(
+    Schema.Struct({
+      code: Schema.Number,
+      message: Schema.String,
+    }),
+  ),
 });
 
-export type CreateStoreOperation = Schema.Schema.Type<typeof CreateStoreOperation>;
+export type CreateStoreOperation = Schema.Schema.Type<
+  typeof CreateStoreOperation
+>;
 
 /**
  * Custom Metadata
@@ -74,7 +80,7 @@ export type SimpleMetadata = Record<string, string | number | string[]>;
  * so numbers are converted to strings for maximum compatibility.
  */
 export function toCustomMetadata(
-  metadata: SimpleMetadata | CustomMetadata[] | undefined
+  metadata: SimpleMetadata | CustomMetadata[] | undefined,
 ): CustomMetadata[] | undefined {
   if (!metadata) return undefined;
 
@@ -92,14 +98,16 @@ export function toCustomMetadata(
   // Convert SimpleMetadata to CustomMetadata[]
   // All values are converted to strings for API compatibility
   return Object.entries(metadata).map(([key, value]) => {
-    if (typeof value === "string") {
+    if (typeof value === 'string') {
       return { key, stringValue: value };
-    } else if (typeof value === "number") {
+    } else if (typeof value === 'number') {
       // Convert to string for API compatibility
       return { key, stringValue: String(value) };
     } else if (Array.isArray(value)) {
       // For arrays, convert to StringList format { values: string[] }
-      const stringArray = value.map((v) => (typeof v === "string" ? v : String(v)));
+      const stringArray = value.map((v) =>
+        typeof v === 'string' ? v : String(v),
+      );
       return { key, stringListValue: { values: stringArray } };
     } else {
       // Fallback: convert to string
@@ -116,7 +124,9 @@ export const WhiteSpaceChunkingConfig = Schema.Struct({
   maxOverlapTokens: Schema.Number,
 });
 
-export type WhiteSpaceChunkingConfig = Schema.Schema.Type<typeof WhiteSpaceChunkingConfig>;
+export type WhiteSpaceChunkingConfig = Schema.Schema.Type<
+  typeof WhiteSpaceChunkingConfig
+>;
 
 export const ChunkingConfig = Schema.Struct({
   whiteSpaceConfig: Schema.optional(WhiteSpaceChunkingConfig),
@@ -174,19 +184,23 @@ export type FileSearchTool = Schema.Schema.Type<typeof FileSearchTool>;
  */
 export const GroundingMetadata = Schema.Struct({
   searchEntryPoint: Schema.optional(Schema.String),
-  retrievalMetadata: Schema.optional(Schema.Struct({
-    score: Schema.optional(Schema.Number),
-    chunk: Schema.optional(Schema.String),
-  })),
+  retrievalMetadata: Schema.optional(
+    Schema.Struct({
+      score: Schema.optional(Schema.Number),
+      chunk: Schema.optional(Schema.String),
+    }),
+  ),
 });
 
 export type GroundingMetadata = Schema.Schema.Type<typeof GroundingMetadata>;
 
 export const Candidate = Schema.Struct({
   content: Schema.Struct({
-    parts: Schema.Array(Schema.Struct({
-      text: Schema.optional(Schema.String),
-    })),
+    parts: Schema.Array(
+      Schema.Struct({
+        text: Schema.optional(Schema.String),
+      }),
+    ),
   }),
   groundingMetadata: Schema.optional(GroundingMetadata),
 });
@@ -217,7 +231,9 @@ export const ListDocumentsResponse = Schema.Struct({
   nextPageToken: Schema.optional(Schema.String),
 });
 
-export type ListDocumentsResponse = Schema.Schema.Type<typeof ListDocumentsResponse>;
+export type ListDocumentsResponse = Schema.Schema.Type<
+  typeof ListDocumentsResponse
+>;
 
 /**
  * Operation (for polling)
@@ -225,10 +241,12 @@ export type ListDocumentsResponse = Schema.Schema.Type<typeof ListDocumentsRespo
 export const Operation = Schema.Struct({
   name: Schema.String,
   done: Schema.Boolean,
-  error: Schema.optional(Schema.Struct({
-    code: Schema.Number,
-    message: Schema.String,
-  })),
+  error: Schema.optional(
+    Schema.Struct({
+      code: Schema.Number,
+      message: Schema.String,
+    }),
+  ),
   response: Schema.optional(Schema.Unknown),
 });
 

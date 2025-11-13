@@ -4,6 +4,14 @@
  * Adapted from Spotify client patterns with Effect-TS
  */
 
+import { GoogleGenAI } from '@google/genai';
+import type {
+  CustomMetadata,
+  Document,
+  FileSearchStore,
+  Pager,
+  UploadToFileSearchStoreOperation,
+} from '@google/genai';
 import {
   Chunk,
   Config,
@@ -14,16 +22,9 @@ import {
   Redacted,
   Schedule,
   Stream,
-} from "effect";
-import { GoogleGenAI } from "@google/genai";
-import type {
-  Pager,
-  FileSearchStore,
-  Document,
-  UploadToFileSearchStoreOperation,
-  CustomMetadata,
-} from "@google/genai";
-import * as Schemas from "./schemas.js";
+} from 'effect';
+
+import * as Schemas from './schemas.js';
 
 // Type aliases for API types
 type FileSearchStorePager = Pager<FileSearchStore>;
@@ -34,7 +35,7 @@ type UploadOperation = UploadToFileSearchStoreOperation;
  * Gemini File Search Client Errors
  */
 export class GeminiFileSearchError extends Data.TaggedError(
-  "GeminiFileSearchError"
+  'GeminiFileSearchError',
 )<{
   readonly cause: unknown;
   readonly message: string;
@@ -44,15 +45,15 @@ export class GeminiFileSearchError extends Data.TaggedError(
  * Gemini File Search Client Service
  */
 export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClient>()(
-  "lib/Gemini/Client",
+  'lib/Gemini/Client',
   {
     effect: Effect.gen(function* () {
-      const apiKey = yield* Config.redacted("GOOGLE_AI_API_KEY").pipe(
+      const apiKey = yield* Config.redacted('GOOGLE_AI_API_KEY').pipe(
         Config.withDefault(
           process.env.GOOGLE_AI_API_KEY
             ? Redacted.make(process.env.GOOGLE_AI_API_KEY)
-            : Redacted.make("")
-        )
+            : Redacted.make(''),
+        ),
       );
 
       const ai = new GoogleGenAI({
@@ -65,32 +66,32 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
        * Exponential delays: 100ms, 200ms, 400ms
        */
       const retrySchedule = Schedule.exponential(Duration.millis(100)).pipe(
-        Schedule.compose(Schedule.recurs(2))
+        Schedule.compose(Schedule.recurs(2)),
       );
 
       const pollOperation = (
         operation: UploadOperation,
-        pollIntervalMs: number = 1000
+        pollIntervalMs: number = 1000,
       ): Effect.Effect<Schemas.Operation, GeminiFileSearchError> =>
         Effect.gen(function* () {
           if (operation.done) {
             return {
-              name: operation.name || "",
+              name: operation.name || '',
               done: true,
               error:
                 operation.error &&
-                typeof operation.error === "object" &&
-                "code" in operation.error &&
-                "message" in operation.error
+                typeof operation.error === 'object' &&
+                'code' in operation.error &&
+                'message' in operation.error
                   ? {
                       code:
-                        typeof operation.error.code === "number"
+                        typeof operation.error.code === 'number'
                           ? operation.error.code
                           : 0,
                       message:
-                        typeof operation.error.message === "string"
+                        typeof operation.error.message === 'string'
                           ? operation.error.message
-                          : "Unknown error",
+                          : 'Unknown error',
                     }
                   : undefined,
               response: operation.response,
@@ -102,19 +103,19 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
             try: () => ai.operations.get({ operation }),
             catch: (error) =>
               new GeminiFileSearchError({
-                message: "Failed to get operation status",
+                message: 'Failed to get operation status',
                 cause: error,
               }),
           }).pipe(Effect.retry(retrySchedule));
           return yield* pollOperation(
             updatedOperation as UploadOperation,
-            pollIntervalMs
+            pollIntervalMs,
           );
         });
 
       const searchStoresRecursive = (
         pager: FileSearchStorePager,
-        displayName: string
+        displayName: string,
       ): Effect.Effect<Schemas.FileSearchStore | null, GeminiFileSearchError> =>
         Effect.gen(function* () {
           const page = pager.page || [];
@@ -123,8 +124,8 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
           for (const store of page) {
             if (store.displayName === displayName) {
               return {
-                name: store.name || "",
-                displayName: store.displayName || "",
+                name: store.name || '',
+                displayName: store.displayName || '',
               } as Schemas.FileSearchStore;
             }
           }
@@ -138,20 +139,20 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
             try: () => pager.nextPage(),
             catch: (error) =>
               new GeminiFileSearchError({
-                message: "Failed to get next page of stores",
+                message: 'Failed to get next page of stores',
                 cause: error,
               }),
           }).pipe(Effect.retry(retrySchedule));
 
           return yield* searchStoresRecursive(
             nextPager as unknown as FileSearchStorePager,
-            displayName
+            displayName,
           );
         });
 
       const searchDocumentsRecursive = (
         pager: DocumentPager,
-        displayName: string
+        displayName: string,
       ): Effect.Effect<Schemas.Document | null, GeminiFileSearchError> =>
         Effect.gen(function* () {
           const page = pager.page || [];
@@ -160,8 +161,8 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
           for (const doc of page) {
             if (doc.displayName === displayName) {
               return {
-                name: doc.name || "",
-                displayName: doc.displayName || "",
+                name: doc.name || '',
+                displayName: doc.displayName || '',
                 createTime: doc.createTime,
                 updateTime: doc.updateTime,
               } as Schemas.Document;
@@ -177,14 +178,14 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
             try: () => pager.nextPage(),
             catch: (error) =>
               new GeminiFileSearchError({
-                message: "Failed to get next page of documents",
+                message: 'Failed to get next page of documents',
                 cause: error,
               }),
           }).pipe(Effect.retry(retrySchedule));
 
           return yield* searchDocumentsRecursive(
             nextPager as unknown as DocumentPager,
-            displayName
+            displayName,
           );
         });
 
@@ -203,7 +204,7 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
                 }),
             });
             return {
-              name: store.name || "",
+              name: store.name || '',
               displayName: store.displayName || displayName,
             } as Schemas.FileSearchStore;
           }).pipe(Effect.retry(retrySchedule)),
@@ -214,7 +215,7 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
               try: () => ai.fileSearchStores.list({ config: { pageSize } }),
               catch: (error) =>
                 new GeminiFileSearchError({
-                  message: "Failed to list file search stores",
+                  message: 'Failed to list file search stores',
                   cause: error,
                 }),
             });
@@ -224,7 +225,7 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
                 new GeminiFileSearchError({
                   message: `Store with display name '${displayName}' not found`,
                   cause: undefined,
-                })
+                }),
               );
             }
             return store;
@@ -233,7 +234,7 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
         uploadFile: (
           filePath: string,
           fileSearchStoreName: string,
-          config: Schemas.UploadConfig
+          config: Schemas.UploadConfig,
         ) =>
           Effect.gen(function* () {
             // Convert metadata to API format using the helper
@@ -265,7 +266,7 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
         uploadContent: (
           content: string | Uint8Array | Buffer,
           fileSearchStoreName: string,
-          config: Schemas.UploadConfig
+          config: Schemas.UploadConfig,
         ) =>
           Effect.gen(function* () {
             // Convert metadata to API format using the helper
@@ -275,33 +276,33 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
             // Handle different content types properly for File constructor
             // Type assertion needed due to strict TypeScript types, but runtime works correctly
             const fileParts =
-              typeof content === "string"
+              typeof content === 'string'
                 ? [content]
                 : Buffer.isBuffer(content)
                   ? [
                       new Uint8Array(
                         content.buffer,
                         content.byteOffset,
-                        content.byteLength
+                        content.byteLength,
                       ) as BlobPart,
                     ]
                   : [content as BlobPart];
 
             const file = new File(
               fileParts as BlobPart[],
-              config.displayName || "document.txt",
+              config.displayName || 'document.txt',
               {
-                type: "text/plain",
-              }
+                type: 'text/plain',
+              },
             );
 
             const contentLength =
-              typeof content === "string"
+              typeof content === 'string'
                 ? content.length
                 : content.byteLength || content.length;
 
             yield* Effect.log(
-              `Uploading content (${contentLength} bytes) to store: ${fileSearchStoreName} with displayName: ${config.displayName}`
+              `Uploading content (${contentLength} bytes) to store: ${fileSearchStoreName} with displayName: ${config.displayName}`,
             );
 
             const operation = yield* Effect.tryPromise({
@@ -328,7 +329,7 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
         uploadFiles: (
           filePaths: string[],
           fileSearchStoreName: string,
-          getConfig: (filePath: string) => Schemas.UploadConfig
+          getConfig: (filePath: string) => Schemas.UploadConfig,
         ) =>
           Effect.gen(function* () {
             const { uploadFile } = yield* GeminiFileSearchClient;
@@ -336,10 +337,14 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
             return yield* Stream.fromIterable(filePaths).pipe(
               Stream.flatMap((filePath) =>
                 Stream.fromEffect(
-                  uploadFile(filePath, fileSearchStoreName, getConfig(filePath))
-                )
+                  uploadFile(
+                    filePath,
+                    fileSearchStoreName,
+                    getConfig(filePath),
+                  ),
+                ),
               ),
-              Stream.runCollect
+              Stream.runCollect,
             );
           }),
 
@@ -347,7 +352,7 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
           model: string,
           contents: string,
           fileSearchStoreNames: string[],
-          metadataFilter?: string
+          metadataFilter?: string,
         ) =>
           Effect.gen(function* () {
             const response = yield* Effect.tryPromise({
@@ -368,7 +373,7 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
                 }),
               catch: (error) =>
                 new GeminiFileSearchError({
-                  message: "Failed to generate content",
+                  message: 'Failed to generate content',
                   cause: error,
                 }),
             });
@@ -443,18 +448,18 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
                   // Transform documents
                   const documents = Chunk.fromIterable(
                     page.map((doc: Document) => ({
-                      name: doc.name || "",
-                      displayName: doc.displayName || "",
+                      name: doc.name || '',
+                      displayName: doc.displayName || '',
                       customMetadata: (doc.customMetadata ||
                         []) as Schemas.CustomMetadata[],
-                    }))
+                    })),
                   );
 
                   // Return documents and next pager (or none if done)
                   // Check if there's a next page by checking if hasNextPage method exists and works
                   // or by checking params directly (which is what hasNextPage does internally)
                   let hasNext = false;
-                  if (typeof (pager as any).hasNextPage === "function") {
+                  if (typeof (pager as any).hasNextPage === 'function') {
                     try {
                       hasNext = (pager as any).hasNextPage();
                     } catch {
@@ -472,11 +477,11 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
                     documents,
                     hasNext ? pager : undefined,
                   ] as const);
-                })
+                }),
             ).pipe(
               Stream.flatMap((documentsChunk) =>
-                Stream.fromChunk(documentsChunk)
-              )
+                Stream.fromChunk(documentsChunk),
+              ),
             );
 
             // Collect all documents from the stream
@@ -485,7 +490,7 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
 
         findDocumentByDisplayName: (
           fileSearchStoreName: string,
-          displayName: string
+          displayName: string,
         ) =>
           Effect.gen(function* () {
             const pager = yield* Effect.tryPromise({
@@ -501,14 +506,14 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
             });
             const document = yield* searchDocumentsRecursive(
               pager,
-              displayName
+              displayName,
             );
             if (!document) {
               return yield* Effect.fail(
                 new GeminiFileSearchError({
                   message: `Document '${displayName}' not found in store`,
                   cause: undefined,
-                })
+                }),
               );
             }
             return document;
@@ -529,7 +534,7 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
             });
             const document = yield* searchDocumentsRecursive(
               pager,
-              displayName
+              displayName,
             );
             return document !== null;
           }).pipe(Effect.retry(retrySchedule)),
@@ -542,14 +547,14 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
             const count = yield* Stream.fromChunk(allDocumentsChunk).pipe(
               Stream.filter((doc) => {
                 const bookIdMetadata = doc.customMetadata?.find(
-                  (meta: Schemas.CustomMetadata) => meta.key === "book_id"
+                  (meta: Schemas.CustomMetadata) => meta.key === 'book_id',
                 );
                 return (
                   bookIdMetadata?.stringValue !== undefined &&
                   bookIdMetadata.stringValue === String(bookId)
                 );
               }),
-              Stream.runCount
+              Stream.runCount,
             );
             return count;
           }),
@@ -574,24 +579,24 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
           filePath: string,
           fileSearchStoreName: string,
           displayName: string,
-          config?: Omit<Schemas.UploadConfig, "displayName">
+          config?: Omit<Schemas.UploadConfig, 'displayName'>,
         ) =>
           Effect.gen(function* () {
             const { findDocumentByDisplayName, deleteDocument, uploadFile } =
               yield* GeminiFileSearchClient;
             yield* findDocumentByDisplayName(
               fileSearchStoreName,
-              displayName
+              displayName,
             ).pipe(
               Effect.flatMap((existingDoc) =>
-                deleteDocument(existingDoc.name, true)
+                deleteDocument(existingDoc.name, true),
               ),
-              Effect.catchTag("GeminiFileSearchError", (error) => {
-                if (error.message.includes("not found")) {
+              Effect.catchTag('GeminiFileSearchError', (error) => {
+                if (error.message.includes('not found')) {
                   return Effect.void;
                 }
                 return Effect.fail(error);
-              })
+              }),
             );
             return yield* uploadFile(filePath, fileSearchStoreName, {
               displayName,
@@ -616,5 +621,5 @@ export class GeminiFileSearchClient extends Effect.Service<GeminiFileSearchClien
           }).pipe(Effect.retry(retrySchedule)),
       } as const;
     }),
-  }
+  },
 ) {}

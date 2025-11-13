@@ -23,6 +23,6 @@
  * ```
  */
 
-export { GeminiFileSearchClient, GeminiFileSearchError } from "./client.js";
+export { GeminiFileSearchClient, GeminiFileSearchError } from './client.js';
 
-export * as Schemas from "./schemas.js";
+export * as Schemas from './schemas.js';

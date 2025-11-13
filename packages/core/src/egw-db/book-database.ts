@@ -13,16 +13,25 @@
  * - book metadata (code, title, author) for quick lookups
  */
 
-import { FileSystem, Path } from "@effect/platform";
-import { Config, Data, Effect, Option, ParseResult, Schema, Stream } from "effect";
-import { Database } from "bun:sqlite";
-import * as EGWSchemas from "../egw/schemas.js";
+import { FileSystem, Path } from '@effect/platform';
+import { Database } from 'bun:sqlite';
+import {
+  Config,
+  Data,
+  Effect,
+  Option,
+  ParseResult,
+  Schema,
+  Stream,
+} from 'effect';
+
+import * as EGWSchemas from '../egw/schemas.js';
 
 /**
  * Database connection or initialization error
  */
 export class DatabaseConnectionError extends Data.TaggedError(
-  "DatabaseConnectionError"
+  'DatabaseConnectionError',
 )<{
   readonly cause: unknown;
   readonly message: string;
@@ -31,7 +40,7 @@ export class DatabaseConnectionError extends Data.TaggedError(
 /**
  * Database query execution error
  */
-export class DatabaseQueryError extends Data.TaggedError("DatabaseQueryError")<{
+export class DatabaseQueryError extends Data.TaggedError('DatabaseQueryError')<{
   readonly cause: unknown;
   readonly operation: string;
   readonly bookId?: number;
@@ -41,7 +50,7 @@ export class DatabaseQueryError extends Data.TaggedError("DatabaseQueryError")<{
  * Paragraph not found error
  */
 export class ParagraphNotFoundError extends Data.TaggedError(
-  "ParagraphNotFoundError"
+  'ParagraphNotFoundError',
 )<{
   readonly bookId: number;
   readonly refCode: string;
@@ -51,7 +60,7 @@ export class ParagraphNotFoundError extends Data.TaggedError(
  * Database schema initialization error
  */
 export class SchemaInitializationError extends Data.TaggedError(
-  "SchemaInitializationError"
+  'SchemaInitializationError',
 )<{
   readonly cause: unknown;
   readonly message: string;
@@ -73,11 +82,11 @@ export type ParagraphDatabaseError =
  */
 export const ParagraphRow = EGWSchemas.Paragraph.pipe(
   Schema.pick(
-    "para_id",
-    "refcode_short",
-    "refcode_long",
-    "content",
-    "puborder"
+    'para_id',
+    'refcode_short',
+    'refcode_long',
+    'content',
+    'puborder',
   ),
   Schema.extend(
     Schema.Struct({
@@ -90,8 +99,8 @@ export const ParagraphRow = EGWSchemas.Paragraph.pipe(
       ref_code: Schema.String,
       created_at: Schema.String,
       updated_at: Schema.String,
-    })
-  )
+    }),
+  ),
 );
 
 export type ParagraphRow = Schema.Schema.Type<typeof ParagraphRow>;
@@ -100,15 +109,15 @@ export type ParagraphRow = Schema.Schema.Type<typeof ParagraphRow>;
  * EGW Paragraph Database Service
  */
 export class EGWParagraphDatabase extends Effect.Service<EGWParagraphDatabase>()(
-  "lib/EGWDB/ParagraphDatabase",
+  'lib/EGWDB/ParagraphDatabase',
   {
     scoped: Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
 
       // Get database file path from config or use default
-      const dbFile = yield* Config.string("EGW_PARAGRAPH_DB").pipe(
-        Config.withDefault("data/egw-paragraphs.db")
+      const dbFile = yield* Config.string('EGW_PARAGRAPH_DB').pipe(
+        Config.withDefault('data/egw-paragraphs.db'),
       );
 
       const dbPath = path.resolve(dbFile);
@@ -167,7 +176,7 @@ export class EGWParagraphDatabase extends Effect.Service<EGWParagraphDatabase>()
         },
         catch: (error) =>
           new SchemaInitializationError({
-            message: "Failed to initialize database schema",
+            message: 'Failed to initialize database schema',
             cause: error,
           }),
       });
@@ -238,7 +247,7 @@ export class EGWParagraphDatabase extends Effect.Service<EGWParagraphDatabase>()
       const paragraphToRow = (
         paragraph: EGWSchemas.Paragraph,
         book: EGWSchemas.Book,
-        now: string
+        now: string,
       ): Effect.Effect<ParagraphRow, ParseResult.ParseError> => {
         const refCode =
           paragraph.refcode_short ??
@@ -267,24 +276,26 @@ export class EGWParagraphDatabase extends Effect.Service<EGWParagraphDatabase>()
        * Note: This returns a paragraph object excluding database-specific fields
        */
       const rowToParagraph = (
-        row: ParagraphRow
+        row: ParagraphRow,
       ): Effect.Effect<EGWSchemas.Paragraph, ParseResult.ParseError> =>
         Schema.decode(ParagraphRow)(row).pipe(
-          Effect.map((paragraphRow): EGWSchemas.Paragraph => ({
-            para_id: paragraphRow.para_id ?? null,
-            id_prev: null,
-            id_next: null,
-            refcode_1: null,
-            refcode_2: null,
-            refcode_3: null,
-            refcode_4: null,
-            refcode_short: paragraphRow.refcode_short ?? null,
-            refcode_long: paragraphRow.refcode_long ?? null,
-            element_type: null,
-            element_subtype: null,
-            content: paragraphRow.content ?? null,
-            puborder: paragraphRow.puborder,
-          }))
+          Effect.map(
+            (paragraphRow): EGWSchemas.Paragraph => ({
+              para_id: paragraphRow.para_id ?? null,
+              id_prev: null,
+              id_next: null,
+              refcode_1: null,
+              refcode_2: null,
+              refcode_3: null,
+              refcode_4: null,
+              refcode_short: paragraphRow.refcode_short ?? null,
+              refcode_long: paragraphRow.refcode_long ?? null,
+              element_type: null,
+              element_subtype: null,
+              content: paragraphRow.content ?? null,
+              puborder: paragraphRow.puborder,
+            }),
+          ),
         );
 
       /**
@@ -292,7 +303,7 @@ export class EGWParagraphDatabase extends Effect.Service<EGWParagraphDatabase>()
        */
       const storeParagraph = (
         paragraph: EGWSchemas.Paragraph,
-        book: EGWSchemas.Book
+        book: EGWSchemas.Book,
       ): Effect.Effect<void, ParagraphDatabaseError | ParseResult.ParseError> =>
         Effect.gen(function* () {
           const now = new Date().toISOString();
@@ -313,7 +324,7 @@ export class EGWParagraphDatabase extends Effect.Service<EGWParagraphDatabase>()
               }),
             catch: (error) =>
               new DatabaseQueryError({
-                operation: "getParagraph",
+                operation: 'getParagraph',
                 bookId: book.book_id,
                 cause: error,
               }),
@@ -323,7 +334,7 @@ export class EGWParagraphDatabase extends Effect.Service<EGWParagraphDatabase>()
           const row = yield* paragraphToRow(
             paragraph,
             book,
-            existing?.created_at || now
+            existing?.created_at || now,
           );
 
           yield* Effect.try({
@@ -345,7 +356,7 @@ export class EGWParagraphDatabase extends Effect.Service<EGWParagraphDatabase>()
             },
             catch: (error) =>
               new DatabaseQueryError({
-                operation: "storeParagraph",
+                operation: 'storeParagraph',
                 bookId: book.book_id,
                 cause: error,
               }),
@@ -357,7 +368,7 @@ export class EGWParagraphDatabase extends Effect.Service<EGWParagraphDatabase>()
        */
       const getParagraph = (
         bookId: number,
-        refCode: string
+        refCode: string,
       ): Effect.Effect<
         Option.Option<EGWSchemas.Paragraph>,
         ParagraphDatabaseError | ParseResult.ParseError
@@ -371,7 +382,7 @@ export class EGWParagraphDatabase extends Effect.Service<EGWParagraphDatabase>()
               }),
             catch: (error) =>
               new DatabaseQueryError({
-                operation: "getParagraph",
+                operation: 'getParagraph',
                 bookId: bookId,
                 cause: error,
               }),
@@ -389,7 +400,7 @@ export class EGWParagraphDatabase extends Effect.Service<EGWParagraphDatabase>()
        * Get all paragraphs for a book
        */
       const getParagraphsByBook = (
-        bookId: number
+        bookId: number,
       ): Stream.Stream<
         EGWSchemas.Paragraph,
         ParagraphDatabaseError | ParseResult.ParseError
@@ -402,21 +413,21 @@ export class EGWParagraphDatabase extends Effect.Service<EGWParagraphDatabase>()
               }),
             catch: (error) =>
               new DatabaseQueryError({
-                operation: "getParagraphsByBook",
+                operation: 'getParagraphsByBook',
                 bookId: bookId,
                 cause: error,
               }),
-          })
+          }),
         ).pipe(
           Stream.flatMap((rows) => Stream.fromIterable(rows)),
-          Stream.mapEffect((row) => rowToParagraph(row))
+          Stream.mapEffect((row) => rowToParagraph(row)),
         );
 
       /**
        * Get all paragraphs by author
        */
       const getParagraphsByAuthor = (
-        author: string
+        author: string,
       ): Stream.Stream<
         EGWSchemas.Paragraph,
         ParagraphDatabaseError | ParseResult.ParseError
@@ -429,13 +440,13 @@ export class EGWParagraphDatabase extends Effect.Service<EGWParagraphDatabase>()
               }),
             catch: (error) =>
               new DatabaseQueryError({
-                operation: "getParagraphsByAuthor",
+                operation: 'getParagraphsByAuthor',
                 cause: error,
               }),
-          })
+          }),
         ).pipe(
           Stream.flatMap((rows) => Stream.fromIterable(rows)),
-          Stream.mapEffect((row) => rowToParagraph(row))
+          Stream.mapEffect((row) => rowToParagraph(row)),
         );
 
       /**
@@ -443,7 +454,7 @@ export class EGWParagraphDatabase extends Effect.Service<EGWParagraphDatabase>()
        * Returns simplified book info extracted from paragraphs
        */
       const getBooksByAuthor = (
-        author: string
+        author: string,
       ): Stream.Stream<
         {
           readonly book_id: number;
@@ -460,10 +471,10 @@ export class EGWParagraphDatabase extends Effect.Service<EGWParagraphDatabase>()
               }),
             catch: (error) =>
               new DatabaseQueryError({
-                operation: "getBooksByAuthor",
+                operation: 'getBooksByAuthor',
                 cause: error,
               }),
-          })
+          }),
         ).pipe(Stream.flatMap((rows) => Stream.fromIterable(rows)));
 
       // Cleanup: close database when scope ends
@@ -474,10 +485,10 @@ export class EGWParagraphDatabase extends Effect.Service<EGWParagraphDatabase>()
           },
           catch: (error) =>
             new DatabaseConnectionError({
-              message: "Failed to close database connection",
+              message: 'Failed to close database connection',
               cause: error,
             }),
-        }).pipe(Effect.ignore)
+        }).pipe(Effect.ignore),
       );
 
       return {
@@ -489,5 +500,5 @@ export class EGWParagraphDatabase extends Effect.Service<EGWParagraphDatabase>()
       } as const;
     }),
     dependencies: [],
-  }
+  },
 ) {}

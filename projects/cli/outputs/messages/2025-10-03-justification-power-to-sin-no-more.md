@@ -45,7 +45,6 @@ more."
   transformative."_
 
 1. **What happens at justification:**
-
    - **2 Corinthians 5:17** - "Therefore if any man be in Christ, he is a new
      creature: old things are passed away; behold, all things are become new"
    - **Romans 5:10** - "For if, when we were enemies, we were reconciled to God
@@ -57,7 +56,6 @@ more."
      have a new heart!"_
 
 2. **The power element in justification:**
-
    - **Romans 6:6-7** - "Knowing this, that our old man is crucified with him,
      that the body of sin might be destroyed, that henceforth we should not
      serve sin. For he that is dead is freed from sin."
@@ -89,7 +87,6 @@ more."
   together."_
 
 1. **The artificial division:**
-
    - **Titus 2:11-14** - "For the grace of God that bringeth salvation hath
      appeared to all men, Teaching us that, denying ungodliness and worldly
      lusts, we should live soberly, righteously, and godly, in this present
@@ -102,7 +99,6 @@ more."
      open doorway."_
 
 2. **Ellen White's unified view:**
-
    - "Justification is the opposite of condemnation. God's boundless mercy is
      exercised toward those who are wholly undeserving. He forgives
      transgressions and sins for the sake of Jesus, who has become the
@@ -137,7 +133,6 @@ more."
   light—the transformation from darkness to light is immediate."_
 
 1. **The new birth provides immediate power:**
-
    - **Ezekiel 36:26-27** - "A new heart also will I give you, and a new spirit
      will I put within you... And I will put my spirit within you, and cause you
      to walk in my statutes"
@@ -149,7 +144,6 @@ more."
      grows more complete over time."_
 
 2. **The gift of the Holy Spirit at conversion:**
-
    - **Galatians 3:2-3** - "Received ye the Spirit by the works of the law, or
      by the hearing of faith? Are ye so foolish? having begun in the Spirit, are
      ye now made perfect by the flesh?"
@@ -182,7 +176,6 @@ more."
   complete power already given at conversion."_
 
 1. **What sanctification really develops:**
-
    - **2 Peter 1:5-8** - "Add to your faith virtue; and to virtue knowledge; And
      to knowledge temperance... For if these things be in you, and abound, they
      make you that ye shall neither be barren nor unfruitful"
@@ -198,7 +191,6 @@ more."
      - Our Christ-like character traits
 
 2. **From victory to victory, not from defeat to victory:**
-
    - **2 Corinthians 3:18** - "But we all, with open face beholding as in a
      glass the glory of the Lord, are changed into the same image from glory to
      glory, even as by the Spirit of the Lord"
@@ -232,7 +224,6 @@ more."
   spiritual empowerment."_
 
 1. **Christ never commands the impossible:**
-
    - **Deuteronomy 30:11-14** - "For this commandment which I command thee this
      day, it is not hidden from thee, neither is it far off... But the word is
      very nigh unto thee, in thy mouth, and in thy heart, that thou mayest do
@@ -245,7 +236,6 @@ more."
      Every divine command comes with divine enabling."_
 
 2. **The moment of decision versus the journey of application:**
-
    - **Mark 8:34** - "Whosoever will come after me, let him deny himself, and
      take up his cross, and follow me"
    - The decision to follow Christ is immediate; the daily cross-bearing is
@@ -280,7 +270,6 @@ more."
   break."_
 
 1. **Understanding the difference between power and pattern:**
-
    - **Romans 6:17-18** - "But God be thanked, that ye were the servants of sin,
      but ye have obeyed from the heart that form of doctrine which was delivered
      you. Being then made free from sin, ye became the servants of
@@ -293,7 +282,6 @@ more."
      real, but their habits still reflect their former captivity."_
 
 2. **The physical reality of neural pathways:**
-
    - **Proverbs 22:6** - "Train up a child in the way he should go: and when he
      is old, he will not depart from it."
    - **Jeremiah 13:23** - "Can the Ethiopian change his skin, or the leopard his
@@ -306,7 +294,6 @@ more."
      channel remains and must be intentionally filled or redirected."_
 
 3. **From impossible to possible:**
-
    - **Philippians 4:13** - "I can do all things through Christ which
      strengtheneth me."
    - **Matthew 19:26** - "With men this is impossible; but with God all things
@@ -343,7 +330,6 @@ more."
   it."_
 
 1. **Claiming immediate freedom from sinful habits:**
-
    - **Romans 6:11-13** - "Likewise reckon ye also yourselves to be dead indeed
      unto sin, but alive unto God through Jesus Christ our Lord... yield
      yourselves unto God, as those that are alive from the dead"
@@ -357,7 +343,6 @@ more."
      living from that new identity by God's power."_
 
 2. **Developing new spiritual habits:**
-
    - **Philippians 4:8-9** - "Finally, brethren, whatsoever things are true...
      think on these things. Those things, which ye have both learned, and
      received, and heard, and seen in me, do: and the God of peace shall be with
@@ -397,7 +382,6 @@ more."
   above what's blocking our view."_
 
 1. **Unbelief in God's promises:**
-
    - **Mark 9:23-24** - "Jesus said unto him, If thou canst believe, all things
      are possible to him that believeth. And straightway the father of the child
      cried out, and said with tears, Lord, I believe; help thou mine unbelief"
@@ -409,7 +393,6 @@ more."
      promises aren't true for them personally."_
 
 2. **Cherished sin and divided loyalty:**
-
    - **Joshua 7:10-13** - The story of Achan's hidden sin causing Israel's
      defeat
    - **Matthew 6:24** - "No man can serve two masters"
@@ -418,7 +401,6 @@ more."
      one on the brake—you'll go nowhere except in circles."_
 
 3. **Misunderstanding the gospel process:**
-
    - **Galatians 3:1-3** - "O foolish Galatians, who hath bewitched you, that ye
      should not obey the truth... Having begun in the Spirit, are ye now made
      perfect by the flesh?"
@@ -451,7 +433,6 @@ more."
   life with His glory."_
 
 1. **The glorious freedom of sons and daughters:**
-
    - **Romans 8:14-17** - "For as many as are led by the Spirit of God, they are
      the sons of God... The Spirit itself beareth witness with our spirit, that
      we are the children of God"
@@ -462,7 +443,6 @@ more."
      field of freedom, exploring the boundless dimensions of God's love."_
 
 2. **Growing from victory to victory:**
-
    - **Isaiah 40:31** - "They that wait upon the LORD shall renew their
      strength; they shall mount up with wings as eagles; they shall run, and not
      be weary; and they shall walk, and not faint"
@@ -492,7 +472,6 @@ more."
   and power for the future. He offers you the same complete package today."_
 
 1. **For those struggling with recurring sin:**
-
    - **Jeremiah 29:13** - "And ye shall seek me, and find me, when ye shall
      search for me with all your heart"
    - **Isaiah 55:7** - "Let the wicked forsake his way, and the unrighteous man
@@ -501,7 +480,6 @@ more."
    - Appeal: Will you claim Christ's complete deliverance today?
 
 2. **For those growing in grace:**
-
    - **Philippians 3:13-14** - "Brethren, I count not myself to have
      apprehended: but this one thing I do, forgetting those things which are
      behind, and reaching forth unto those things which are before, I press

@@ -39,9 +39,7 @@ confound me, with God at my right hand?"
   for effective planting."_
 
 - Three essential properties of the biblical seed:
-
   1. **Inherent life-giving power** - the Word's transformative nature
-
      - **Isaiah 55:10-11** - "For as the rain cometh down, and the snow from
        heaven... So shall my word be that goeth forth out of my mouth: it shall
        not return unto me void."
@@ -52,7 +50,6 @@ confound me, with God at my right hand?"
        generating the life."_
 
   2. **Different types for different purposes** - various biblical truths
-
      - **2 Timothy 3:16-17** - "All scripture is given by inspiration of God,
        and is profitable for doctrine, for reproof, for correction, for
        instruction in righteousness"
@@ -94,9 +91,7 @@ confound me, with God at my right hand?"
   harvest Tuesday. Similarly, spiritual truth unfolds in progressive stages."_
 
 - The pattern of progressive revelation:
-
   1. **Beginning with common ground** - establishing connection
-
      - **Acts 17:22-23** - Paul's approach at Athens: "For as I passed by, and
        beheld your devotions, I found an altar with this inscription, TO THE
        UNKNOWN GOD."
@@ -110,7 +105,6 @@ confound me, with God at my right hand?"
        - Starting with agreed-upon problems before offering solutions
 
   2. **Moving from known to unknown** - building on existing knowledge
-
      - **John 3:12** - "If I have told you earthly things, and ye believe not,
        how shall ye believe, if I tell you of heavenly things?"
      - **1 Corinthians 3:1-2** - "I have fed you with milk, and not with meat:
@@ -152,9 +146,7 @@ confound me, with God at my right hand?"
   single, inflexible method."_
 
 - Four effective seed-sowing methods:
-
   1. **Testimony-based approach** - sharing personal experience
-
      - **John 9:25** - The healed blind man: "One thing I know, that, whereas I
        was blind, now I see."
      - **Mark 5:19** - "Go home to thy friends, and tell them how great things
@@ -170,7 +162,6 @@ confound me, with God at my right hand?"
        - Avoidance of religious jargon
 
   2. **Dialogue-based approach** - interactive conversation
-
      - **John 4:7-26** - Jesus' conversation with the Samaritan woman
      - _Speaking note: "Notice how Jesus used questions rather than declarations
        with the Samaritan woman. He created a dialogue that led her to her own
@@ -183,7 +174,6 @@ confound me, with God at my right hand?"
        - Creating safe space for honest wrestling with difficult concepts
 
   3. **Teaching-based approach** - systematic instruction
-
      - **Matthew 5-7** - The Sermon on the Mount
      - **Acts 19:9-10** - "Paul was disputing daily in the school of one
        Tyrannus. And this continued by the space of two years; so that all they
@@ -230,9 +220,7 @@ confound me, with God at my right hand?"
   obstacles to truth's reception."_
 
 - Five principles of effective truth presentation:
-
   1. **Clarity over complexity** - making truth understandable
-
      - **Habakkuk 2:2** - "Write the vision, and make it plain upon tables, that
        he may run that readeth it."
      - _Speaking note: "Clarity isn't dumbing down truth but distilling it to
@@ -246,7 +234,6 @@ confound me, with God at my right hand?"
        - Testing presentations with non-church members
 
   2. **Stories and metaphors** - capturing imagination
-
      - **Matthew 13:34** - "All these things spake Jesus unto the multitude in
        parables; and without a parable spake he not unto them."
      - _Speaking note: "Jesus, the master teacher, consistently used
@@ -260,7 +247,6 @@ confound me, with God at my right hand?"
        - Questions that invite application
 
   3. **Visual and tangible elements** - engaging multiple senses
-
      - **Jeremiah 18:1-6** - God sending Jeremiah to the potter's house
      - **John 4:7-15** - Jesus using physical water to teach about living water
      - _Speaking note: "Biblical teaching frequently employed visual and
@@ -274,7 +260,6 @@ confound me, with God at my right hand?"
        - Environmental elements that support the message
 
   4. **Cultural relevance** - connecting to current context
-
      - **Acts 17:28** - Paul quoting Greek poets in Athens
      - _Speaking note: "Paul demonstrated cultural awareness by quoting their
        own poets and philosophers. Similarly, we must build bridges between
@@ -317,9 +302,7 @@ confound me, with God at my right hand?"
   than frustration."_
 
 - Four common forms of resistance:
-
   1. **Intellectual objections** - questions and doubts
-
      - **Acts 17:16-34** - Mixed reaction to Paul's Mars Hill presentation
      - _Speaking note: "Some resistance comes from genuine intellectual
        questions. Notice how Paul didn't dismiss the Athenians' questions but
@@ -332,7 +315,6 @@ confound me, with God at my right hand?"
        - Distinguishing between intellectual and emotional objections
 
   2. **Emotional barriers** - fear, hurt, and distrust
-
      - **Mark 10:17-22** - The rich young ruler's emotional struggle
      - _Speaking note: "The rich young ruler's obstacle wasn't intellectual
        disagreement but emotional attachment to wealth. Many resist truth not
@@ -345,7 +327,6 @@ confound me, with God at my right hand?"
        - Emphasizing God's compassion and support through change
 
   3. **Lifestyle implications** - practical consequences
-
      - **Acts 24:25** - "And as he reasoned of righteousness, temperance, and
        judgment to come, Felix trembled, and answered, Go thy way for this time;
        when I have a convenient season, I will call for thee."
@@ -395,9 +376,7 @@ confound me, with God at my right hand?"
   Spirit's work in hearts."_
 
 - Three essential aspects of Spirit partnership:
-
   1. **Recognizing divine timing** - sensitivity to the Spirit's preparation
-
      - **John 16:8** - "And when he is come, he will reprove the world of sin,
        and of righteousness, and of judgment."
      - _Speaking note: "The Holy Spirit works in hearts before, during, and
@@ -410,7 +389,6 @@ confound me, with God at my right hand?"
        - Specific questions indicating inner spiritual work
 
   2. **Spirit-guided adaptability** - flexibility in presentation
-
      - **Acts 16:6-10** - The Spirit redirecting Paul's missionary journey
      - _Speaking note: "Paul had a plan, but the Spirit had a better one.
        Similarly, our prepared outlines and approaches must remain flexible to
@@ -456,7 +434,6 @@ confound me, with God at my right hand?"
   timelines different from our expectations."_
 
 - Summary of key seed-sowing principles:
-
   - Understanding the sacred nature of the seed itself
   - Respecting the sequence of spiritual growth
   - Selecting methods appropriate to the audience
@@ -465,9 +442,7 @@ confound me, with God at my right hand?"
   - Partnering with the Holy Spirit throughout
 
 - Three levels of commitment invitation:
-
   1. For beginners in seed-sowing:
-
      - Commit to sharing your personal testimony with one person this month
      - Begin a prayer list of five people with whom you'd like to share truth
      - _Speaking note: "Your testimony is the simplest seed to sow, requiring no
@@ -475,7 +450,6 @@ confound me, with God at my right hand?"
        us can begin most naturally."_
 
   2. For intermediate seed-sowers:
-
      - Identify your strongest presentation method and develop it further
      - Commit to a specific study series with someone showing interest
      - _Speaking note: "As you discover your natural seed-sowing style, invest

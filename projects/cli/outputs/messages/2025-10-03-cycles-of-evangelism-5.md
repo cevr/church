@@ -46,9 +46,7 @@ to teach others also."
   they are inseparable parts of one continuous process."_
 
 - Three biblical foundations for post-harvest ministry:
-
   1. **Agricultural completion model** - the full harvest cycle
-
      - **Deuteronomy 16:13-15** - "Thou shalt observe the feast of tabernacles
        seven days, after that thou hast gathered in thy corn and thy wine."
      - **John 15:16** - "I have chosen you, and ordained you, that ye should go
@@ -60,7 +58,6 @@ to teach others also."
        permanence, not just initial decisions."_
 
   2. **Spiritual parenting model** - responsibility for nurture
-
      - **1 Thessalonians 2:7-8, 11-12** - "But we were gentle among you, even as
        a nurse cherisheth her children... As ye know how we exhorted and
        comforted and charged every one of you, as a father doth his children."
@@ -101,9 +98,7 @@ to teach others also."
   support long-term spiritual health."_
 
 - Five essential establishment elements:
-
   1. **Identity formation** - embracing new self-understanding
-
      - **1 Peter 2:9-10** - "But ye are a chosen generation, a royal priesthood,
        an holy nation, a peculiar people... Which in time past were not a
        people, but are now the people of God."
@@ -117,7 +112,6 @@ to teach others also."
        - Ceremony and symbolism that reinforces new identity
 
   2. **Relationship integration** - community incorporation
-
      - **Ephesians 2:19-22** - "Now therefore ye are no more strangers and
        foreigners, but fellowcitizens with the saints, and of the household of
        God."
@@ -131,7 +125,6 @@ to teach others also."
        - Social engagement outside formal church settings
 
   3. **Habit formation** - spiritual practice establishment
-
      - **Acts 2:42** - "And they continued stedfastly in the apostles' doctrine
        and fellowship, and in breaking of bread, and in prayers."
      - _Speaking note: "The word 'continued stedfastly' reveals the early
@@ -144,7 +137,6 @@ to teach others also."
        - Regular fellowship engagement patterns
 
   4. **Paradigm reorganization** - worldview restructuring
-
      - **Romans 12:2** - "And be not conformed to this world: but be ye
        transformed by the renewing of your mind."
      - _Speaking note: "New doctrinal knowledge must be integrated into a
@@ -186,9 +178,7 @@ to teach others also."
   on continued progress toward spiritual adulthood."_
 
 - Five growth empowerment principles:
-
   1. **Progressive challenge** - increasing spiritual capacity
-
      - **Hebrews 5:12-14** - "For when for the time ye ought to be teachers, ye
        have need that one teach you again... But strong meat belongeth to them
        that are of full age."
@@ -202,7 +192,6 @@ to teach others also."
        - Progressive spiritual discipline development
 
   2. **Gift discovery and deployment** - ministry involvement
-
      - **1 Peter 4:10** - "As every man hath received the gift, even so minister
        the same one to another, as good stewards of the manifold grace of God."
      - **Ephesians 4:16** - "From whom the whole body fitly joined together...
@@ -218,7 +207,6 @@ to teach others also."
        - Regular service reflection and evaluation
 
   3. **Knowledge deepening** - thorough doctrinal grounding
-
      - **Hebrews 6:1-2** - "Therefore leaving the principles of the doctrine of
        Christ, let us go on unto perfection; not laying again the foundation."
      - _Speaking note: "Initial evangelism provides doctrinal basics, but mature
@@ -231,7 +219,6 @@ to teach others also."
        - Exploration of biblical themes and typology
 
   4. **Testing and trial navigation** - growth through challenge
-
      - **James 1:2-4** - "My brethren, count it all joy when ye fall into divers
        temptations; Knowing this, that the trying of your faith worketh
        patience. But let patience have her perfect work, that ye may be perfect
@@ -279,9 +266,7 @@ to teach others also."
   feeding others."_
 
 - Five reproductive equipping elements:
-
   1. **Ministry skill development** - practical capability building
-
      - **1 Peter 4:10-11** - "As every man hath received the gift, even so
        minister the same one to another... If any man speak, let him speak as
        the oracles of God; if any man minister, let him do it as of the ability
@@ -296,7 +281,6 @@ to teach others also."
        - Personal witnessing and evangelistic skills
 
   2. **Leadership identification and development** - responsibility progression
-
      - **Exodus 18:21-22** - "Moreover thou shalt provide out of all the people
        able men, such as fear God, men of truth, hating covetousness; and place
        such over them, to be rulers of thousands, and rulers of hundreds, rulers
@@ -312,7 +296,6 @@ to teach others also."
        - Specific leadership skill training
 
   3. **Mentoring relationships** - apprenticeship training
-
      - **2 Timothy 3:10-11** - "But thou hast fully known my doctrine, manner of
        life, purpose, faith, longsuffering, charity, patience, Persecutions,
        afflictions."
@@ -326,7 +309,6 @@ to teach others also."
        - Transparent sharing of both successes and failures
 
   4. **Teaching opportunities** - guided instruction experience
-
      - **Hebrews 5:12** - "For when for the time ye ought to be teachers, ye
        have need that one teach you again."
      - _Speaking note: "The natural progression of discipleship leads to
@@ -369,9 +351,7 @@ to teach others also."
   losing promising disciples."_
 
 - Five critical multiplication breakdown points:
-
   1. **Identity regression** - reverting to pre-conversion mindset
-
      - **Galatians 4:9** - "But now, after that ye have known God, or rather are
        known of God, how turn ye again to the weak and beggarly elements,
        whereunto ye desire again to be in bondage?"
@@ -385,7 +365,6 @@ to teach others also."
        - Creating strong narratives of belonging in the faith community
 
   2. **Relationship isolation** - community disconnection
-
      - **Hebrews 10:25** - "Not forsaking the assembling of ourselves together,
        as the manner of some is; but exhorting one another: and so much the
        more, as ye see the day approaching."
@@ -399,7 +378,6 @@ to teach others also."
        - Multiple relationship anchors beyond a single connection point
 
   3. **Unresolved conflicts** - interpersonal barriers
-
      - **Matthew 5:23-24** - "Therefore if thou bring thy gift to the altar, and
        there rememberest that thy brother hath ought against thee; Leave there
        thy gift before the altar, and go thy way; first be reconciled to thy
@@ -414,7 +392,6 @@ to teach others also."
        - Creating culture of confession and forgiveness
 
   4. **Ministry discouragement** - service burnout
-
      - **Galatians 6:9** - "And let us not be weary in well doing: for in due
        season we shall reap, if we faint not."
      - _Speaking note: "The multiplication phase often breaks down when
@@ -457,9 +434,7 @@ to teach others also."
   discipleship journey."_
 
 - Four elements of effective multiplication systems:
-
   1. **Clear pathway development** - structured growth process
-
      - **1 Corinthians 14:40** - "Let all things be done decently and in order."
      - _Speaking note: "Ad hoc approaches to discipleship produce inconsistent
        results. Effective multiplication requires a clear, simple pathway that
@@ -471,7 +446,6 @@ to teach others also."
        - Regular evaluation and refinement of the pathway
 
   2. **Leadership alignment** - unified multiplication focus
-
      - **1 Corinthians 1:10** - "Now I beseech you, brethren, by the name of our
        Lord Jesus Christ, that ye all speak the same thing, and that there be no
        divisions among you; but that ye be perfectly joined together in the same
@@ -486,7 +460,6 @@ to teach others also."
        - Coordinated calendar and resource allocation
 
   3. **Resource allocation** - strategic investment
-
      - **Luke 14:28-30** - "For which of you, intending to build a tower,
        sitteth not down first, and counteth the cost, whether he have sufficient
        to finish it?"
@@ -532,7 +505,6 @@ to teach others also."
   established, reproductive disciples who themselves become harvest workers."_
 
 - Summary of the storing and multiplying process:
-
   - Understanding the biblical mandate for post-decision ministry
   - Establishing new believers in identity, relationships, and habits
   - Developing mature disciples through progressive growth
@@ -541,9 +513,7 @@ to teach others also."
   - Creating church-wide systems that support the full discipleship journey
 
 - Three levels of commitment invitation:
-
   1. For individual members:
-
      - Commit to mentoring one new or young believer toward maturity
      - Identify your place in the discipleship process as either recipient or
        provider
@@ -553,7 +523,6 @@ to teach others also."
        else?"_
 
   2. For ministry leaders:
-
      - Evaluate your ministry's contribution to the full discipleship process
      - Develop specific strategies for connecting your ministry to the next
        phase

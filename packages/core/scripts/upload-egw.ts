@@ -23,11 +23,17 @@
  *   - EGW_BOOK_DB: (optional) Path to book database file, defaults to "data/egw-books.db"
  */
 
-import { EGWGeminiService } from "../src/egw-gemini/index.js";
-import { GeminiFileSearchClient } from "../src/gemini/index.js";
-import { BunContext, BunRuntime, BunFileSystem, BunPath } from "@effect/platform-bun";
-import { FetchHttpClient } from "@effect/platform";
-import { Effect, Layer } from "effect";
+import { FetchHttpClient } from '@effect/platform';
+import {
+  BunContext,
+  BunFileSystem,
+  BunPath,
+  BunRuntime,
+} from '@effect/platform-bun';
+import { Effect, Layer } from 'effect';
+
+import { EGWGeminiService } from '../src/egw-gemini/index.js';
+import { GeminiFileSearchClient } from '../src/gemini/index.js';
 
 // Folder ID for "Books" folder (published writings)
 // This is under "EGW Writings" (ID: 2) and contains 120 books
@@ -36,22 +42,22 @@ const BOOKS_FOLDER_ID = 4;
 const program = Effect.gen(function* () {
   const service = yield* EGWGeminiService;
 
-  yield* Effect.log("Starting upload of all EGW writings...");
+  yield* Effect.log('Starting upload of all EGW writings...');
   yield* Effect.log(
-    `Filtering books by folder ID ${BOOKS_FOLDER_ID} (Books - published writings)`
+    `Filtering books by folder ID ${BOOKS_FOLDER_ID} (Books - published writings)`,
   );
 
-  const languageCode = "en";
+  const languageCode = 'en';
 
   const result = yield* service.uploadAllEGWWritings({
-    storeDisplayName: "egw-writings",
+    storeDisplayName: 'egw-writings',
     languageCode,
-    egwAuthorName: "Ellen Gould White",
+    egwAuthorName: 'Ellen Gould White',
     folderId: BOOKS_FOLDER_ID, // Filter by Books folder (published writings)
   });
 
   yield* Effect.log(
-    `Upload complete! Processed ${result.totalBooksFound} books, uploaded ${result.booksUploaded} new books.`
+    `Upload complete! Processed ${result.totalBooksFound} books, uploaded ${result.booksUploaded} new books.`,
   );
 
   return result;
@@ -60,9 +66,9 @@ const program = Effect.gen(function* () {
 const ServiceLayer = Layer.mergeAll(
   Layer.provideMerge(
     Layer.provide(EGWGeminiService.Default, FetchHttpClient.layer),
-    Layer.mergeAll(BunFileSystem.layer, BunPath.layer)
+    Layer.mergeAll(BunFileSystem.layer, BunPath.layer),
   ),
-  GeminiFileSearchClient.Default
+  GeminiFileSearchClient.Default,
 );
 
 // Provide BunContext first for scoped services, then merge with other services

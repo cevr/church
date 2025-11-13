@@ -24,6 +24,6 @@
  * ```
  */
 
-export { EGWApiClient, EGWApiError } from "./client.js";
-export { EGWAuth, EGWAuthError, AccessToken } from "./auth.js";
-export * as Schemas from "./schemas.js";
+export { EGWApiClient, EGWApiError } from './client.js';
+export { EGWAuth, EGWAuthError, AccessToken } from './auth.js';
+export * as Schemas from './schemas.js';

@@ -73,9 +73,7 @@ maketh increase of the body unto the edifying of itself in love."
   with no solid foundation, and it cannot stand at all."_
 
 - Three biblical principles that should guide our church relationship:
-
   1. **The priesthood of all believers**
-
      - **1 Peter 2:9** - "But ye are a chosen generation, a royal priesthood, a
        holy nation"
      - Each member has direct access to God and responsibility to know truth
@@ -84,7 +82,6 @@ maketh increase of the body unto the edifying of itself in love."
        privilege. We cannot outsource our spiritual thinking to others."_
 
   2. **Unity in essentials, liberty in non-essentials**
-
      - **Ephesians 4:3-6** - "Endeavouring to keep the unity of the Spirit in
        the bond of peace"
      - **Romans 14:1-6** - Paul's counsel on disputable matters
@@ -103,7 +100,6 @@ maketh increase of the body unto the edifying of itself in love."
 ## II. The Institutionalist Archetype: Valuing Structure Above Truth
 
 - **Characteristics of the Institutionalist mindset:**
-
   - Deeply values church authority, tradition, and hierarchy
   - Often equates loyalty to the institution with loyalty to God
   - Fears change and tends to resist questioning of established practices
@@ -113,7 +109,6 @@ maketh increase of the body unto the edifying of itself in love."
     necessary renovations."_
 
 - **Biblical examples:**
-
   - **Matthew 15:1-9** - The Pharisees who valued traditions above God's
     commandments
   - **John 11:47-50** - Caiaphas and the Sanhedrin who sacrificed truth to
@@ -123,7 +118,6 @@ maketh increase of the body unto the edifying of itself in love."
     instincts lead to right actions for wrong reasons."_
 
 - **Strengths of this perspective:**
-
   - Provides stability and continuity in church life
   - Guards against hasty, impulsive changes
   - Promotes respect for church authority and heritage
@@ -143,7 +137,6 @@ maketh increase of the body unto the edifying of itself in love."
 ## III. The Protector Archetype: Guarding Unity Without Compromising Truth
 
 - **Characteristics of the Protector mindset:**
-
   - Values both institutional stability and biblical truth
   - Seeks to strengthen the church while remaining faithful to Scripture
   - Defends the church against unfair criticism while acknowledging flaws
@@ -153,7 +146,6 @@ maketh increase of the body unto the edifying of itself in love."
     They demonstrate that true love doesn't mean blind acceptance."_
 
 - **Biblical examples:**
-
   - **Nehemiah** - Rebuilt Jerusalem's walls while instituting reforms
   - **Paul in Acts 15** - Defended Christian liberty while respecting church
     authority
@@ -163,7 +155,6 @@ maketh increase of the body unto the edifying of itself in love."
     approach of the protector."_
 
 - **Strengths of this perspective:**
-
   - Promotes healthy, constructive engagement with church leadership
   - Balances respect for order with commitment to truth
   - Fosters stability while allowing for necessary growth
@@ -182,7 +173,6 @@ maketh increase of the body unto the edifying of itself in love."
 ## IV. The Reformist Archetype: Calling for Return to Fundamentals
 
 - **Characteristics of the Reformist mindset:**
-
   - Passionately committed to biblical truth and church mission
   - Identifies areas where church practice has drifted from biblical foundations
   - Advocates for thoughtful change and renewal based on Scripture
@@ -192,7 +182,6 @@ maketh increase of the body unto the edifying of itself in love."
     less concerned with comfort than with correct direction."_
 
 - **Biblical examples:**
-
   - **John the Baptist** - Called for repentance and preparation
   - **Josiah in 2 Kings 22-23** - Rediscovered the law and instituted reforms
   - **Ellen White's ministry** - Called the church back to biblical foundations
@@ -201,7 +190,6 @@ maketh increase of the body unto the edifying of itself in love."
     begins with personal conviction before public proclamation."_
 
 - **Strengths of this perspective:**
-
   - Challenges complacency and institutional drift
   - Promotes biblical literacy and doctrinal integrity
   - Energizes mission and purpose
@@ -222,7 +210,6 @@ maketh increase of the body unto the edifying of itself in love."
 ## V. The Rebel Archetype: Disillusionment and Separation
 
 - **Characteristics of the Rebel mindset:**
-
   - Deeply disillusioned with church leadership or practices
   - Believes the institution has fundamentally compromised truth
   - Often withdraws from active participation or separates entirely
@@ -232,7 +219,6 @@ maketh increase of the body unto the edifying of itself in love."
     protective instincts come from genuine pain, not mere stubbornness."_
 
 - **Biblical parallels (not direct equivalents):**
-
   - **Elijah's despair** - "I, even I only, am left" (1 Kings 19:10)
   - **The discouraged disciples after the crucifixion** (Luke 24:13-21)
   - _Speaking note: "Consider the disciples on the road to Emmaus—convinced
@@ -241,7 +227,6 @@ maketh increase of the body unto the edifying of itself in love."
     struggle with doubt."_
 
 - **Understanding rebel concerns:**
-
   - Often motivated by sincere desire for truth and integrity
   - May have experienced genuine hurt or observed troubling compromises
   - Their critiques sometimes contain valuable insights
@@ -262,7 +247,6 @@ maketh increase of the body unto the edifying of itself in love."
 - God calls us to a balanced position between blind institutional loyalty and
   disillusioned separation
 - **The middle path: Principled engagement**
-
   - Remaining firmly within the body while standing firmly for truth
   - Working for reform without destroying unity
   - **Proverbs 11:14** - "Where no counsel is, the people fall: but in the
@@ -272,9 +256,7 @@ maketh increase of the body unto the edifying of itself in love."
     disagreement. You can speak truth without slamming doors."_
 
 - **Biblical wisdom for finding balance:**
-
   1. **Test everything against Scripture**
-
      - **Acts 17:11** - The Bereans "searched the scriptures daily, whether
        those things were so"
      - Final authority must always be God's Word, not human opinion
@@ -283,7 +265,6 @@ maketh increase of the body unto the edifying of itself in love."
        teachings."_
 
   2. **Maintain a teachable spirit**
-
      - **Proverbs 1:5** - "A wise man will hear, and will increase learning"
      - Be open to correction from both Scripture and godly counsel
      - _Speaking note: "The moment we believe we have nothing to learn from
@@ -291,7 +272,6 @@ maketh increase of the body unto the edifying of itself in love."
        revelation from Christ, consulted with other apostles."_
 
   3. **Speak truth with love and respect**
-
      - **Ephesians 4:15** - "Speaking the truth in love"
      - **1 Peter 3:15** - "With meekness and fear"
      - The message matters, but so does the manner
@@ -322,14 +302,12 @@ maketh increase of the body unto the edifying of itself in love."
   the boat makes progress."_
 
 - **Personal inventory questions:**
-
   1. Which archetype most resembles my own approach to church?
   2. What valuable insights might I gain from other perspectives?
   3. Am I balancing institutional loyalty with biblical fidelity?
   4. How can I contribute constructively to my local church family?
 
 - **Our model: Christ's perfect balance**
-
   - Respected institution while challenging corruption
   - Upheld truth while showing compassion for people
   - Never compromised principles but worked within existing structures
@@ -339,7 +317,6 @@ maketh increase of the body unto the edifying of itself in love."
     while reforming it from within."_
 
 - **Appeal for balanced commitment:**
-
   - To the institutionalist: Would you be willing to examine traditions in light
     of Scripture?
   - To the rebel: Would you consider re-engaging constructively with your church

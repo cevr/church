@@ -20,22 +20,23 @@
  *   - EGW_PARAGRAPH_DB: (optional) Path to paragraph database file, defaults to "data/egw-paragraphs.db"
  */
 
-import { EGWParagraphDatabase } from "../src/egw-db/index.js";
-import { EGWApiClient } from "../src/egw/client.js";
-import { BunContext, BunRuntime } from "@effect/platform-bun";
-import { FetchHttpClient } from "@effect/platform";
-import { Effect, Layer, Ref, Stream } from "effect";
+import { FetchHttpClient } from '@effect/platform';
+import { BunContext, BunRuntime } from '@effect/platform-bun';
+import { Effect, Layer, Ref, Stream } from 'effect';
 
-const languageCode = process.argv[2] || "en";
+import { EGWParagraphDatabase } from '../src/egw-db/index.js';
+import { EGWApiClient } from '../src/egw/client.js';
+
+const languageCode = process.argv[2] || 'en';
 // Default to Ellen G. White (EGW) - the primary author of EGW writings
-const egwAuthorName = process.argv[3] || "Ellen Gould White";
+const egwAuthorName = process.argv[3] || 'Ellen Gould White';
 
 const program = Effect.gen(function* () {
   const paragraphDb = yield* EGWParagraphDatabase;
   const egwClient = yield* EGWApiClient;
 
   yield* Effect.log(
-    `Starting sync of EGW paragraphs to local database (language: ${languageCode}, author: ${egwAuthorName})...`
+    `Starting sync of EGW paragraphs to local database (language: ${languageCode}, author: ${egwAuthorName})...`,
   );
 
   // Fetch all books from API as a stream and filter to only EGW books
@@ -58,7 +59,7 @@ const program = Effect.gen(function* () {
         Effect.gen(function* () {
           const totalBooksForLog = yield* Ref.get(totalBooksRef);
           yield* Effect.log(
-            `Processing book ${totalBooksForLog}: ${book.title} (ID: ${book.book_id})`
+            `Processing book ${totalBooksForLog}: ${book.title} (ID: ${book.book_id})`,
           );
 
           // Get table of contents to iterate through chapters
@@ -90,7 +91,7 @@ const program = Effect.gen(function* () {
               }
 
               return Stream.fromEffect(
-                egwClient.getChapterContent(book.book_id, chapterId)
+                egwClient.getChapterContent(book.book_id, chapterId),
               );
             }),
             Stream.flatMap((paragraphs) => Stream.fromIterable(paragraphs)),
@@ -105,35 +106,35 @@ const program = Effect.gen(function* () {
                         if (count % 100 === 0) {
                           yield* Effect.log(`Stored ${count} paragraphs...`);
                         }
-                      })
+                      }),
                     ),
                     Effect.catchAll((error) =>
                       Effect.gen(function* () {
                         yield* Ref.update(errorCountRef, (n) => n + 1);
                         yield* Effect.logError(
                           `Failed to store paragraph:`,
-                          error
+                          error,
                         );
                         return yield* Effect.void;
-                      })
-                    )
+                      }),
+                    ),
                   );
                 }),
-              { concurrency: 100 } // Store multiple paragraphs concurrently
+              { concurrency: 100 }, // Store multiple paragraphs concurrently
             ),
-            Stream.runDrain
+            Stream.runDrain,
           );
 
           yield* Ref.update(booksProcessedRef, (n) => n + 1);
           const completedCount = yield* Ref.get(booksProcessedRef);
           const totalCount = yield* Ref.get(totalBooksRef);
           yield* Effect.log(
-            `Completed book ${completedCount}/${totalCount}: ${book.title}`
+            `Completed book ${completedCount}/${totalCount}: ${book.title}`,
           );
         }),
-      { concurrency: 1 } // Process one book at a time to avoid overwhelming the API
+      { concurrency: 1 }, // Process one book at a time to avoid overwhelming the API
     ),
-    Stream.runDrain
+    Stream.runDrain,
   );
 
   // Get final statistics from Refs
@@ -143,12 +144,12 @@ const program = Effect.gen(function* () {
   const errorCount = yield* Ref.get(errorCountRef);
 
   yield* Effect.log(
-    `Sync complete! Processed ${booksProcessed} books, stored ${storedParagraphs} paragraphs, ${errorCount} errors.`
+    `Sync complete! Processed ${booksProcessed} books, stored ${storedParagraphs} paragraphs, ${errorCount} errors.`,
   );
 
   if (totalBooks === 0) {
     yield* Effect.logError(
-      `No EGW books found for author "${egwAuthorName}". Please verify the author name is correct.`
+      `No EGW books found for author "${egwAuthorName}". Please verify the author name is correct.`,
     );
   }
 
@@ -163,7 +164,7 @@ const program = Effect.gen(function* () {
 // Compose all layers
 const ServiceLayer = Layer.mergeAll(
   EGWParagraphDatabase.Default, // Scoped service - gets FileSystem/Path from BunContext
-  Layer.provide(EGWApiClient.Default, FetchHttpClient.layer)
+  Layer.provide(EGWApiClient.Default, FetchHttpClient.layer),
 );
 
 const AppLayer = ServiceLayer.pipe(Layer.provide(BunContext.layer));

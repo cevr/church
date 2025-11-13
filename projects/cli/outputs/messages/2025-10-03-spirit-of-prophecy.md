@@ -41,7 +41,6 @@ commandments of God, and have the testimony of Jesus Christ."
 - **Amos 3:7** - "Surely the Lord GOD will do nothing, but he revealeth his
   secret unto his servants the prophets"
 - God's consistent pattern throughout Scripture:
-
   - **Numbers 12:6** - "If there be a prophet among you, I the LORD will make
     myself known unto him in a vision, and will speak unto him in a dream"
   - **1 Samuel 3:19-21** - "The LORD revealed himself to Samuel in Shiloh by the
@@ -51,7 +50,6 @@ commandments of God, and have the testimony of Jesus Christ."
     established communication method throughout sacred history."_
 
 - The New Testament continuation of prophetic gifts:
-
   - **Ephesians 4:11-13** - Prophets listed among gifts Christ gave the church
     "till we all come in the unity of the faith"
   - **1 Corinthians 12:28** - "God hath set some in the church, first apostles,
@@ -85,7 +83,6 @@ commandments of God, and have the testimony of Jesus Christ."
   Scripture tells us this is the remnant church."_
 
 - Historical manifestation of the prophetic gift in the Advent movement:
-
   - Brief account of Ellen White's first vision in December 1844
   - How her ministry matched biblical patterns of prophetic calling:
     - **Isaiah 6:5-8** - Initial reluctance (like Isaiah's unworthiness)
@@ -122,10 +119,8 @@ commandments of God, and have the testimony of Jesus Christ."
   Egypt or survived the wilderness."_
 
 - Five key purposes of the Spirit of Prophecy in the remnant church:
-
   1. **John 16:13** - Guiding into all truth: "When he, the Spirit of truth, is
      come, he will guide you into all truth"
-
      - _Speaking note: "Ellen White's writings consistently direct us back to
        Scripture—magnifying biblical truth rather than replacing it. Like a
        telescope doesn't create stars but helps us see existing ones more
@@ -135,7 +130,6 @@ commandments of God, and have the testimony of Jesus Christ."
   2. **John 14:29** - Preparing God's people for coming events: "And now I have
      told you before it come to pass, that, when it is come to pass, ye might
      believe"
-
      - _Speaking note: "Prophetic guidance is like an early warning system. It
        doesn't prevent the storm but helps us prepare for it. From health reform
        to educational guidance, the Spirit of Prophecy has consistently prepared
@@ -144,7 +138,6 @@ commandments of God, and have the testimony of Jesus Christ."
   3. **2 Chronicles 36:15-16** - Calling God's people back to faithfulness: "The
      LORD God of their fathers sent to them by his messengers, rising up
      betimes, and sending; because he had compassion on his people"
-
      - _Speaking note: "Like a good parent who calls out when a child strays
        toward danger, God sends prophetic messages to redirect His people when
        they begin to wander. This is always an act of love, not control or
@@ -152,7 +145,6 @@ commandments of God, and have the testimony of Jesus Christ."
 
   4. **2 Timothy 3:16-17** - Practical guidance for living: "That the man of God
      may be perfect, thoroughly furnished unto all good works"
-
      - _Speaking note: "The prophetic gift takes eternal principles from
        Scripture and applies them to specific circumstances. It's like taking
        architectural blueprints and showing how they apply to the actual
@@ -175,9 +167,7 @@ commandments of God, and have the testimony of Jesus Christ."
   create unnecessary barriers to receiving its blessing."_
 
 - Four common misunderstandings:
-
   1. Misconception: "The Spirit of Prophecy replaces or equals Scripture"
-
      - Correction from Ellen White's own words: "The testimonies of Sister White
        should not be carried to the front. God's Word is the unerring
        standard... Let all prove their positions from the Scriptures and
@@ -191,7 +181,6 @@ commandments of God, and have the testimony of Jesus Christ."
        the decisions help us understand its application."_
 
   2. Misconception: "The Spirit of Prophecy is outdated and irrelevant today"
-
      - **Ecclesiastes 1:9-10** - "There is no new thing under the sun"
      - **2 Timothy 3:16-17** - "All scripture... is profitable" (principle of
        timeless truth)
@@ -202,7 +191,6 @@ commandments of God, and have the testimony of Jesus Christ."
 
   3. Misconception: "The Spirit of Prophecy is primarily about rules and
      restrictions"
-
      - **1 John 5:3** - "His commandments are not grievous"
      - _Speaking note: "Many view Ellen White's counsel as a list of 'don'ts'
        rather than seeing the freedom and joy she describes in living according
@@ -229,9 +217,7 @@ commandments of God, and have the testimony of Jesus Christ."
   neglect or misapplication. Let's explore how to receive its full benefit."_
 
 - Practical principles for receiving benefit:
-
   1. Read it for yourself rather than relying on secondhand information
-
      - **Acts 17:11** - "They received the word with all readiness of mind, and
        searched the scriptures daily, whether those things were so"
      - _Speaking note: "Many opinions about Ellen White's writings come from
@@ -239,7 +225,6 @@ commandments of God, and have the testimony of Jesus Christ."
        about a book based only on reviews without reading it yourself."_
 
   2. Begin with the most accessible, practical books
-
      - Recommended starting points: Steps to Christ, Christ's Object Lessons,
        Thoughts from the Mount of Blessing
      - _Speaking note: "You wouldn't begin studying mathematics with advanced
@@ -248,7 +233,6 @@ commandments of God, and have the testimony of Jesus Christ."
        excellent introduction to her ministry."_
 
   3. Apply principles rather than merely adopting specific applications
-
      - **2 Corinthians 3:6** - "The letter killeth, but the spirit giveth life"
      - _Speaking note: "When reading historical counsels, ask 'What principle is
        being taught here?' rather than simply adopting the specific application
@@ -256,7 +240,6 @@ commandments of God, and have the testimony of Jesus Christ."
        constant, while specific styles naturally change with time."_
 
   4. Read comprehensively rather than selectively
-
      - **2 Peter 1:20** - "No prophecy of the scripture is of any private
        interpretation"
      - _Speaking note: "Cherry-picking isolated statements from Ellen White's
@@ -281,9 +264,7 @@ commandments of God, and have the testimony of Jesus Christ."
   of daily living."_
 
 - Three areas of particular blessing:
-
   1. Personal devotional life
-
      - Guidance for prayer, Bible study, and communion with God
      - _Speaking note: "Ellen White's writings contain some of the most
        beautiful portrayals of what communion with God can be like. Many have
@@ -291,7 +272,6 @@ commandments of God, and have the testimony of Jesus Christ."
        to cultivate God's presence."_
 
   2. Family relationships
-
      - Counsel for marriage, parenting, and home atmosphere
      - **Joshua 24:15** - "As for me and my house, we will serve the LORD"
      - _Speaking note: "In an age of family breakdown, Ellen White's counsel on
@@ -317,7 +297,6 @@ commandments of God, and have the testimony of Jesus Christ."
   law-keeping, they lose their boundaries. God's remnant needs both."_
 
 - Summary of main points:
-
   1. The prophetic gift is biblically established as continuing until Christ's
      return
   2. The Spirit of Prophecy is a identifying mark of God's remnant people
@@ -327,7 +306,6 @@ commandments of God, and have the testimony of Jesus Christ."
 
 - Personal testimony about a specific instance where the Spirit of Prophecy
   provided guidance in my ministry
-
   - _Speaking note: "I remember facing a crucial decision in ministry where I
     felt torn between two apparently good options. Reading Testimonies to
     Ministers brought a clear principle to light that helped me see God's
@@ -337,7 +315,6 @@ commandments of God, and have the testimony of Jesus Christ."
 - **2 Chronicles 20:20** - "Believe in the LORD your God, so shall ye be
   established; believe his prophets, so shall ye prosper"
 - Final appeal:
-
   - For those unfamiliar with the Spirit of Prophecy: Would you be willing to
     read Steps to Christ this week with an open heart?
   - For those who've neglected this gift: Would you commit to incorporating

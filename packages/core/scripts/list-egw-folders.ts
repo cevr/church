@@ -15,35 +15,34 @@
  *   - EGW_SCOPE: (optional) Defaults to "writings search studycenter subscriptions user_info"
  */
 
-import { EGWApiClient } from "../src/egw/client.js";
-import * as EGWSchemas from "../src/egw/schemas.js";
-import { BunContext, BunRuntime } from "@effect/platform-bun";
-import { FetchHttpClient } from "@effect/platform";
-import { Effect, Layer } from "effect";
+import { FetchHttpClient } from '@effect/platform';
+import { BunContext, BunRuntime } from '@effect/platform-bun';
+import { Effect, Layer } from 'effect';
 
-const languageCode = process.argv[2] || "en";
+import { EGWApiClient } from '../src/egw/client.js';
+import * as EGWSchemas from '../src/egw/schemas.js';
+
+const languageCode = process.argv[2] || 'en';
 
 const program = Effect.gen(function* () {
   const egwClient = yield* EGWApiClient;
 
-  yield* Effect.log(
-    `Fetching folders for language: ${languageCode}...`
-  );
+  yield* Effect.log(`Fetching folders for language: ${languageCode}...`);
 
   const folders = yield* egwClient.getFoldersByLanguage(languageCode);
 
   // Recursive function to display folder hierarchy
   const displayFolders = (
     folders: ReadonlyArray<EGWSchemas.Folder>,
-    indent = ""
+    indent = '',
   ): Effect.Effect<void> =>
     Effect.gen(function* () {
       for (const folder of folders) {
         yield* Effect.log(
-          `${indent}📁 ${folder.name} (ID: ${folder.folder_id}) - ${folder.nbooks} books, ${folder.naudiobooks} audiobooks`
+          `${indent}📁 ${folder.name} (ID: ${folder.folder_id}) - ${folder.nbooks} books, ${folder.naudiobooks} audiobooks`,
         );
         if (folder.children && folder.children.length > 0) {
-          yield* displayFolders(folder.children, indent + "  ");
+          yield* displayFolders(folder.children, indent + '  ');
         }
       }
     });
@@ -53,7 +52,7 @@ const program = Effect.gen(function* () {
 
   yield* Effect.log(`\n✅ Folder listing complete!`);
   yield* Effect.log(
-    `💡 Tip: Use the folder ID in upload-egw.ts or sync-egw-books.ts to filter books by folder.`
+    `💡 Tip: Use the folder ID in upload-egw.ts or sync-egw-books.ts to filter books by folder.`,
   );
 
   return folders;

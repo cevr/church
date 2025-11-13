@@ -83,7 +83,6 @@ from glory to glory, even as by the Spirit of the Lord."
 ## Main Content Section 2: Knowledge – The Foundation of Transformation [*] (15 min)
 
 - **The Critical Role of Knowledge**
-
   - Hosea 4:6 – "My people are destroyed for lack of knowledge..."
   - **Wisdom as the Principal Thing:**
     - Proverbs 4:7 – "Wisdom is the principal thing; therefore get wisdom: and
@@ -103,7 +102,6 @@ from glory to glory, even as by the Spirit of the Lord."
     knowledge and understanding.)
 
 - **A. Knowledge of God: The Standard for Restoration**
-
   - John 17:3 – "And this is life eternal, that they might know thee the only
     true God, and Jesus Christ, whom thou hast sent."
   - **Christ as the Wisdom of God:**
@@ -123,7 +121,6 @@ from glory to glory, even as by the Spirit of the Lord."
 
 - **B. Christ's Knowledge: The Perfect Example of Justification and
   Restoration**
-
   - **Isaiah 53:11** – "By his knowledge shall my righteous servant justify
     many; for he shall bear their iniquities."
     - Christ's perfect knowledge of the Father enabled Him to justify (make
@@ -146,7 +143,6 @@ from glory to glory, even as by the Spirit of the Lord."
     example? (Phil 2:5-8)
 
 - **C. Knowledge of Self: The Starting Point for Application**
-
   - Psalm 139:23-24 – "Search me, O God, and know my heart: try me, and know my
     thoughts: And see if there be any wicked way in me, and lead me in the way
     everlasting."
@@ -177,7 +173,6 @@ from glory to glory, even as by the Spirit of the Lord."
 ## Main Content Section 3: The Will – Cooperating in Transformation (12 min)
 
 - **The Indispensable Role of the Will**
-
   - Knowledge alone is insufficient; the will must be engaged.
   - Philippians 2:13 – "For it is God which worketh in you both to will and to
     do of his good pleasure."
@@ -190,7 +185,6 @@ from glory to glory, even as by the Spirit of the Lord."
     men unto obedience to God, or unto disobedience." (CH 60.2 or 5T 513.2)
 
 - **"Putting Off" and "Putting On": The Action of a Surrendered Will**
-
   - Ephesians 4:22-24 – "That ye put off concerning the former conversation the
     old man, which is corrupt according to the deceitful lusts; And be renewed
     in the spirit of your mind; And that ye put on the new man, which after God

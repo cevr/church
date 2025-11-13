@@ -24,7 +24,6 @@ in the air: and so shall we ever be with the Lord."
 
 - **Ecclesiastes 9:5-6** - "For the living know that they shall die: but the
   dead know not any thing"
-
   - The Bible's straightforward description of death
   - _Speaking note: "Our understanding of death affects how we live, how we
     grieve, and how we hope. Let's allow Scripture, not tradition or Hollywood,
@@ -32,7 +31,6 @@ in the air: and so shall we ever be with the Lord."
 
 - **Psalm 146:3-4** - "His breath goeth forth, he returneth to his earth; in
   that very day his thoughts perish"
-
   - Biblical physiology of death
   - _Speaking note: "Death in Scripture is presented not as a doorway to another
     state of consciousness, but as a sleep without awareness—a temporary
@@ -48,14 +46,12 @@ in the air: and so shall we ever be with the Lord."
 ## I. The Origin of Death and God's Original Plan
 
 - **Genesis 2:16-17** - God's warning about the consequence of sin
-
   - Death as the result of separation from Life-Giver
   - _Speaking note: "Death was never part of God's original design for humanity,
     any more than rust is part of a car manufacturer's design. It's the natural
     result of disconnection from the Source of life."_
 
 - **Genesis 3:1-4** - "Ye shall not surely die" - Satan's first lie
-
   - _Speaking note: "Satan's first lie wasn't about the existence of God, but
     about the nature of death—suggesting humans possess intrinsic immortality
     regardless of their relationship with God."_
@@ -71,7 +67,6 @@ in the air: and so shall we ever be with the Lord."
 
 - **Genesis 2:7** - "The LORD God formed man of the dust of the ground, and
   breathed into his nostrils the breath of life; and man became a living soul"
-
   - Biblical equation: Dust + Breath of Life = Living Soul
   - _Speaking note: "Genesis doesn't say man was given a soul, but that he
     became a soul—a whole, integrated being. Think of it like this: battery +
@@ -79,11 +74,9 @@ in the air: and so shall we ever be with the Lord."
     not a separate part."_
 
 - Three key terms in biblical anthropology:
-
   1. **Body (basar/soma)** - Physical organism
   2. **Spirit/Breath (ruach/pneuma)** - Life-force from God
   3. **Soul (nephesh/psyche)** - Whole living being, not a separate entity
-
   - _Speaking note: "These Hebrew and Greek terms have been often misunderstood
     through the lens of Greek philosophy rather than biblical thought. In
     Scripture, these aren't separate, detachable parts, but aspects of a unified
@@ -100,7 +93,6 @@ in the air: and so shall we ever be with the Lord."
 ## III. The Biblical Description of Death
 
 - **John 11:11-14** - Jesus describes death as sleep
-
   - "Our friend Lazarus sleepeth... Lazarus is dead"
   - _Speaking note: "Jesus, who had firsthand knowledge of death and the
     afterlife, consistently used the metaphor of sleep—not because it was
@@ -108,7 +100,6 @@ in the air: and so shall we ever be with the Lord."
     dead."_
 
 - Biblical metaphors for death's nature:
-
   - **Psalm 13:3** - "the sleep of death"
   - **Job 14:12** - "man lieth down, and riseth not, till the heavens be no
     more"
@@ -130,20 +121,17 @@ in the air: and so shall we ever be with the Lord."
 ## IV. The Immortality Question: Who Has It and How Is It Obtained?
 
 - **1 Timothy 6:15-16** - God "who only hath immortality"
-
   - Immortality as God's inherent quality, not humanity's
   - _Speaking note: "Immortality isn't something humans possess naturally—it's a
     divine attribute that can only be received as a gift through Christ."_
 
 - **Romans 2:7** - Humans "seek for glory and honour and immortality"
-
   - Immortality as future goal, not present possession
   - _Speaking note: "If we already possessed immortality, why would Paul
     describe it as something we seek? This would be like telling someone with a
     full tank of gas to seek fuel."_
 
 - **1 Corinthians 15:51-54** - Immortality bestowed at resurrection
-
   - "This mortal must put on immortality"
   - _Speaking note: "Note the timing—immortality isn't given at death, but at
     resurrection when Christ returns. Death isn't a promotion to immortality;
@@ -158,13 +146,11 @@ in the air: and so shall we ever be with the Lord."
 ## V. Historical Development of Immortal Soul Teaching
 
 - **Acts 20:29-30** - Paul's warning about doctrinal corruption
-
   - _Speaking note: "The teaching of innate immortality didn't originate in
     Scripture but entered Christian thought gradually through Greek
     philosophical influence."_
 
 - Historical influences:
-
   - Greek philosophy (Plato's teachings)
   - Pagan religions and spiritualistic practices
   - Medieval church doctrines developed to support other teachings
@@ -184,7 +170,6 @@ in the air: and so shall we ever be with the Lord."
 ## VI. Examining Key Texts Often Misunderstood
 
 - **Luke 23:43** - Thief on the cross
-
   - "Verily I say unto thee today, shalt thou be with me in paradise"
   - Punctuation issue (original Greek had no punctuation)
   - **John 20:17** - Jesus had not yet ascended to the Father after resurrection
@@ -194,7 +179,6 @@ in the air: and so shall we ever be with the Lord."
     Father after His resurrection."_
 
 - **Luke 16:19-31** - The Rich Man and Lazarus
-
   - Parable using familiar Jewish folklore to teach about opportunity and
     responsibility
   - Not intended as literal description of afterlife
@@ -204,7 +188,6 @@ in the air: and so shall we ever be with the Lord."
     teaching vehicle, not giving a doctrinal statement on death."_
 
 - **Philippians 1:21-24** - Paul's desire to "depart and be with Christ"
-
   - Time perception in death (no awareness of passing time)
   - Next conscious moment after death is resurrection
   - _Speaking note: "For Paul, 'to die' and 'to be with Christ' would seem
@@ -213,7 +196,6 @@ in the air: and so shall we ever be with the Lord."
     though hours passed."_
 
 - **2 Corinthians 5:6-8** - "Absent from the body, present with the Lord"
-
   - Context shows Paul discussing final resurrection state
   - _Speaking note: "Reading the entire chapter shows Paul contrasting our
     current mortal state with our future immortal resurrection bodies—not
@@ -231,21 +213,18 @@ in the air: and so shall we ever be with the Lord."
 
 - **John 5:28-29** - "All that are in the graves shall hear his voice, and shall
   come forth"
-
   - Resurrection as universal hope for all the dead
   - _Speaking note: "Notice Jesus says the dead will come forth from their
     graves, not return from heaven or hell. Resurrection isn't a secondary event
     after death but the primary Christian hope."_
 
 - **1 Corinthians 15:12-19** - Resurrection as central to Christian faith
-
   - Without resurrection, faith is "vain" and dead "are perished"
   - _Speaking note: "If believers go to heaven at death, why does Paul say the
     dead 'are perished' if there's no resurrection? The biblical hope isn't
     disembodied existence but bodily resurrection."_
 
 - **1 Thessalonians 4:13-18** - Comfort based on resurrection hope
-
   - Christians are comforted not by souls in heaven, but by future resurrection
   - _Speaking note: "When comforting grieving Christians, Paul didn't say 'Don't
     worry, your loved ones are looking down from heaven.' He pointed to the
@@ -265,7 +244,6 @@ in the air: and so shall we ever be with the Lord."
 ## VIII. The Danger of Spiritualism and Death Deceptions
 
 - **1 Samuel 28:3-20** - Saul and the witch of Endor
-
   - Samuel's appearance as demonic impersonation
   - God had already withdrawn from Saul (v.6)
   - _Speaking note: "This wasn't Samuel but a demonic impersonation—God had
@@ -273,14 +251,12 @@ in the air: and so shall we ever be with the Lord."
     Saul through legitimate channels."_
 
 - **Isaiah 8:19-20** - Warning against consulting the dead
-
   - Test all spirits by "the law and the testimony"
   - _Speaking note: "God explicitly forbids attempting communication with the
     dead—not just because it's wrong, but because what responds is never the
     actual dead person but something else entirely."_
 
 - **2 Corinthians 11:14** - Satan's ability to appear as "an angel of light"
-
   - Deceptive appearances in the last days
   - _Speaking note: "Satan's most effective deceptions don't appear dark and
     evil, but come disguised as light and comfort—like the false assurance that
@@ -295,7 +271,6 @@ in the air: and so shall we ever be with the Lord."
 ## IX. Practical Implications of the Biblical View of Death
 
 - Healthy grief process:
-
   - **1 Thessalonians 4:13** - Christians grieve, but with hope
   - Acknowledging loss while anticipating reunion
   - _Speaking note: "The biblical view allows for genuine grief without
@@ -303,7 +278,6 @@ in the air: and so shall we ever be with the Lord."
     resurrection reunion."_
 
 - Proper focus on Christ's return:
-
   - **Titus 2:13** - "Looking for that blessed hope, and the glorious appearing"
   - Death not as "going to heaven" but as sleep until resurrection
   - _Speaking note: "When we understand death correctly, our hope centers not on
@@ -311,7 +285,6 @@ in the air: and so shall we ever be with the Lord."
     saints."_
 
 - Freedom from fear and superstition:
-
   - **Hebrews 2:14-15** - Christ delivers those who "through fear of death were
     all their lifetime subject to bondage"
   - _Speaking note: "Understanding death as unconscious sleep frees us from
@@ -329,7 +302,6 @@ in the air: and so shall we ever be with the Lord."
 ## X. The Comfort of the Biblical Teaching
 
 - Promise of perfect rest:
-
   - **Revelation 14:13** - "Blessed are the dead which die in the Lord... that
     they may rest from their labours"
   - _Speaking note: "For the weary, suffering saint, death brings not
@@ -337,7 +309,6 @@ in the air: and so shall we ever be with the Lord."
     morning—when they awake to find illness, pain, and sorrow gone forever."_
 
 - Hope of joyful reunion:
-
   - **1 Thessalonians 4:17-18** - "So shall we ever be with the Lord. Wherefore
     comfort one another with these words"
   - _Speaking note: "At resurrection, families will be reunited, not as
@@ -355,13 +326,11 @@ in the air: and so shall we ever be with the Lord."
 
 - **John 11:25-26** - "I am the resurrection, and the life: he that believeth in
   me, though he were dead, yet shall he live"
-
   - Christ-centered hope transcending death
   - _Speaking note: "Our hope isn't in an immortal soul that lives on, but in an
     immortal Savior who conquers death and calls forth His sleeping children."_
 
 - **1 Corinthians 15:51-57** - Victory over death through Christ
-
   - "O death, where is thy sting? O grave, where is thy victory?"
   - _Speaking note: "Death is not a friend to embrace but an enemy Christ has
     conquered. We face it not with stoic acceptance but with resurrection

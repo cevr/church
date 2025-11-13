@@ -60,24 +60,20 @@ from glory to glory, even as by the Spirit of the Lord."
   Similarly, we measure our character against Christ, not other struggling
   Christians."_
 - Key attributes of Christ's character as revealed in Scripture:
-
   1. **Love** - **John 15:13** - "Greater love hath no man than this, that a man
      lay down his life for his friends."
-
      - _Speaking note: "Christ's love wasn't just words - it was demonstrated
        through consistent sacrifice. Like a deep well that never runs dry,
        Jesus' love remained constant whether people praised or criticized Him."_
 
   2. **Humility** - **Philippians 2:5-8** - "Let this mind be in you, which was
      also in Christ Jesus... he humbled himself, and became obedient unto death"
-
      - _Speaking note: "The Creator of the universe washed the disciples' feet -
        true humility serves without seeking recognition. Imagine the CEO of a
        global company arriving early to clean the office bathrooms without
        telling anyone—that's the kind of humility Jesus demonstrated."_
 
   3. **Truth** - **John 14:6** - "I am the way, the truth, and the life"
-
      - _Speaking note: "Jesus never compromised truth, even when it cost Him
        followers or popularity. Unlike politicians who adjust their message to
        please the crowd, Jesus spoke the same truth to Pharisees and fishermen
@@ -85,7 +81,6 @@ from glory to glory, even as by the Spirit of the Lord."
 
   4. **Compassion** - **Matthew 9:36** - "But when he saw the multitudes, he was
      moved with compassion on them"
-
      - _Speaking note: "Christ was never too busy to notice human suffering - He
        saw individuals among crowds. Like a mother who can pick out her child's
        cry in a noisy playground, Jesus noticed the woman who touched His
@@ -93,7 +88,6 @@ from glory to glory, even as by the Spirit of the Lord."
 
   5. **Purity** - **Hebrews 7:26** - "For such an high priest became us, who is
      holy, harmless, undefiled, separate from sinners"
-
      - _Speaking note: "Think of gold being refined by fire—the hotter the
        flame, the purer the gold becomes. Christ's character was similarly
        tested in the furnace of temptation, but emerged without a single
@@ -118,9 +112,7 @@ from glory to glory, even as by the Spirit of the Lord."
   We become so accustomed to our own rationalizations that we don't even
   recognize them as excuses."_
 - Common forms of spiritual self-deception:
-
   1. **Relative righteousness** - comparing to others rather than Christ
-
      - **Luke 18:9-14** - The Pharisee and tax collector: "I thank thee, that I
        am not as other men are"
      - _Speaking note: "We often measure ourselves against those we feel
@@ -129,7 +121,6 @@ from glory to glory, even as by the Spirit of the Lord."
        better, but still far from excellence."_
 
   2. **Selective memory** - remembering our good deeds, forgetting our failings
-
      - **Matthew 7:3** - "And why beholdest thou the mote that is in thy
        brother's eye, but considerest not the beam that is in thine own eye?"
      - _Speaking note: "We're like movie directors editing our own highlight
@@ -138,7 +129,6 @@ from glory to glory, even as by the Spirit of the Lord."
        needy person without helping."_
 
   3. **External focus** - emphasizing outward actions over heart motives
-
      - **Matthew 23:25-26** - "Ye make clean the outside of the cup and of the
        platter, but within they are full of extortion and excess."
      - _Speaking note: "It's easier to count church attendance than to measure
@@ -164,9 +154,7 @@ from glory to glory, even as by the Spirit of the Lord."
   when you've taken a wrong turn, this method helps you identify where you've
   strayed and how to get back on course."_
 - A practical framework for biblical self-examination:
-
   1. **Meditate on Scripture** - use God's Word as your standard
-
      - **Psalm 119:105** - "Thy word is a lamp unto my feet, and a light unto my
        path."
      - _Speaking note: "Scripture is both the mirror that shows our true
@@ -175,7 +163,6 @@ from glory to glory, even as by the Spirit of the Lord."
        spiritual journey without the compass of Scripture."_
 
   2. **Invite the Holy Spirit** - ask for divine insight
-
      - **John 16:13** - "When he, the Spirit of truth, is come, he will guide
        you into all truth"
      - _Speaking note: "The Holy Spirit is like a trusted friend who will tell
@@ -184,7 +171,6 @@ from glory to glory, even as by the Spirit of the Lord."
        mislead you—that's the Holy Spirit's role in introspection."_
 
   3. **Review your motives** - examine why you do what you do
-
      - **Proverbs 20:27** - "The spirit of man is the candle of the LORD,
        searching all the inward parts of the belly."
      - **1 Corinthians 4:5** - The Lord "will bring to light the hidden things
@@ -196,7 +182,6 @@ from glory to glory, even as by the Spirit of the Lord."
        given anonymously."_
 
   4. **Record your insights** - journal your discoveries
-
      - **Habakkuk 2:2** - "Write the vision, and make it plain upon tables, that
        he may run that readeth it."
      - _Speaking note: "Writing helps make vague thoughts concrete and gives you
@@ -205,7 +190,6 @@ from glory to glory, even as by the Spirit of the Lord."
        see how far you've traveled."_
 
   5. **Outline actionable steps** - create a plan for change
-
      - **Matthew 3:8** - "Bring forth therefore fruits meet for repentance"
      - _Speaking note: "True introspection leads to action, not just awareness.
        Recognizing you're heading north when you need to go south is only
@@ -231,7 +215,6 @@ from glory to glory, even as by the Spirit of the Lord."
   before adding the next. Hastily stacked bricks without mortar will collapse
   under pressure."_
 - Developing patience:
-
   - Introspective questions:
     - "When was I impatient today? What triggered it?"
     - "How would Jesus have responded in that situation?"
@@ -245,7 +228,6 @@ from glory to glory, even as by the Spirit of the Lord."
       and the interrupted conversation are all your spiritual gymnasium."_
 
 - Cultivating kindness:
-
   - Introspective questions:
     - "Did I miss opportunities to show kindness today?"
     - "What motivates my acts of kindness - genuine love or recognition?"
@@ -284,9 +266,7 @@ from glory to glory, even as by the Spirit of the Lord."
   it. Spiritual bankruptcy rarely happens suddenly; it's the result of a
   thousand unchecked withdrawals."_
 - Consequences of spiritual blindness:
-
   1. **Stunted growth** - remaining spiritual infants
-
      - **Hebrews 5:12-14** - "For when for the time ye ought to be teachers, ye
        have need that one teach you again"
      - _Speaking note: "It's like a child who never checks their height against
@@ -295,7 +275,6 @@ from glory to glory, even as by the Spirit of the Lord."
        because we expect growth over time."_
 
   2. **Hypocrisy** - unconsciously living a double life
-
      - **Matthew 23:27-28** - "Ye also outwardly appear righteous unto men, but
        within ye are full of hypocrisy and iniquity."
      - _Speaking note: "The person most deceived by our hypocrisy is often
@@ -304,7 +283,6 @@ from glory to glory, even as by the Spirit of the Lord."
        mask we can't remove."_
 
   3. **Damaged witness** - undermining our testimony
-
      - **Romans 2:21-24** - "Thou therefore which teachest another, teachest
        thou not thyself?"
      - _Speaking note: "Our inconsistencies speak louder than our words. It's
@@ -329,9 +307,7 @@ from glory to glory, even as by the Spirit of the Lord."
   rooms in our heart. God holds the master key, but we must invite Him to open
   each door we've kept closed—even from ourselves."_
 - Common barriers and biblical solutions:
-
   1. **Fear of what we'll discover**
-
      - **1 John 1:9** - "If we confess our sins, he is faithful and just to
        forgive us our sins"
      - _Speaking note: "The doctor can't treat what you refuse to reveal - God
@@ -341,7 +317,6 @@ from glory to glory, even as by the Spirit of the Lord."
        table; He reveals to heal, not to condemn."_
 
   2. **Busyness and distraction**
-
      - **Psalm 46:10** - "Be still, and know that I am God"
      - _Speaking note: "In our noisy world, silence has become uncomfortable -
        yet it's essential for hearing God's voice. Busyness is to introspection
@@ -350,7 +325,6 @@ from glory to glory, even as by the Spirit of the Lord."
        God's clear broadcast."_
 
   3. **Pride and defensiveness**
-
      - **Proverbs 12:1** - "Whoso loveth instruction loveth knowledge: but he
        that hateth reproof is brutish."
      - _Speaking note: "True humility says 'I have blind spots I cannot see

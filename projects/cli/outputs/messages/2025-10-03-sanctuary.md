@@ -17,7 +17,6 @@ the true tabernacle, which the Lord pitched, and not man."
 ## Introduction: God's Visual Aid for Salvation
 
 - **Exodus 25:8** - "Let them make me a sanctuary; that I may dwell among them"
-
   - The sanctuary represents God's desire for relationship, not just ritual
   - _Speaking note: "The sanctuary is God's object lesson of salvation—like a 3D
     model teaching complex truths through tangible symbols."_
@@ -30,17 +29,13 @@ the true tabernacle, which the Lord pitched, and not man."
 ## I. The Sanctuary Structure: A Divine Blueprint
 
 - **Exodus 25:9** - Built according to a heavenly pattern
-
   - Not human invention but divine revelation
 
 - Three main compartments with distinct purposes:
-
   1. **Outer Court** - Altar of sacrifice and laver (justification)
-
      - Represents Christ's death and initial cleansing
 
   2. **Holy Place** - Daily priestly ministry (sanctification)
-
      - Lampstand: Christ as Light of the World
      - Table of Showbread: Christ as Bread of Life
      - Altar of Incense: Prayer and intercession
@@ -55,7 +50,6 @@ the true tabernacle, which the Lord pitched, and not man."
 
 - **John 1:29** - "Behold the Lamb of God, which taketh away the sin of the
   world"
-
   - All sacrifices pointed to Messiah
 
 - The sin transfer process:
@@ -70,11 +64,9 @@ the true tabernacle, which the Lord pitched, and not man."
 ## III. Christ as Our High Priest
 
 - **Hebrews 4:15-16** - Priest as compassionate mediator
-
   - Understanding human weakness through shared experience
 
 - **Hebrews 7:25** - "He ever liveth to make intercession for us"
-
   - Christ's ongoing heavenly ministry applying His sacrifice
 
 - Contrasts between earthly and heavenly priests:
@@ -86,19 +78,16 @@ the true tabernacle, which the Lord pitched, and not man."
 ## IV. The Day of Atonement: Model of Final Judgment
 
 - **Leviticus 16** - Annual cleansing of sanctuary from accumulated sin
-
   - _Speaking note: "The sanctuary functioned as God's 'sin processing
     center'—the Day of Atonement was the annual 'system cleansing.'"_
 
 - The essential process:
-
   1. High priest's special preparation
   2. Two goats selected:
      - Lord's goat: sacrifice for atonement
      - Scapegoat: removal of sin
   3. Blood applied to cleanse Most Holy Place
   4. Sins placed on scapegoat and removed from camp
-
   - _Speaking note: "These two goats represent complete solution to
     sin—forgiveness through Christ's death and final removal of sin at the
     end."_
@@ -111,13 +100,10 @@ the true tabernacle, which the Lord pitched, and not man."
 ## V. Christ's Two-Phase Heavenly Ministry
 
 - **Hebrews 8:1-5** - Christ ministers in the true sanctuary in heaven
-
   - Earthly sanctuary was a copy and shadow
 
 - Two phases of Christ's heavenly ministry:
-
   1. **Holy Place Ministry (31 AD to 1844)**
-
      - Application of sacrifice benefits
      - Forgiveness and transformation for believers
      - _Speaking note: "For most of Christian history, Christ has been applying
@@ -134,15 +120,12 @@ the true tabernacle, which the Lord pitched, and not man."
 
 - **Daniel 7:9-10, 8:14** - "Unto two thousand and three hundred days; then
   shall the sanctuary be cleansed"
-
   - 2300 year prophecy extending from 457 BC to 1844 AD
 
 - Nature of the judgment:
-
   1. Examination of life records
   2. Determination of who receives eternal life
   3. Vindication of God's justice before the universe
-
   - _Speaking note: "This judgment isn't about God needing information but
     demonstrating the fairness of His decisions before the watching universe."_
 
@@ -155,7 +138,6 @@ the true tabernacle, which the Lord pitched, and not man."
 
 - **1 John 2:1** - "We have an advocate with the Father, Jesus Christ the
   righteous"
-
   - Christ as our defense attorney
 
 - **Zechariah 3:1-5** - Joshua and the filthy garments
@@ -167,7 +149,6 @@ the true tabernacle, which the Lord pitched, and not man."
 ## VIII. Living in the Day of Atonement: Our Response
 
 - **Joel 2:12-17** - Call to deep consecration
-
   - Heart-searching and repentance
 
 - Practical steps for Day of Atonement living:
@@ -182,7 +163,6 @@ the true tabernacle, which the Lord pitched, and not man."
 ## Conclusion and Appeal
 
 - **Revelation 21:3** - Ultimate fulfillment of sanctuary purpose
-
   - "The tabernacle of God is with men, and he will dwell with them"
   - _Speaking note: "The sanctuary's ultimate purpose will be fulfilled when God
     dwells directly with His people—all symbolism points toward this glorious

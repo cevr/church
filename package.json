@@ -17,8 +17,15 @@
       "effect": "3.19.3"
     }
   },
-  "scripts": {},
+  "scripts": {
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\""
+  },
   "devDependencies": {
-    "oxfmt": "^0.13.0"
-  }
+    "@cvr/config": "^0.5.2",
+    "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
+    "oxfmt": "^0.13.0",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.7.1"
+  },
+  "prettier": "@cvr/config/prettier"
 }

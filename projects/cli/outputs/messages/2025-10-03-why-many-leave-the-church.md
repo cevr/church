@@ -60,9 +60,7 @@ to the things which we have heard, lest at any time we should let them slip."
   overweight overnight, but gradually through small daily choices, spiritual
   drift happens bite by bite, choice by choice."_
 - Three primary attractions that parallel John's warning:
-
   1. **Intellectual attractions** - worldly philosophies (pride of life)
-
      - **Colossians 2:8** - "Beware lest any man spoil you through philosophy
        and vain deceit"
      - _Speaking note: "Remember that earthly wisdom often appears sophisticated
@@ -71,7 +69,6 @@ to the things which we have heard, lest at any time we should let them slip."
        the other speaks directly to the heart with its clarity."_
 
   2. **Social attractions** - desire for acceptance (lust of the eyes)
-
      - **Romans 12:2** - "Be not conformed to this world, but be ye transformed"
      - _Speaking note: "Like a boat on water, we're meant to be in the world but
        not of it. A boat fulfills its purpose when it's in the water, but
@@ -153,9 +150,7 @@ to the things which we have heard, lest at any time we should let them slip."
   worldly temptations and false teachings cannot penetrate our spiritual
   protection."_
 - Being sealed involves:
-
   1. **Intellectual conviction** - knowing what and why we believe
-
      - **1 Peter 3:15** - "Be ready always to give an answer to every man that
        asketh you a reason of the hope that is in you"
      - _Speaking note: "Truth is not just something we feel, but something we
@@ -163,7 +158,6 @@ to the things which we have heard, lest at any time we should let them slip."
        having a vague feeling about where you live."_
 
   2. **Heart transformation** - loving the truth and being changed by it
-
      - **Psalm 40:8** - "I delight to do thy will, O my God: thy law is within
        my heart"
      - **Ezekiel 36:26** - "A new heart also will I give you, and a new spirit
@@ -173,7 +167,6 @@ to the things which we have heard, lest at any time we should let them slip."
        selfish heart with God's loving heart."_
 
   3. **Lifestyle alignment** - daily choices reflecting our beliefs
-
      - **James 2:17** - "Faith, if it hath not works, is dead, being alone"
      - _Speaking note: "Our actions reveal what we truly believe. Just as a
        thermometer reads the temperature, our lifestyle reads our true spiritual
@@ -226,7 +219,6 @@ to the things which we have heard, lest at any time we should let them slip."
   intense activity. Just as you can't get physically fit by exercising only on
   Sabbath, you can't get spiritually fit with once-a-week religion."_
 - Daily Bible study and prayer
-
   - **Matthew 4:4** - "Man shall not live by bread alone, but by every word that
     proceedeth out of the mouth of God"
   - **Practical application:**
@@ -235,7 +227,6 @@ to the things which we have heard, lest at any time we should let them slip."
     - Keep a spiritual journal to track insights and growth
 
 - Active practice of biblical principles
-
   - **James 1:22** - "Be ye doers of the word, and not hearers only, deceiving
     your own selves"
   - **Matthew 7:24-27** - The wise man who built his house upon a rock vs. the
@@ -247,7 +238,6 @@ to the things which we have heard, lest at any time we should let them slip."
       three people today")
 
 - Building a supportive faith community
-
   - **Ecclesiastes 4:9-10** - "Two are better than one... for if they fall, the
     one will lift up his fellow"
   - **Practical application:**

@@ -43,12 +43,12 @@
  * ```
  */
 
-export { EGWGeminiService, EGWGeminiError } from "./service.js";
+export { EGWGeminiService, EGWGeminiError } from './service.js';
 export type {
   UploadBookOptions,
   QueryOptions,
   UploadAllEGWWritingsOptions,
-} from "./service.js";
+} from './service.js';
 
 export {
   EGWUploadStatus,
@@ -56,10 +56,10 @@ export {
   DatabaseQueryError,
   ParagraphUploadNotFoundError,
   SchemaInitializationError,
-} from "./upload-status.js";
+} from './upload-status.js';
 export type {
   BookUploadStatus,
   ParagraphUploadStatus,
   UploadStatusMap,
   UploadStatusError,
-} from "./upload-status.js";
+} from './upload-status.js';

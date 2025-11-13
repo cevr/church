@@ -3,10 +3,11 @@
  * Based on the tutorial: https://www.philschmid.de/gemini-file-search-javascript
  */
 
-import { Effect } from "effect";
-import { Path } from "@effect/platform";
-import { GeminiFileSearchClient } from "./client.js";
-import * as Schemas from "./schemas.js";
+import { Path } from '@effect/platform';
+import { Effect } from 'effect';
+
+import { GeminiFileSearchClient } from './client.js';
+import * as Schemas from './schemas.js';
 
 /**
  * Example 1: Create a File Search Store
@@ -19,9 +20,9 @@ export const createStoreExample = (displayName: string) =>
     return store;
   }).pipe(
     Effect.catchAll((error) =>
-      Effect.logError("Failed to create store:", error)
+      Effect.logError('Failed to create store:', error),
     ),
-    Effect.provide(GeminiFileSearchClient.Default)
+    Effect.provide(GeminiFileSearchClient.Default),
   );
 
 /**
@@ -34,10 +35,8 @@ export const findStoreExample = (displayName: string) =>
     yield* Effect.log(`Found store: ${store.name}`);
     return store;
   }).pipe(
-    Effect.catchAll((error) =>
-      Effect.logError("Failed to find store:", error)
-    ),
-    Effect.provide(GeminiFileSearchClient.Default)
+    Effect.catchAll((error) => Effect.logError('Failed to find store:', error)),
+    Effect.provide(GeminiFileSearchClient.Default),
   );
 
 /**
@@ -46,7 +45,7 @@ export const findStoreExample = (displayName: string) =>
 export const uploadFilesExample = (
   fileSearchStoreName: string,
   docsDir: string,
-  files: string[]
+  files: string[],
 ) =>
   Effect.gen(function* () {
     const path = yield* Path.Path;
@@ -57,18 +56,16 @@ export const uploadFilesExample = (
       fileSearchStoreName,
       (filePath) => ({
         displayName: path.basename(filePath),
-      })
+      }),
     );
-    yield* Effect.log(
-      `Processing complete for ${operations.length} files`
-    );
+    yield* Effect.log(`Processing complete for ${operations.length} files`);
     return operations;
   }).pipe(
     Effect.catchAll((error) =>
-      Effect.logError("Failed to upload files:", error)
+      Effect.logError('Failed to upload files:', error),
     ),
     Effect.provide(GeminiFileSearchClient.Default),
-    Effect.provide(Path.layer)
+    Effect.provide(Path.layer),
   );
 
 /**
@@ -76,11 +73,11 @@ export const uploadFilesExample = (
  */
 export const advancedUploadExample = (
   fileSearchStoreName: string,
-  filePath: string
+  filePath: string,
 ) => {
   const config: Schemas.UploadConfig = {
-    displayName: "technical-manual.txt",
-    customMetadata: [{ key: "doc_type", stringValue: "manual" }],
+    displayName: 'technical-manual.txt',
+    customMetadata: [{ key: 'doc_type', stringValue: 'manual' }],
     chunkingConfig: {
       whiteSpaceConfig: {
         maxTokensPerChunk: 500,
@@ -94,15 +91,15 @@ export const advancedUploadExample = (
     const operation = yield* client.uploadFile(
       filePath,
       fileSearchStoreName,
-      config
+      config,
     );
-    yield* Effect.log("Advanced file processed");
+    yield* Effect.log('Advanced file processed');
     return operation;
   }).pipe(
     Effect.catchAll((error) =>
-      Effect.logError("Failed to upload file:", error)
+      Effect.logError('Failed to upload file:', error),
     ),
-    Effect.provide(GeminiFileSearchClient.Default)
+    Effect.provide(GeminiFileSearchClient.Default),
   );
 };
 
@@ -111,27 +108,27 @@ export const advancedUploadExample = (
  */
 export const generateContentExample = (
   fileSearchStoreName: string,
-  query: string
+  query: string,
 ) =>
   Effect.gen(function* () {
     const client = yield* GeminiFileSearchClient;
-    const response = yield* client.generateContent("gemini-2.5-flash", query, [
+    const response = yield* client.generateContent('gemini-2.5-flash', query, [
       fileSearchStoreName,
     ]);
     const text =
-      response.candidates[0]?.content.parts[0]?.text || "No response";
-    yield* Effect.log("Model response:", text);
+      response.candidates[0]?.content.parts[0]?.text || 'No response';
+    yield* Effect.log('Model response:', text);
     // Optionally check groundingMetadata for citations
     const metadata = response.candidates[0]?.groundingMetadata;
     if (metadata) {
-      yield* Effect.log("Grounding metadata:", metadata);
+      yield* Effect.log('Grounding metadata:', metadata);
     }
     return response;
   }).pipe(
     Effect.catchAll((error) =>
-      Effect.logError("Failed to generate content:", error)
+      Effect.logError('Failed to generate content:', error),
     ),
-    Effect.provide(GeminiFileSearchClient.Default)
+    Effect.provide(GeminiFileSearchClient.Default),
   );
 
 /**
@@ -139,25 +136,25 @@ export const generateContentExample = (
  */
 export const generateContentWithFilterExample = (
   fileSearchStoreName: string,
-  query: string
+  query: string,
 ) =>
   Effect.gen(function* () {
     const client = yield* GeminiFileSearchClient;
     const response = yield* client.generateContent(
-      "gemini-2.5-flash",
+      'gemini-2.5-flash',
       query,
       [fileSearchStoreName],
-      'doc_type="manual"'
+      'doc_type="manual"',
     );
     const text =
-      response.candidates[0]?.content.parts[0]?.text || "No response";
-    yield* Effect.log("Filtered response:", text);
+      response.candidates[0]?.content.parts[0]?.text || 'No response';
+    yield* Effect.log('Filtered response:', text);
     return response;
   }).pipe(
     Effect.catchAll((error) =>
-      Effect.logError("Failed to generate content:", error)
+      Effect.logError('Failed to generate content:', error),
     ),
-    Effect.provide(GeminiFileSearchClient.Default)
+    Effect.provide(GeminiFileSearchClient.Default),
   );
 
 /**
@@ -165,21 +162,21 @@ export const generateContentWithFilterExample = (
  */
 export const findDocumentExample = (
   fileSearchStoreName: string,
-  displayName: string
+  displayName: string,
 ) =>
   Effect.gen(function* () {
     const client = yield* GeminiFileSearchClient;
     const document = yield* client.findDocumentByDisplayName(
       fileSearchStoreName,
-      displayName
+      displayName,
     );
     yield* Effect.log(`Found document: ${document.name}`);
     return document;
   }).pipe(
     Effect.catchAll((error) =>
-      Effect.logError("Failed to find document:", error)
+      Effect.logError('Failed to find document:', error),
     ),
-    Effect.provide(GeminiFileSearchClient.Default)
+    Effect.provide(GeminiFileSearchClient.Default),
   );
 
 /**
@@ -189,12 +186,12 @@ export const deleteDocumentExample = (documentName: string) =>
   Effect.gen(function* () {
     const client = yield* GeminiFileSearchClient;
     yield* client.deleteDocument(documentName, true);
-    yield* Effect.log("Document deleted successfully");
+    yield* Effect.log('Document deleted successfully');
   }).pipe(
     Effect.catchAll((error) =>
-      Effect.logError("Failed to delete document:", error)
+      Effect.logError('Failed to delete document:', error),
     ),
-    Effect.provide(GeminiFileSearchClient.Default)
+    Effect.provide(GeminiFileSearchClient.Default),
   );
 
 /**
@@ -203,22 +200,22 @@ export const deleteDocumentExample = (documentName: string) =>
 export const updateDocumentExample = (
   fileSearchStoreName: string,
   filePath: string,
-  displayName: string
+  displayName: string,
 ) =>
   Effect.gen(function* () {
     const client = yield* GeminiFileSearchClient;
     const operation = yield* client.updateDocument(
       filePath,
       fileSearchStoreName,
-      displayName
+      displayName,
     );
-    yield* Effect.log("Document updated successfully");
+    yield* Effect.log('Document updated successfully');
     return operation;
   }).pipe(
     Effect.catchAll((error) =>
-      Effect.logError("Failed to update document:", error)
+      Effect.logError('Failed to update document:', error),
     ),
-    Effect.provide(GeminiFileSearchClient.Default)
+    Effect.provide(GeminiFileSearchClient.Default),
   );
 
 /**
@@ -228,12 +225,12 @@ export const deleteStoreExample = (storeName: string) =>
   Effect.gen(function* () {
     const client = yield* GeminiFileSearchClient;
     yield* client.deleteStore(storeName, true);
-    yield* Effect.log("Store deleted successfully");
+    yield* Effect.log('Store deleted successfully');
   }).pipe(
     Effect.catchAll((error) =>
-      Effect.logError("Failed to delete store:", error)
+      Effect.logError('Failed to delete store:', error),
     ),
-    Effect.provide(GeminiFileSearchClient.Default)
+    Effect.provide(GeminiFileSearchClient.Default),
   );
 
 /**
@@ -241,7 +238,7 @@ export const deleteStoreExample = (storeName: string) =>
  */
 export const completeWorkflowExample = Effect.gen(function* () {
   const client = yield* GeminiFileSearchClient;
-  const storeName = "my-example-store";
+  const storeName = 'my-example-store';
 
   // 1. Create or find store
   const store = yield* client
@@ -255,12 +252,12 @@ export const completeWorkflowExample = Effect.gen(function* () {
 
   // 3. Generate content
   const response = yield* client.generateContent(
-    "gemini-2.5-flash",
-    "What is Gemini and what is the File API?",
-    [store.name]
+    'gemini-2.5-flash',
+    'What is Gemini and what is the File API?',
+    [store.name],
   );
 
-  yield* Effect.log("Response:", response);
+  yield* Effect.log('Response:', response);
 
   // 4. Cleanup (optional)
   // yield* client.deleteStore(store.name, true);

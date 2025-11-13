@@ -11,7 +11,7 @@ import {
   HttpClientResponse,
   Path,
   UrlParams,
-} from "@effect/platform";
+} from '@effect/platform';
 import {
   Clock,
   Config,
@@ -24,12 +24,12 @@ import {
   Schedule,
   Schema,
   SynchronizedRef,
-} from "effect";
+} from 'effect';
 
 /**
  * EGW Auth Errors
  */
-export class EGWAuthError extends Data.TaggedError("EGWAuthError")<{
+export class EGWAuthError extends Data.TaggedError('EGWAuthError')<{
   readonly cause: unknown;
   readonly message: string;
 }> {}
@@ -49,7 +49,7 @@ const OAuthTokenResponse = Schema.Struct({
  * Access Token with creation timestamp
  */
 export class AccessToken extends Schema.Class<AccessToken>(
-  "lib/EGW/Auth/AccessToken"
+  'lib/EGW/Auth/AccessToken',
 )({
   accessToken: Schema.Redacted(Schema.NonEmptyString),
   refreshToken: Schema.optional(Schema.Redacted(Schema.NonEmptyString)),
@@ -85,7 +85,7 @@ const AccessTokenFromOAuthResponse = Schema.transformOrFail(
             expiresAt: createdAt + expiresIn,
             scope: encoded.scope,
           },
-          { disableValidation: true }
+          { disableValidation: true },
         );
       }),
     encode: (decoded) =>
@@ -94,28 +94,28 @@ const AccessTokenFromOAuthResponse = Schema.transformOrFail(
         refresh_token: decoded.refreshToken
           ? Redacted.value(decoded.refreshToken)
           : undefined,
-        token_type: "Bearer",
+        token_type: 'Bearer',
         expires_in: Math.floor((decoded.expiresAt - Date.now()) / 1000),
         scope: decoded.scope,
       }),
-  }
+  },
 );
 
 /**
  * EGW Authentication Service
  */
-export class EGWAuth extends Effect.Service<EGWAuth>()("lib/EGW/Auth", {
+export class EGWAuth extends Effect.Service<EGWAuth>()('lib/EGW/Auth', {
   scoped: Effect.gen(function* () {
-    const authBaseUrl = yield* Config.string("EGW_AUTH_BASE_URL").pipe(
-      Config.withDefault("https://cpanel.egwwritings.org")
+    const authBaseUrl = yield* Config.string('EGW_AUTH_BASE_URL').pipe(
+      Config.withDefault('https://cpanel.egwwritings.org'),
     );
-    const clientId = yield* Config.string("EGW_CLIENT_ID");
-    const clientSecret = yield* Config.redacted("EGW_CLIENT_SECRET");
-    const scope = yield* Config.string("EGW_SCOPE").pipe(
-      Config.withDefault("writings search studycenter subscriptions user_info")
+    const clientId = yield* Config.string('EGW_CLIENT_ID');
+    const clientSecret = yield* Config.redacted('EGW_CLIENT_SECRET');
+    const scope = yield* Config.string('EGW_SCOPE').pipe(
+      Config.withDefault('writings search studycenter subscriptions user_info'),
     );
-    const tokenFile = yield* Config.string("EGW_TOKEN_FILE").pipe(
-      Config.withDefault("data/tokens.json")
+    const tokenFile = yield* Config.string('EGW_TOKEN_FILE').pipe(
+      Config.withDefault('data/tokens.json'),
     );
 
     const fs = yield* FileSystem.FileSystem;
@@ -128,20 +128,20 @@ export class EGWAuth extends Effect.Service<EGWAuth>()("lib/EGW/Auth", {
       .makeDirectory(path.dirname(tokenFilePath), { recursive: true })
       .pipe(Effect.orDie);
 
-    const readTokenFromCache = Effect.fn("EGWAuth.readTokenFromCache")(
+    const readTokenFromCache = Effect.fn('EGWAuth.readTokenFromCache')(
       function* () {
         const exists = yield* fs.exists(tokenFilePath);
         if (!exists) {
           return yield* Effect.succeed(Option.none());
         }
-        const json = yield* fs.readFileString(tokenFilePath, "utf-8");
+        const json = yield* fs.readFileString(tokenFilePath, 'utf-8');
         const token = yield* AccessToken.fromJson(json);
         return yield* Effect.succeed(Option.some(token));
-      }
+      },
     );
 
-    const writeTokenToCache = Effect.fn("EGWAuth.writeTokenToCache")(function* (
-      token: AccessToken
+    const writeTokenToCache = Effect.fn('EGWAuth.writeTokenToCache')(function* (
+      token: AccessToken,
     ) {
       const json = yield* AccessToken.toJson(token);
       yield* fs.writeFileString(tokenFilePath, json);
@@ -152,13 +152,13 @@ export class EGWAuth extends Effect.Service<EGWAuth>()("lib/EGW/Auth", {
         request.pipe(
           HttpClientRequest.prependUrl(authBaseUrl),
           HttpClientRequest.basicAuth(clientId, Redacted.value(clientSecret)),
-          HttpClientRequest.acceptJson
-        )
+          HttpClientRequest.acceptJson,
+        ),
       ),
       HttpClient.tapRequest((request) => {
         if (
-          request.body._tag === "Uint8Array" &&
-          request.body.contentType.includes("json")
+          request.body._tag === 'Uint8Array' &&
+          request.body.contentType.includes('json')
         ) {
           const text = new TextDecoder().decode(request.body.body);
           try {
@@ -166,12 +166,12 @@ export class EGWAuth extends Effect.Service<EGWAuth>()("lib/EGW/Auth", {
             // Mask sensitive fields
             const maskedJson = {
               ...json,
-              client_secret: json.client_secret ? "[REDACTED]" : undefined,
-              refresh_token: json.refresh_token ? "[REDACTED]" : undefined,
+              client_secret: json.client_secret ? '[REDACTED]' : undefined,
+              refresh_token: json.refresh_token ? '[REDACTED]' : undefined,
             };
             return Effect.log(
               `-> req ${request.method} ${request.url}`,
-              JSON.stringify(maskedJson)
+              JSON.stringify(maskedJson),
             );
           } catch {
             return Effect.log(`-> req ${request.method} ${request.url}`);
@@ -184,46 +184,46 @@ export class EGWAuth extends Effect.Service<EGWAuth>()("lib/EGW/Auth", {
           Effect.tap((response) =>
             Effect.gen(function* () {
               yield* Effect.log(
-                `<- res ${response.status} ${response.request.method} ${response.request.url}`
+                `<- res ${response.status} ${response.request.method} ${response.request.url}`,
               );
               // Log response body for non-2xx status codes
               if (response.status < 200 || response.status >= 300) {
                 const body = yield* response.text.pipe(Effect.either);
-                if (body._tag === "Right") {
-                  yield* Effect.logError("Error response body:", body.right);
+                if (body._tag === 'Right') {
+                  yield* Effect.logError('Error response body:', body.right);
                 }
               }
-            })
-          )
-        )
+            }),
+          ),
+        ),
       ),
       HttpClient.tapError((error) =>
         Effect.gen(function* () {
-          const request = "request" in error ? error.request : undefined;
+          const request = 'request' in error ? error.request : undefined;
           yield* Effect.logError(
             `✗ res ${request?.method} ${request?.url}`,
-            String(error)
+            String(error),
           );
-        })
+        }),
       ),
-      HttpClient.filterStatusOk
+      HttpClient.filterStatusOk,
     );
 
-    const fetchToken = Effect.fn("EGWAuth.fetchToken")(function* () {
+    const fetchToken = Effect.fn('EGWAuth.fetchToken')(function* () {
       // When using Basic Auth, don't include client_id and client_secret in body
       const token = yield* httpClient
-        .post("/connect/token", {
+        .post('/connect/token', {
           body: HttpBody.urlParams(
             UrlParams.fromInput({
-              grant_type: "client_credentials",
+              grant_type: 'client_credentials',
               scope: scope,
-            })
+            }),
           ),
         })
         .pipe(
           Effect.flatMap(
-            HttpClientResponse.schemaBodyJson(AccessTokenFromOAuthResponse)
-          )
+            HttpClientResponse.schemaBodyJson(AccessTokenFromOAuthResponse),
+          ),
         );
 
       yield* writeTokenToCache(token);
@@ -231,32 +231,32 @@ export class EGWAuth extends Effect.Service<EGWAuth>()("lib/EGW/Auth", {
       return token;
     }, Effect.orDie);
 
-    const refreshToken = Effect.fn("EGWAuth.refreshToken")(function* (
-      token: AccessToken
+    const refreshToken = Effect.fn('EGWAuth.refreshToken')(function* (
+      token: AccessToken,
     ) {
       if (!token.refreshToken) {
         return yield* Effect.fail(
           new EGWAuthError({
-            message: "No refresh token available",
+            message: 'No refresh token available',
             cause: undefined,
-          })
+          }),
         );
       }
 
-      yield* Effect.logDebug("Refreshing EGW access token");
+      yield* Effect.logDebug('Refreshing EGW access token');
 
       const refreshedToken = yield* httpClient
-        .post("/connect/token", {
+        .post('/connect/token', {
           body: HttpBody.urlParams(
             UrlParams.fromInput({
-              grant_type: "refresh_token",
+              grant_type: 'refresh_token',
               refresh_token: Redacted.value(token.refreshToken),
-            })
+            }),
           ),
         })
         .pipe(
           Effect.flatMap(
-            HttpClientResponse.schemaBodyJson(AccessTokenFromOAuthResponse)
+            HttpClientResponse.schemaBodyJson(AccessTokenFromOAuthResponse),
           ),
           Effect.flatMap((response) =>
             Clock.currentTimeMillis.pipe(
@@ -266,18 +266,18 @@ export class EGWAuth extends Effect.Service<EGWAuth>()("lib/EGW/Auth", {
                   {
                     accessToken: response.accessToken,
                     refreshToken: Predicate.isNotUndefined(
-                      response.refreshToken
+                      response.refreshToken,
                     )
                       ? response.refreshToken
                       : token.refreshToken,
                     expiresAt: response.expiresAt,
                     scope: response.scope,
                   },
-                  { disableValidation: true }
+                  { disableValidation: true },
                 );
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
 
       yield* writeTokenToCache(refreshedToken);
@@ -285,7 +285,7 @@ export class EGWAuth extends Effect.Service<EGWAuth>()("lib/EGW/Auth", {
       return refreshedToken;
     }, Effect.orDie);
 
-    const refreshTokenIfExpired = Effect.fn("EGWAuth.refreshTokenIfExpired")(
+    const refreshTokenIfExpired = Effect.fn('EGWAuth.refreshTokenIfExpired')(
       function* (token: AccessToken) {
         const now = yield* Clock.currentTimeMillis;
         // Refresh if expired or expiring within 5 minutes
@@ -293,27 +293,27 @@ export class EGWAuth extends Effect.Service<EGWAuth>()("lib/EGW/Auth", {
         return yield* token.isExpired(now - Duration.toMillis(fiveMinutes))
           ? refreshToken(token)
           : Effect.succeed(token);
-      }
+      },
     );
 
     const initialToken = yield* readTokenFromCache().pipe(
       Effect.flatMap((maybeToken) =>
-        maybeToken._tag === "Some"
+        maybeToken._tag === 'Some'
           ? refreshTokenIfExpired(maybeToken.value)
-          : fetchToken()
-      )
+          : fetchToken(),
+      ),
     );
 
     const tokenRef = yield* SynchronizedRef.make(initialToken);
 
-    const getToken = Effect.fn("EGWAuth.getToken")(() =>
-      SynchronizedRef.updateAndGetEffect(tokenRef, refreshTokenIfExpired)
+    const getToken = Effect.fn('EGWAuth.getToken')(() =>
+      SynchronizedRef.updateAndGetEffect(tokenRef, refreshTokenIfExpired),
     );
 
     // Periodically refresh token
     yield* getToken().pipe(
       Effect.interruptible,
-      Effect.scheduleForked(Schedule.cron("0 0 * * *"))
+      Effect.scheduleForked(Schedule.cron('0 0 * * *')),
     );
 
     return {

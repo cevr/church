@@ -19,7 +19,6 @@ pattern shewed to thee in the mount."
 ## Introduction: The Sanctuary as Prophetic Timeline
 
 - **Psalm 77:13** - "Thy way, O God, is in the sanctuary"
-
   - The sanctuary reveals God's plan across salvation history
   - _Speaking note: "The sanctuary is God's prophetic roadmap—revealing not just
     Christ's complete ministry but also the progressive development of His
@@ -37,7 +36,6 @@ pattern shewed to thee in the mount."
 ## I. The Four Sanctuary Zones: Overview of the Complete Pattern
 
 1. **Outer Court**
-
    - Located outside tent structure, accessible to all Israelites
    - Contained altar of sacrifice and laver for cleansing
    - Represented initial justification experience
@@ -46,7 +44,6 @@ pattern shewed to thee in the mount."
      experience of justification."_
 
 2. **Holy Place**
-
    - First compartment inside tent, daily priestly ministry
    - Contained lampstand, showbread table, incense altar
    - Represented ongoing sanctification process
@@ -55,7 +52,6 @@ pattern shewed to thee in the mount."
      church preserving truth during the wilderness period."_
 
 3. **Most Holy Place**
-
    - Inner sanctuary behind veil, entered once yearly
    - Contained ark of covenant with law and mercy seat
    - Represented final cleansing and judgment
@@ -74,7 +70,6 @@ pattern shewed to thee in the mount."
 ## II. Christ's Four-Part Ministry Through the Sanctuary Lens
 
 1. **Outer Court Ministry: Christ on Earth (27-31 AD)**
-
    - **John 1:29** - "Behold the Lamb of God, which taketh away the sin of the
      world"
    - Key events:
@@ -87,7 +82,6 @@ pattern shewed to thee in the mount."
      into God's presence."_
 
 2. **Holy Place Ministry: Heavenly Intercession (31 AD-1844)**
-
    - **Hebrews 9:24** - "Christ is not entered into the holy places made with
      hands... but into heaven itself"
    - Key aspects:
@@ -100,7 +94,6 @@ pattern shewed to thee in the mount."
      interceding for believers during centuries of apostasy."_
 
 3. **Most Holy Place Ministry: Pre-Advent Judgment (1844-Close of Probation)**
-
    - **Daniel 8:14** - "Unto two thousand and three hundred days; then shall the
      sanctuary be cleansed"
    - Key aspects:
@@ -127,7 +120,6 @@ pattern shewed to thee in the mount."
 ## III. The Sanctuary and Three Prophetic Church Periods
 
 1. **Apostolic Church: Outer Court Phase (31 AD-538 AD)**
-
    - **Acts 2:41-47** - New Testament church established at Pentecost
    - **Acts 4:33** - "With great power gave the apostles witness of the
      resurrection"
@@ -142,7 +134,6 @@ pattern shewed to thee in the mount."
      development."_
 
 2. **Waldenses through Reformation: Holy Place Phase (538-1844)**
-
    - **Revelation 12:6, 14** - "The woman fled into the wilderness, where she
      hath a place prepared of God"
    - **Revelation 3:7-8** - Philadelphia church with "open door"
@@ -164,7 +155,6 @@ pattern shewed to thee in the mount."
      contributing to the progressive restoration of biblical teaching."_
 
 3. **Advent Movement: Most Holy Place Phase (1844-Close of Probation)**
-
    - **Revelation 11:19** - "The temple of God was opened in heaven, and there
      was seen in his temple the ark of his testament"
    - **Revelation 14:12** - "Here are they that keep the commandments of God,
@@ -208,7 +198,6 @@ pattern shewed to thee in the mount."
 ## IV. Practical Applications: Our Place in the Sanctuary Timeline
 
 1. **Current Position in Most Holy Place Phase**
-
    - **Hebrews 4:14-16** - "We have a great high priest... passed into the
      heavens"
    - Living during investigative judgment
@@ -219,7 +208,6 @@ pattern shewed to thee in the mount."
      Christ's return."_
 
 2. **Practical Ministry Emphases for Now**
-
    - **Revelation 14:6-12** - Three Angels' Messages
    - Priorities for Most Holy Place phase:
      - Complete law restoration, especially Sabbath
@@ -249,7 +237,6 @@ pattern shewed to thee in the mount."
 
 - **Revelation 21:3** - "Behold, the tabernacle of God is with men, and he will
   dwell with them"
-
   - Ultimate fulfillment of sanctuary purpose
   - _Speaking note: "The sanctuary system ultimately points to full restoration
     of God's dwelling with humanity—a return to Eden's face-to-face communion,
@@ -257,7 +244,6 @@ pattern shewed to thee in the mount."
 
 - **Hebrews 10:19-25** - "Having therefore, brethren, boldness to enter into the
   holiest"
-
   - Privilege of Most Holy Place access now
   - Responsibility of preparation for final sealing
   - _Speaking note: "We have the privilege of spiritually entering the Most Holy
