@@ -5,28 +5,30 @@
     "": {
       "name": "church",
       "dependencies": {
-        "@ai-sdk/anthropic": "^2.0.42",
-        "@ai-sdk/google": "^2.0.29",
-        "@ai-sdk/groq": "^2.0.28",
-        "@ai-sdk/openai": "^2.0.64",
+        "@ai-sdk/anthropic": "^2.0.44",
+        "@ai-sdk/google": "^2.0.31",
+        "@ai-sdk/groq": "^2.0.29",
+        "@ai-sdk/openai": "^2.0.65",
         "@clack/prompts": "^0.11.0",
         "@cvr/config": "^0.5.1",
         "@effect/cli": "^0.70.0",
+        "@effect/cluster": "^0.52.9",
         "@effect/language-service": "^0.40.1",
         "@effect/platform": "^0.90.10",
         "@effect/platform-bun": "^0.79.1",
         "@effect/platform-node": "^0.96.1",
-        "ai": "^5.0.89",
+        "@effect/rpc": "^0.72.1",
+        "ai": "^5.0.93",
         "cheerio": "^1.1.2",
         "date-fns": "^4.1.0",
-        "effect": "^3.19.2",
+        "effect": "^3.19.3",
         "marked": "^16.4.2",
         "match-sorter": "^8.1.0",
         "prettier": "^3.6.2",
         "zod": "^4.1.12",
       },
       "devDependencies": {
-        "@types/bun": "^1.3.1",
+        "@types/bun": "^1.3.2",
         "tsx": "^4.20.6",
         "typescript": "^5.9.3",
       },
@@ -75,7 +77,7 @@
 
     "@effect/cli": ["@effect/cli@0.70.0", "", { "dependencies": { "ini": "^4.1.3", "toml": "^3.0.0", "yaml": "^2.5.0" }, "peerDependencies": { "@effect/platform": "^0.91.0", "@effect/printer": "^0.45.0", "@effect/printer-ansi": "^0.45.0", "effect": "^3.17.14" } }, "sha512-nnPYeKuDzizHDFmn02zKBC3QtzWEuU63xsmEZODLqS3gxcA1Z8PRxTr9i/M6YoxBwtMm/7eEQodHcflsP2p0GA=="],
 
-    "@effect/cluster": ["@effect/cluster@0.29.10", "", { "peerDependencies": { "@effect/platform": "^0.80.6", "@effect/rpc": "^0.55.8", "@effect/sql": "^0.33.6", "effect": "^3.14.6" } }, "sha512-JOpTD3ZE9fAfo9j9gKJ3K6c2ahxgcDIsFIVnDaQdoNFkbWUHy/KXzBwVzQQW7yUce5dVhCcbS/KZYlgjJ2FE2Q=="],
+    "@effect/cluster": ["@effect/cluster@0.52.9", "", { "peerDependencies": { "@effect/platform": "^0.93.0", "@effect/rpc": "^0.72.1", "@effect/sql": "^0.48.0", "@effect/workflow": "^0.12.2", "effect": "^3.19.3" } }, "sha512-m9a/JSUrUIBr+46CY78FUKe4eBmC5skgWfsbP0/14J7YaV4gGIuhPVNyU9qq0hbCAoOGce+JCOFNfxcYDR1S1A=="],
 
     "@effect/experimental": ["@effect/experimental@0.44.6", "", { "dependencies": { "uuid": "^11.0.3" }, "peerDependencies": { "@effect/platform": "^0.80.6", "effect": "^3.14.6", "ioredis": "^5", "lmdb": "^3" }, "optionalPeers": ["ioredis", "lmdb"] }, "sha512-1xbExr01HbyCoeSiFUGEmRrRMofjdrZsEM843VswhUdtJWpgT1E5xxfcK5TY4krxzfse9bLB8yQTD7eZGNO5ng=="],
 
@@ -93,11 +95,13 @@
 
     "@effect/printer-ansi": ["@effect/printer-ansi@0.45.0", "", { "dependencies": { "@effect/printer": "^0.45.0" }, "peerDependencies": { "@effect/typeclass": "^0.36.0", "effect": "^3.17.0" } }, "sha512-3MS02RP83eZaBJX98PRI4f5kyoEVyNfg2Qu/XUWQMFRp4wvmgNwEy18RjO9G6s7uB8NaYXTpQVDmtUoKARx7fA=="],
 
-    "@effect/rpc": ["@effect/rpc@0.55.8", "", { "peerDependencies": { "@effect/platform": "^0.80.6", "effect": "^3.14.6" } }, "sha512-xZqQ9FjMMm5NjBJMUImnuSYngIYk0TZeA4bfrKYfGRvTMCPsLFrwq4UbY91TDoXIv79MPD2r0QGyhajGwjQQeA=="],
+    "@effect/rpc": ["@effect/rpc@0.72.1", "", { "dependencies": { "msgpackr": "^1.11.4" }, "peerDependencies": { "@effect/platform": "^0.93.0", "effect": "^3.19.0" } }, "sha512-crpiAxDvFxM/fGhLuAgB1V8JOtfCm8/6ZdOP4MIdkz14I/ff3LdLJpf8hHJpYIbwYXypglAeAaHpfuZOt5f+SA=="],
 
     "@effect/sql": ["@effect/sql@0.33.6", "", { "dependencies": { "@opentelemetry/semantic-conventions": "^1.25.1", "uuid": "^11.0.3" }, "peerDependencies": { "@effect/experimental": "^0.44.6", "@effect/platform": "^0.80.6", "effect": "^3.14.6" } }, "sha512-E38k4GAhpqRgvWCk/huJR2Ugbaao1dNm4GmlBSbQEPhFU4QYn8Bfiyb17wjdPISGjFC+3B+T9lJKb7408Id8zg=="],
 
     "@effect/typeclass": ["@effect/typeclass@0.36.0", "", { "peerDependencies": { "effect": "^3.17.0" } }, "sha512-+8xYvX4tjD7gKwGYzOyFh90I+ptdXzoNHLQTSa8kGh/xOVZMIGYb0VgLoNHE02UsuVrB+JJJuBmKLdd5TeDTPg=="],
+
+    "@effect/workflow": ["@effect/workflow@0.12.3", "", { "peerDependencies": { "@effect/experimental": "^0.57.1", "@effect/platform": "^0.93.1", "@effect/rpc": "^0.72.1", "effect": "^3.19.3" } }, "sha512-WvYIG9ENi55/vCSw5/dsUmSBVX0K4bbH3PZ1/im9efVdPAU35OZdXpMQXu1YGge3AVxwlg6frHlv7ppCta840w=="],
 
     "@emnapi/core": ["@emnapi/core@1.4.3", "", { "dependencies": { "@emnapi/wasi-threads": "1.0.2", "tslib": "^2.4.0" } }, "sha512-4m62DuCE07lw01soJwPiBGC0nAww0Q+RY70VZ+n49yDIO13yyinhbWCeNnaob0lakDtWQzSdtNWzJeOJt2ma+g=="],
 

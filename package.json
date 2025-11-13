@@ -17,5 +17,8 @@
       "effect": "3.19.3"
     }
   },
-  "scripts": {}
+  "scripts": {},
+  "devDependencies": {
+    "oxfmt": "^0.13.0"
+  }
 }
