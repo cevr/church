@@ -50,8 +50,8 @@ const extractModel = Effect.fn('extractModel')(
           Option.map((openaiKey) => {
             return {
               models: {
-                high: createOpenAI({ apiKey: openaiKey })('gpt-5'),
-                low: createOpenAI({ apiKey: openaiKey })('gpt-5-nano'),
+                high: createOpenAI({ apiKey: openaiKey })('gpt-5.1'),
+                low: createOpenAI({ apiKey: openaiKey })('gpt-5.1-nano'),
               },
               provider: Provider.OpenAI,
             };

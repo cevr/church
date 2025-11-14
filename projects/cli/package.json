@@ -1,5 +1,5 @@
 {
-  "name": "church",
+  "name": "@bible-tools/cli",
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -16,8 +16,8 @@
     "@clack/prompts": "^0.11.0",
     "@effect/cli": "^0.72.1",
     "@effect/cluster": "^0.52.9",
-    "@effect/language-service": "^0.55.4",
-    "@effect/platform": "^0.93.1",
+    "@effect/language-service": "^0.56.0",
+    "@effect/platform": "^0.93.2",
     "@effect/platform-bun": "^0.83.0",
     "@effect/platform-node": "^0.100.0",
     "@effect/rpc": "^0.72.1",

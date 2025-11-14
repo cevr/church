@@ -6,7 +6,7 @@
   "author": "cristian ramos <seeve.c@gmail.com>",
   "workspaces": {
     "packages": [
-      "apps/*",
+      "projects/*",
       "packages/*"
     ],
     "catalog": {

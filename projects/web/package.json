@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@base-ui-components/react": "^1.0.0-beta.4",
-    "@effect/platform": "^0.93.1",
+    "@effect/platform": "^0.93.2",
     "@effect/platform-bun": "^0.83.0",
     "@google/genai": "^1.29.1",
     "@react-router/node": "^7.9.6",
