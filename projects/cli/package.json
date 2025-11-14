@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "bun build core/main.ts --outfile node_modules/.bin/church --compile"
+    "build": "bun build core/main.ts --outfile bin/bible --compile"
+  },
+  "bin": {
+    "bible": "bin/bible"
   },
   "keywords": [],
   "author": "",
