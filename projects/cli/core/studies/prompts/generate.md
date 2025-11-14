@@ -172,7 +172,7 @@ scripture and practical application.
 
 ## 9. Output Format
 
-```markdown
+<output-format>
 # Bible Study: [TITLE]
 
 ## [Section 1: Primary Topic Introduction]
@@ -202,7 +202,7 @@ scripture and practical application.
 3. **Growth** (next steps in spiritual development)
 
 _Final scripture quote for inspiration_
-```
+</output-format>
 
 ## 10. Prefilled Replies
 
