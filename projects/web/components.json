@@ -19,6 +19,6 @@
     "hooks": "~/hooks"
   },
   "registries": {
-    "@basecn": "https://basecn.dev/r/{name}.json"
+    "@coss": "https://coss.com/ui/r/{name}.json"
   }
 }
