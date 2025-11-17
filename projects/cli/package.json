@@ -1,5 +1,5 @@
 {
-  "name": "@bible-tools/cli",
+  "name": "@bible/cli",
   "version": "1.0.0",
   "description": "",
   "scripts": {

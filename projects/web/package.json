@@ -1,5 +1,5 @@
 {
-  "name": "@bible-tools/web",
+  "name": "@bible/web",
   "private": true,
   "type": "module",
   "scripts": {
