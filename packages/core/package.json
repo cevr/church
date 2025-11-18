@@ -9,7 +9,7 @@
     "@effect/cli": "catalog:",
     "@effect/platform": "catalog:",
     "@effect/platform-bun": "catalog:",
-    "@google/genai": "^1.29.1",
+    "@google/genai": "^1.30.0",
     "effect": "catalog:"
   },
   "devDependencies": {

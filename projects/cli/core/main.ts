@@ -2,6 +2,7 @@ import { Command } from '@effect/cli';
 import { BunContext, BunRuntime } from '@effect/platform-bun';
 import { Effect } from 'effect';
 
+import { bibleReadings } from './bible-readings/bible-readings';
 import { exportOutput } from './export-output';
 import { messages } from './messages/messages';
 import { sabbathSchool } from './sabbath-school/sabbath-school';
@@ -13,6 +14,7 @@ const command = Command.make('church-tools').pipe(
     messages,
     sabbathSchool,
     studies,
+    bibleReadings,
     exportOutput,
   ]),
 );
