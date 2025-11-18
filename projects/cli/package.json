@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@ai-sdk/anthropic": "^2.0.45",
-    "@ai-sdk/google": "^2.0.34",
+    "@ai-sdk/google": "^2.0.36",
     "@ai-sdk/groq": "^2.0.29",
     "@ai-sdk/openai": "^2.0.68",
     "@clack/prompts": "^0.11.0",
@@ -24,7 +24,7 @@
     "@effect/platform-bun": "^0.83.0",
     "@effect/platform-node": "^0.100.0",
     "@effect/rpc": "^0.72.1",
-    "ai": "^5.0.93",
+    "ai": "^5.0.94",
     "cheerio": "^1.1.2",
     "date-fns": "^4.1.0",
     "effect": "^3.19.4",

@@ -31,8 +31,8 @@ const extractModel = Effect.fn('extractModel')(
             });
             return {
               models: {
-                high: modelProvider('gemini-2.5-pro'),
-                low: modelProvider('gemini-2.0-flash-exp'),
+                high: modelProvider('gemini-3.0-pro'),
+                low: modelProvider('gemini-2.5-flash-lite'),
               },
               provider: Provider.Gemini,
             };
@@ -48,10 +48,11 @@ const extractModel = Effect.fn('extractModel')(
       Effect.map((openaiKey) =>
         openaiKey.pipe(
           Option.map((openaiKey) => {
+            const modelProvider = createOpenAI({ apiKey: openaiKey });
             return {
               models: {
-                high: createOpenAI({ apiKey: openaiKey })('gpt-5.1'),
-                low: createOpenAI({ apiKey: openaiKey })('gpt-5-nano'),
+                high: modelProvider('gpt-5.1'),
+                low: modelProvider('gpt-5-nano'),
               },
               provider: Provider.OpenAI,
             };
@@ -67,14 +68,11 @@ const extractModel = Effect.fn('extractModel')(
       Effect.map((anthropicKey) =>
         anthropicKey.pipe(
           Option.map((anthropicKey) => {
+            const modelProvider = createAnthropic({ apiKey: anthropicKey });
             return {
               models: {
-                high: createAnthropic({ apiKey: anthropicKey })(
-                  'claude-sonnet-4-5',
-                ),
-                low: createAnthropic({ apiKey: anthropicKey })(
-                  'claude-haiku-4-5',
-                ),
+                high: modelProvider('claude-sonnet-4-5'),
+                low: modelProvider('claude-haiku-4-5'),
               },
               provider: Provider.Anthropic,
             };
