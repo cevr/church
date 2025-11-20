@@ -169,7 +169,9 @@ const processChapters = Command.make('process', { model }, (args) =>
             );
           }
 
-          yield* Effect.log(`✓ Completed ${chapterFile}`);
+          yield* Effect.log(
+            `[${index + 1}/${chaptersToProcess.length}] ✓ Completed ${chapterFile}`,
+          );
         }).pipe(
           Effect.annotateLogs({
             chapter: chapterFile,
