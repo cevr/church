@@ -30,15 +30,27 @@ const processChapters = Command.make('process', { model }, (args) =>
       fs.makeDirectory(outputDir).pipe(Effect.ignore),
     );
 
-    // Read the system prompt
-    const systemPrompt = yield* fs
+    // Read the system prompts
+    const studyPrompt = yield* fs
       .readFile(
         path.join(
           process.cwd(),
           'core',
           'bible-readings',
           'prompts',
-          'generate.md',
+          'generate-study.md',
+        ),
+      )
+      .pipe(Effect.map((i) => new TextDecoder().decode(i)));
+
+    const slidesPrompt = yield* fs
+      .readFile(
+        path.join(
+          process.cwd(),
+          'core',
+          'bible-readings',
+          'prompts',
+          'generate-slides.md',
         ),
       )
       .pipe(Effect.map((i) => new TextDecoder().decode(i)));
@@ -65,9 +77,14 @@ const processChapters = Command.make('process', { model }, (args) =>
         Effect.gen(function* () {
           const chapterNum =
             chapterFile.match(/chapter-(\d+)\.txt/)?.[1] || '0';
-          const outputFile = path.join(outputDir, `chapter-${chapterNum}.md`);
-          const exists = yield* fs.exists(outputFile);
-          return !exists;
+          const studyFile = path.join(outputDir, `chapter-${chapterNum}-study.md`);
+          const slidesFile = path.join(
+            outputDir,
+            `chapter-${chapterNum}-slides.md`,
+          );
+          const studyExists = yield* fs.exists(studyFile);
+          const slidesExists = yield* fs.exists(slidesFile);
+          return !studyExists || !slidesExists;
         }),
       {
         concurrency: 'unbounded',
@@ -91,28 +108,66 @@ const processChapters = Command.make('process', { model }, (args) =>
           const chapterNum =
             chapterFile.match(/chapter-(\d+)\.txt/)?.[1] || '0';
           const chapterPath = path.join(chaptersDir, chapterFile);
+          const studyOutputFile = path.join(
+            outputDir,
+            `chapter-${chapterNum}-study.md`,
+          );
+          const slidesOutputFile = path.join(
+            outputDir,
+            `chapter-${chapterNum}-slides.md`,
+          );
 
           yield* Effect.log(
             `[${index + 1}/${chaptersToProcess.length}] Processing ${chapterFile}...`,
           );
 
-          // Read chapter content
-          const chapterContent = yield* fs
-            .readFile(chapterPath)
-            .pipe(Effect.map((i) => new TextDecoder().decode(i)));
+          const studyExists = yield* fs.exists(studyOutputFile);
+          let studyContent = '';
 
-          // Generate study from chapter
-          const { response } = yield* generate(
-            systemPrompt,
-            chapterContent,
-          ).pipe(Effect.provideService(Model, args.model));
+          if (studyExists) {
+            yield* Effect.log(`Study already exists for ${chapterFile}, skipping generation...`);
+            studyContent = yield* fs
+              .readFile(studyOutputFile)
+              .pipe(Effect.map((i) => new TextDecoder().decode(i)));
+          } else {
+            // Read chapter content
+            const chapterContent = yield* fs
+              .readFile(chapterPath)
+              .pipe(Effect.map((i) => new TextDecoder().decode(i)));
 
-          // Write output
-          const outputFile = path.join(outputDir, `chapter-${chapterNum}.md`);
-          yield* spin(
-            `Writing ${chapterFile} to ${outputFile}`,
-            fs.writeFile(outputFile, new TextEncoder().encode(response)),
-          );
+            // Generate study from chapter
+            const { response } = yield* generate(
+              studyPrompt,
+              chapterContent,
+              { skipRevisions: true },
+            ).pipe(Effect.provideService(Model, args.model));
+            studyContent = response;
+
+            // Write output
+            yield* spin(
+              `Writing study to ${studyOutputFile}`,
+              fs.writeFile(studyOutputFile, new TextEncoder().encode(studyContent)),
+            );
+          }
+
+          const slidesExists = yield* fs.exists(slidesOutputFile);
+          if (!slidesExists) {
+            // Generate slides from study
+            const { response: slidesContent } = yield* generate(
+              slidesPrompt,
+              studyContent,
+              { skipRevisions: true },
+            ).pipe(Effect.provideService(Model, args.model));
+
+            // Write output
+            yield* spin(
+              `Writing slides to ${slidesOutputFile}`,
+              fs.writeFile(
+                slidesOutputFile,
+                new TextEncoder().encode(slidesContent),
+              ),
+            );
+          }
 
           yield* Effect.log(`✓ Completed ${chapterFile}`);
         }).pipe(

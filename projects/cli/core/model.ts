@@ -31,7 +31,7 @@ const extractModel = Effect.fn('extractModel')(
             });
             return {
               models: {
-                high: modelProvider('gemini-3.0-pro'),
+                high: modelProvider('gemini-3-pro-preview'),
                 low: modelProvider('gemini-2.5-flash-lite'),
               },
               provider: Provider.Gemini,

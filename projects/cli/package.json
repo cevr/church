@@ -24,7 +24,7 @@
     "@effect/platform-bun": "^0.83.0",
     "@effect/platform-node": "^0.100.0",
     "@effect/rpc": "^0.72.1",
-    "ai": "^5.0.94",
+    "ai": "^5.0.95",
     "cheerio": "^1.1.2",
     "date-fns": "^4.1.0",
     "effect": "^3.19.4",
