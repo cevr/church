@@ -22,7 +22,7 @@ const processChapters = Command.make('process', { model }, (args) =>
     );
 
     // Path to output directory
-    const outputDir = path.join(process.cwd(), 'outputs', 'bible-readings');
+    const outputDir = path.join(process.cwd(), 'outputs', 'readings');
 
     // Ensure output directory exists
     yield* spin(
@@ -36,7 +36,7 @@ const processChapters = Command.make('process', { model }, (args) =>
         path.join(
           process.cwd(),
           'core',
-          'bible-readings',
+          'readings',
           'prompts',
           'generate-study.md',
         ),
@@ -48,7 +48,7 @@ const processChapters = Command.make('process', { model }, (args) =>
         path.join(
           process.cwd(),
           'core',
-          'bible-readings',
+          'readings',
           'prompts',
           'generate-slides.md',
         ),
@@ -77,7 +77,10 @@ const processChapters = Command.make('process', { model }, (args) =>
         Effect.gen(function* () {
           const chapterNum =
             chapterFile.match(/chapter-(\d+)\.txt/)?.[1] || '0';
-          const studyFile = path.join(outputDir, `chapter-${chapterNum}-study.md`);
+          const studyFile = path.join(
+            outputDir,
+            `chapter-${chapterNum}-study.md`,
+          );
           const slidesFile = path.join(
             outputDir,
             `chapter-${chapterNum}-slides.md`,
@@ -125,7 +128,9 @@ const processChapters = Command.make('process', { model }, (args) =>
           let studyContent = '';
 
           if (studyExists) {
-            yield* Effect.log(`Study already exists for ${chapterFile}, skipping generation...`);
+            yield* Effect.log(
+              `Study already exists for ${chapterFile}, skipping generation...`,
+            );
             studyContent = yield* fs
               .readFile(studyOutputFile)
               .pipe(Effect.map((i) => new TextDecoder().decode(i)));
@@ -136,17 +141,19 @@ const processChapters = Command.make('process', { model }, (args) =>
               .pipe(Effect.map((i) => new TextDecoder().decode(i)));
 
             // Generate study from chapter
-            const { response } = yield* generate(
-              studyPrompt,
-              chapterContent,
-              { skipRevisions: true },
-            ).pipe(Effect.provideService(Model, args.model));
+            const { response } = yield* generate(studyPrompt, chapterContent, {
+              skipRevisions: true,
+              skipChime: true,
+            }).pipe(Effect.provideService(Model, args.model));
             studyContent = response;
 
             // Write output
             yield* spin(
               `Writing study to ${studyOutputFile}`,
-              fs.writeFile(studyOutputFile, new TextEncoder().encode(studyContent)),
+              fs.writeFile(
+                studyOutputFile,
+                new TextEncoder().encode(studyContent),
+              ),
             );
           }
 
@@ -156,7 +163,7 @@ const processChapters = Command.make('process', { model }, (args) =>
             const { response: slidesContent } = yield* generate(
               slidesPrompt,
               studyContent,
-              { skipRevisions: true },
+              { skipRevisions: true, skipChime: true },
             ).pipe(Effect.provideService(Model, args.model));
 
             // Write output
@@ -191,6 +198,6 @@ const processChapters = Command.make('process', { model }, (args) =>
   }),
 );
 
-export const bibleReadings = Command.make('bible-readings').pipe(
+export const readings = Command.make('readings').pipe(
   Command.withSubcommands([processChapters]),
 );

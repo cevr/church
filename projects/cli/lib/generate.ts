@@ -18,7 +18,7 @@ class GenerateFilenameError extends Data.TaggedError('GenerateFilenameError')<{
 export const generate = Effect.fn('generate')(function* (
   systemPrompt: string,
   prompt: string,
-  options?: { skipRevisions?: boolean },
+  options?: { skipRevisions?: boolean; skipChime?: boolean },
 ) {
   const models = yield* Model;
 
@@ -74,7 +74,9 @@ export const generate = Effect.fn('generate')(function* (
       }),
   });
 
-  yield* doneChime;
+  if (!options?.skipChime) {
+    yield* doneChime;
+  }
 
   if (options?.skipRevisions) {
     return {
