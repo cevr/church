@@ -1,0 +1,177 @@
+Study Title: The Hope of the Resurrection: Victory Over the Grave
+
+---
+
+Slide 1 Question: What promise does God give regarding the power of death?
+
+[IMG] Warm classical biblical painting of heavy iron chains lying broken on the ground, illuminated by a shaft of divine light.
+
+---
+
+Slide 2 Biblical Answer: “I will ransom them from the power of the grave; I will redeem them from death: O death, I will be thy plagues; O grave, I will be thy destruction.” (Hosea 13:14)
+
+[IMG] Warm classical biblical painting of a dark stone tomb entrance being shattered by a brilliant, overpowering light from within.
+
+---
+
+Slide 3 Explanation: God does not view death as a permanent state for His children. He uses legal and military language here: He offers a "ransom" to buy us back and declares war on the grave itself, promising its ultimate destruction.
+
+[DYK] The word "ransom" implies a price paid to liberate a captive. In the New Testament context, the life of Jesus was the price paid to liberate humanity from the dominion of death.
+
+[IMG] Warm classical biblical painting of a strong hand reaching down to grasp the hand of someone trapped in a pit, symbolizing redemption.
+
+---
+
+Slide 4 Question: Through whom is this victory over death accomplished?
+
+[IMG] Warm classical biblical painting of two contrasting figures: a silhouette of a man in a garden (Adam) and a silhouette of a man on a hill with a cross (Jesus), historically respectful.
+
+---
+
+Slide 5 Biblical Answer: “For since by man came death, by man came also the resurrection of the dead. For as in Adam all die, even so in Christ shall all be made alive.” (1 Corinthians 15:21, 22)
+
+[IMG] Warm classical biblical painting of the resurrected Jesus standing outside the garden tomb, dawn breaking behind Him.
+
+---
+
+Slide 6 Explanation: This text establishes the parallel between Adam and Jesus (the "Second Adam"). Just as Adam’s choice brought mortality to the human race, Christ’s victory brings life. We inherit mortality from Adam, but we receive immortality through Christ.
+
+[IMG] Warm classical biblical painting of a dying tree on the left and a flourishing, fruit-bearing tree on the right, separated by a stream of water.
+
+---
+
+Slide 7 Question: If there were no resurrection, what would be the condition of those who have died believing in Jesus?
+
+[IMG] Warm classical biblical painting of an ancient, silent graveyard covered in mist, conveying a sense of finality and silence.
+
+---
+
+Slide 8 Biblical Answer: “For if the dead rise not... Then they also which are fallen asleep in Christ are perished.” (1 Corinthians 15:16-18)
+
+[IMG] Warm classical biblical painting of an old scroll with writing that is fading away into dust.
+
+---
+
+Slide 9 Explanation: Paul argues that without the resurrection, the dead have "perished"—meaning they are gone forever. If the righteous went immediately to heaven at death, they would not be considered "perished." Thus, our hope relies entirely on Jesus waking us from the sleep of death.
+
+[ILL] Consider a person sleeping in a dark room. They are unaware of the passing time until the morning light wakes them. Similarly, death is a sleep from which the believer awaits the call of the Lifegiver.
+
+[IMG] Warm classical biblical painting of a figure sleeping peacefully in a dimly lit chamber, with the first rays of morning sun touching their face.
+
+---
+
+Slide 10 Question: How does nature illustrate the necessity of death before the new life?
+
+[IMG] Warm classical biblical painting of a farmer's hands sowing wheat seeds into dark, rich furrows of earth.
+
+---
+
+Slide 11 Biblical Answer: “That which thou sowest is not quickened, except it die.” (1 Corinthians 15:36) ... “Except a corn of wheat fall into the ground and die, it abideth alone: but if it die, it bringeth forth much fruit.” (John 12:24)
+
+[IMG] Warm classical biblical painting of a single grain of wheat buried in the soil, beginning to crack open to release a sprout.
+
+---
+
+Slide 12 Spiritual Insight: The seed (the natural body) must be "sown" (buried) to give way to the plant (the spiritual body). The decay of the seed is not a failure; it is part of the process of glorification.
+
+[SN] This agricultural metaphor was profound for an agrarian society, but it holds deep spiritual truth. We are planted in hope.
+
+[IMG] Warm classical biblical painting of golden stalks of wheat waving in a field under a bright sun.
+
+---
+
+Slide 13 Question: What will our new bodies be like at the resurrection?
+
+[IMG] Warm classical biblical painting of a figure looking up toward the heavens, their form glowing with a soft, transformative light.
+
+---
+
+Slide 14 Biblical Answer: “It is sown in corruption; it is raised in incorruption: it is sown in dishonour; it is raised in glory: it is sown in weakness; it is raised in power: it is sown a natural body; it is raised a spiritual body.” (1 Corinthians 15:42-44)
+
+[IMG] Warm classical biblical painting contrasting a withered autumn leaf with a vibrant, imperishable golden leaf.
+
+---
+
+Slide 15 Definitions & Insight:
+**"Incorruption":** A state where the body is no longer subject to decay, sickness, aging, or death.
+
+**Deeper Insight:** Jesus will change our "vile body" to be fashioned like His "glorious body" (Phil 3:21). We will not be disembodied spirits, but tangible, glorified beings, just as Jesus was real and tangible after His resurrection.
+
+[IMG] Warm classical biblical painting of the risen Jesus showing his tangible hands to Thomas, soft light highlighting the reality of His body.
+
+---
+
+Slide 16 Question: When does this resurrection of the righteous occur?
+
+[IMG] Warm classical biblical painting of the sky rolling back like a scroll, revealing a brilliant heavenly light.
+
+---
+
+Slide 17 Biblical Answer: “For the Lord Himself shall descend from heaven with a shout, with the voice of the archangel, and with the trump of God: and the dead in Christ shall rise first.” (1 Thessalonians 4:16)
+
+[IMG] Warm classical biblical painting of angels blowing silver trumpets amidst the clouds, announcing the King.
+
+---
+
+Slide 18 Explanation: The reward is given at the Second Coming of Jesus, not at the moment of death. This event is not secret; it is audible (shout, voice, trumpet) and visible.
+
+[IMG] Warm classical biblical painting of graves opening in a churchyard, beams of light connecting the earth to the heavens.
+
+---
+
+Slide 19 Question: Are all the dead raised at the same time?
+
+[IMG] Warm classical biblical painting of an hourglass with the sand stopped, symbolizing a distinct period of time.
+
+---
+
+Slide 20 Biblical Answer: “And they [the righteous] lived and reigned with Christ a thousand years. But the rest of the dead lived not again until the thousand years were finished.” (Revelation 20:4, 5)
+
+[IMG] Warm classical biblical painting of a heavenly court with thrones, bathed in peaceful, golden light.
+
+---
+
+Slide 21 The Order of Events:
+1. **The First Resurrection**: For the "just," occurring at the Second Coming (The resurrection of life).
+2. **The Millennium**: A thousand-year interval where the righteous are with Christ.
+3. **The Second Resurrection**: For the "unjust," occurring after the thousand years (Leading to the second death).
+
+[DYK] This concept explains how God deals fairly with the righteous (reward) and the wicked (judgment) in distinct phases.
+
+[IMG] Warm classical biblical painting of a timeline scroll, clearly divided into two distinct eras by a span of time.
+
+---
+
+Slide 22 Question: What is the final fate of death itself?
+
+[IMG] Warm classical biblical painting of a dark, hooded cloak lying empty and discarded on the ground.
+
+---
+
+Slide 23 Biblical Answer: “The last enemy that shall be destroyed is death.” (1 Corinthians 15:26)
+
+[IMG] Warm classical biblical painting of a broken scythe (symbol of death) lying in the grass, overgrown by flowers.
+
+---
+
+Slide 24 Explanation: Death is not a friend; it is an "enemy." In God's recreated universe, this enemy will be no more. The ultimate shout of victory will be, "O death, where is thy sting? O grave, where is thy victory?"
+
+[IMG] Warm classical biblical painting of a joyous crowd entering a city of light where no shadows exist.
+
+---
+
+Slide 25 Practical Application: Because of the resurrection, how should we live today?
+• We grieve the loss of loved ones, but not as those without hope.
+• We respect our bodies as seeds of a future glory.
+
+[IMG] Warm classical biblical painting of people comforting one another in a garden setting, their faces displaying peace rather than despair.
+
+---
+
+Slide 26 Practical Application (Continued):
+• We look forward to the return of Jesus as the consummation of our salvation.
+• We have assurance that justice will eventually be served for all.
+
+[IMG] Warm classical biblical painting of a family looking toward the eastern horizon at sunrise, full of expectation.
+
+---
